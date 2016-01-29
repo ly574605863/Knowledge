@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 public class KnowledgeFragment extends BaseFragment implements NewsView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
-    private List<String> networkImages;
+    private List<String> topImages;
     private String[] images = {"http://img2.imgtn.bdimg.com/it/u=3093785514,1341050958&fm=21&gp=0.jpg",
             "http://img2.3lian.com/2014/f2/37/d/40.jpg",
             "http://d.3987.com/sqmy_131219/001.jpg",
@@ -50,7 +50,7 @@ public class KnowledgeFragment extends BaseFragment implements NewsView, SwipeRe
 
     @Override
     protected void initData() {
-        networkImages = Arrays.asList(images);
+        topImages = Arrays.asList(images);
         convenientBanner.setScrollDuration(500);
         convenientBanner.startTurning(5000);
         convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
@@ -58,7 +58,7 @@ public class KnowledgeFragment extends BaseFragment implements NewsView, SwipeRe
             public NetworkImageHolderView createHolder() {
                 return new NetworkImageHolderView();
             }
-        }, networkImages);
+        }, topImages);
 
         mNewsPresenter = new NewsPresenterImpl(this);
         GetData();
@@ -110,12 +110,18 @@ public class KnowledgeFragment extends BaseFragment implements NewsView, SwipeRe
 
     @Override
     public void showProgress() {
-        
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
-    public void setTop(List<TopStoriesEntity> storiesEntities) {
+    public void setTop(List<TopStoriesEntity> topEntities) {
 
+        convenientBanner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+            @Override
+            public NetworkImageHolderView createHolder() {
+                return new NetworkImageHolderView();
+            }
+        }, topEntities);
     }
 
     @Override
