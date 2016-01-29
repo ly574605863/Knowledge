@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="96dp"
+                android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/story_topic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:text="今日热闻"
+        android:textSize="13sp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/story_img"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_menu_gallery"/>
+
+    <TextView
+       android:layout_centerInParent="true"
+        android:id="@+id/story_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/story_img"
+        android:padding="6dp"
+        android:text="如何看待当下这种越来越普遍的“沉默”人格？"
+        android:textSize="18sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/story_img"
+        android:background="@android:color/darker_gray"/>
+</RelativeLayout>
