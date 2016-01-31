@@ -1,5 +1,6 @@
 package com.dante.knowledge;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -15,8 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.dante.knowledge.news.KnowledgeFragment;
+import com.dante.knowledge.news.view.NewsFragment;
 import com.dante.knowledge.ui.BaseActivity;
+import com.dante.knowledge.ui.SettingsActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,9 +52,8 @@ public class MainActivity extends BaseActivity
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-
-        navView.setNavigationItemSelectedListener(this);
-        mFragment = new KnowledgeFragment();
+        initNavigationView();
+        mFragment = new NewsFragment();
         replaceFragment(mFragment, "main");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,14 +62,30 @@ public class MainActivity extends BaseActivity
                         .setAction("知道啦", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                RecyclerView list=((KnowledgeFragment) mFragment).getmRecyclerView();
-                                if (null!=list){
-                                    list.smoothScrollToPosition(0);
-                                }
+                                scrollToTop();
                             }
                         }).show();
             }
         });
+    }
+
+    private void initNavigationView() {
+        navView.setNavigationItemSelectedListener(this);
+        navView.inflateMenu(R.menu.activity_main_drawer);
+    }
+
+    private void scrollToTop() {
+        NewsFragment fragment = ((NewsFragment) mFragment);
+        RecyclerView recyclerView = fragment.getmRecyclerView();
+        if (null != recyclerView) {
+            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            if (manager.findLastVisibleItemPosition() < 35) {
+                recyclerView.smoothScrollToPosition(0);
+
+            } else {
+                recyclerView.scrollToPosition(0);
+            }
+        }
     }
 
     @Override
@@ -92,6 +110,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
 
@@ -104,7 +123,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            mFragment = new KnowledgeFragment();
+            mFragment = new NewsFragment();
             replaceFragment(mFragment, "main");
         } else if (id == R.id.nav_fresh) {
 
