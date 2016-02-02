@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.fab)
     FloatingActionButton fab;
 
-    private Fragment mFragment;
+    private Fragment currentFragment;
 
     @Override
     protected void initLayoutId() {
@@ -53,8 +53,8 @@ public class MainActivity extends BaseActivity
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         initNavigationView();
-        mFragment = new NewsFragment();
-        replaceFragment(mFragment, "main");
+        currentFragment = new NewsFragment();
+        replaceFragment(currentFragment, "main");
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void scrollToTop() {
-        NewsFragment fragment = ((NewsFragment) mFragment);
+        NewsFragment fragment = ((NewsFragment) currentFragment);
         RecyclerView recyclerView = fragment.getmRecyclerView();
         if (null != recyclerView) {
             LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -123,8 +123,10 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            mFragment = new NewsFragment();
-            replaceFragment(mFragment, "main");
+            if (!(currentFragment instanceof NewsFragment)){
+                currentFragment = new NewsFragment();
+                replaceFragment(currentFragment, "main");
+            }
         } else if (id == R.id.nav_fresh) {
 
         } else if (id == R.id.nav_beauty) {

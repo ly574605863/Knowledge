@@ -22,6 +22,8 @@ import com.dante.knowledge.news.presenter.NewsPresenterImpl;
 import com.dante.knowledge.news.presenter.NewsPresenter;
 import com.dante.knowledge.news.other.OnListFragmentInteractionListener;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.Tool;
+import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -113,6 +115,8 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
         super.onDestroy();
         RefWatcher watcher = KnowledgeApplication.getRefWatcher(getActivity());
         watcher.watch(this);
+//        Tool.removeActivityFromTransitionManager(getActivity());解决内存泄露
+
     }
 
     @Override
@@ -148,6 +152,7 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
         adapter.clear();
         adapter.setShowHeader(false);
         mNewsPresenter.loadNews();
+        Logger.init("test");
     }
 
     @Override
@@ -166,6 +171,7 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
             }
         });
     }
+
 
     @Override
     public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {

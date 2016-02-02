@@ -64,7 +64,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
 
     private void initWebView() {
-        webView = new WebView(getApplicationContext());
+        webView = new WebView(this);
         webContainer.addView(webView);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -139,10 +139,4 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
 
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }
