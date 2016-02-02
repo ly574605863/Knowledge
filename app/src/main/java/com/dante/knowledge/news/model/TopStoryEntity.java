@@ -1,9 +1,11 @@
-package com.dante.knowledge.bean;
+package com.dante.knowledge.news.model;
+
+import java.io.Serializable;
 
 /**
  * Created by yons on 16/1/29.
  */
-public class TopStoriesEntity {
+public class TopStoryEntity implements Serializable{
     private String image;
     private int id;
     private String title;

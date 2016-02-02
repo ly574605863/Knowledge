@@ -1,4 +1,4 @@
-package com.dante.knowledge.bean;
+package com.dante.knowledge.news.model;
 
 import java.util.List;
 
@@ -20,13 +20,13 @@ public class BeforeNews {
      * title : 深夜惊奇 · 以霸制霸
      */
 
-    private List<StoriesEntity> stories;
+    private List<StoryEntity> stories;
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public void setStories(List<StoriesEntity> stories) {
+    public void setStories(List<StoryEntity> stories) {
         this.stories = stories;
     }
 
@@ -34,7 +34,7 @@ public class BeforeNews {
         return date;
     }
 
-    public List<StoriesEntity> getStories() {
+    public List<StoryEntity> getStories() {
         return stories;
     }
 

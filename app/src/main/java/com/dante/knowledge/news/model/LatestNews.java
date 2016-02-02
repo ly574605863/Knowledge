@@ -1,4 +1,4 @@
-package com.dante.knowledge.bean;
+package com.dante.knowledge.news.model;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class LatestNews {
      * title : 运气好的话，说不定 3 万年就把木星挪过来
      */
 
-    private List<StoriesEntity> stories;
+    private List<StoryEntity> stories;
     /**
      * image : http://pic2.zhimg.com/9c8804770cef7efe1b464eb394f73a19.jpg
      * type : 0
@@ -31,17 +31,17 @@ public class LatestNews {
      * title : 讲真，请不要用眼镜布擦眼镜
      */
 
-    private List<TopStoriesEntity> top_stories;
+    private List<TopStoryEntity> top_stories;
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public void setStories(List<StoriesEntity> stories) {
+    public void setStories(List<StoryEntity> stories) {
         this.stories = stories;
     }
 
-    public void setTop_stories(List<TopStoriesEntity> top_stories) {
+    public void setTop_stories(List<TopStoryEntity> top_stories) {
         this.top_stories = top_stories;
     }
 
@@ -49,11 +49,11 @@ public class LatestNews {
         return date;
     }
 
-    public List<StoriesEntity> getStories() {
+    public List<StoryEntity> getStories() {
         return stories;
     }
 
-    public List<TopStoriesEntity> getTop_stories() {
+    public List<TopStoryEntity> getTop_stories() {
         return top_stories;
     }
 

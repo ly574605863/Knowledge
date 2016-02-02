@@ -5,4 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="load_fail">Load failed</string>
+    <string name="title_activity_news_detail">NewsDetailActivity</string>
+    <string name="share_title">shared_title</string>
+    <string name="shared_img">shared_img</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

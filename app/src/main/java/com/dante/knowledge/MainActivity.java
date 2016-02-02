@@ -71,7 +71,7 @@ public class MainActivity extends BaseActivity
 
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(this);
-        navView.inflateMenu(R.menu.activity_main_drawer);
+//        navView.inflateMenu(R.menu.activity_main_drawer);
     }
 
     private void scrollToTop() {

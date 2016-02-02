@@ -1,4 +1,4 @@
-package com.dante.knowledge.news.inter;
+package com.dante.knowledge.news.presenter;
 
 /**
  * Created by yons on 16/1/29.
