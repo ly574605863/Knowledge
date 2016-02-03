@@ -23,7 +23,8 @@ import java.util.List;
  */
 public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final String FRESH_ITEM = "fresh_item";
+    public static final String FRESH_ITEMS = "fresh_items";
+    public static final String FRESH_ITEM_POSITION = "fresh_items_position";
     private Context context;
     private List<FreshItem> freshItems = new ArrayList<>();
     private FreshNews news;

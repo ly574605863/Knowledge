@@ -127,7 +127,8 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
             FreshListAdapter.FreshViewHolder holder = (FreshListAdapter.FreshViewHolder) viewHolder;
             holder.mTitle.setTextColor(grey);
             Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
-            intent.putExtra(FreshListAdapter.FRESH_ITEM, holder.freshItem);
+            intent.putExtra(FreshListAdapter.FRESH_ITEMS, holder.freshItem);
+            intent.putExtra(FreshListAdapter.FRESH_ITEM_POSITION, holder.freshItem);
             startActivity(intent);
         }
     }

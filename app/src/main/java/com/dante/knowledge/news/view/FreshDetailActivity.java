@@ -1,30 +1,22 @@
 package com.dante.knowledge.news.view;
 
-import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.Toolbar;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.model.FreshDetail;
 import com.dante.knowledge.news.model.FreshItem;
-import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.other.FreshListAdapter;
-import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.presenter.FreshDetailPresenter;
-import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.Tool;
-import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class FreshDetailActivity extends BaseActivity implements NewsDetailView<FreshDetail> {
 
@@ -46,7 +38,7 @@ public class FreshDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void initViews() {
         super.initViews();
-        Object object = getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEM);
+        Object object = getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEMS);
         freshItem = (FreshItem) object;
 
         toolbar.setTitle(freshItem.getTitle());

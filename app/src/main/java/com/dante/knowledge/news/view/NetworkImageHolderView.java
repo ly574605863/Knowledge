@@ -23,7 +23,7 @@ public class NetworkImageHolderView implements Holder<ZhihuTop> {
 
     @Override
     public View createView(Context context) {
-        view= LayoutInflater.from(context).inflate(R.layout.card_item_big, null);
+        view = LayoutInflater.from(context).inflate(R.layout.card_item_big, null);
         return view;
     }
 
@@ -38,7 +38,7 @@ public class NetworkImageHolderView implements Holder<ZhihuTop> {
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZhihuDetailActivity.class);
                 intent.putExtra(NewsListAdapter.ZHIHU_ITEM, entity);
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity)context,
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) context,
                         imageView, context.getString(R.string.shared_img));
                 ActivityCompat.startActivity((MainActivity) context, intent, optionsCompat.toBundle());
             }
