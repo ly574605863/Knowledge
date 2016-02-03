@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.appcompat.R.anim;
 
 import com.dante.knowledge.R;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,8 +20,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
+    protected Toolbar toolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,10 +40,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private void initBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if (null != getSupportActionBar()) {
+//        if (null != getSupportActionBar()) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setHomeButtonEnabled(true);
-        }
+//        }
     }
 
     public void replaceFragment(Fragment fragment, String tag) {

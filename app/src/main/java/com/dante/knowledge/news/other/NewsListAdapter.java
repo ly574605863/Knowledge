@@ -28,7 +28,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int TYPE_HEADER = 1;
     private static final int TYPE_ITEM = 2;
     private static final int TYPE_FOOTER = 3;
-    public static final String STORY = "Story";
+    public static final String ZHIHU_ITEM = "zhihu_item";
     private Context context;
     private List<ZhihuItem> storyEntities = new ArrayList<>();
     private List<ZhihuTop> topEntities = new ArrayList<>();
@@ -37,7 +37,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean showHeader;
     private ZhihuNews news;
     List<ZhihuItem> newStories;
-    private int lastStoriesSize;
 
     public boolean isShowHeader() {
         return showHeader;
@@ -119,34 +118,34 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            final ViewHolder itemHolder = (ViewHolder) holder;
+            final ViewHolder viewHolder = (ViewHolder) holder;
 
             if (position == 1) {
-                itemHolder.header.setVisibility(View.VISIBLE);
-                itemHolder.mItem.setVisibility(View.GONE);
+                viewHolder.header.setVisibility(View.VISIBLE);
+                viewHolder.mItem.setVisibility(View.GONE);
                 return;
             } else {
-                itemHolder.story = storyEntities.get(position - 2);//这里position=0,1时，被banner,header占用了
-                if (itemHolder.story.getId() == 1) {
+                viewHolder.zhihuItem = storyEntities.get(position - 2);//这里position=0,1时，被banner,header占用了
+                if (viewHolder.zhihuItem.getId() == 1) {
                     String date = StringUtil.parseDate(news.getDate());
-                    itemHolder.header.setText(date);
-                    itemHolder.header.setVisibility(View.VISIBLE);
-                    itemHolder.mItem.setVisibility(View.GONE);
+                    viewHolder.header.setText(date);
+                    viewHolder.header.setVisibility(View.VISIBLE);
+                    viewHolder.mItem.setVisibility(View.GONE);
                     return;
                 } else {
-                    itemHolder.header.setVisibility(View.GONE);
-                    itemHolder.mItem.setVisibility(View.VISIBLE);
+                    viewHolder.header.setVisibility(View.GONE);
+                    viewHolder.mItem.setVisibility(View.VISIBLE);
                 }
             }
 
             showHeader = true;
-            ImageUtil.load(itemHolder.itemView.getContext(), itemHolder.story.getImages().get(0), itemHolder.mImage);
-            itemHolder.mTitle.setText(itemHolder.story.getTitle());
-            itemHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            ImageUtil.load(viewHolder.itemView.getContext(), viewHolder.zhihuItem.getImages().get(0), viewHolder.mImage);
+            viewHolder.mTitle.setText(viewHolder.zhihuItem.getTitle());
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
-                        mListener.onListFragmentInteraction(itemHolder);
+                        mListener.onListFragmentInteraction(viewHolder);
                     }
 
                 }
@@ -216,7 +215,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public final ImageView mImage;
         public final TextView mTitle;
         public final View mItem;
-        public ZhihuItem story;
+        public ZhihuItem zhihuItem;
 
         public ViewHolder(View view) {
             super(view);

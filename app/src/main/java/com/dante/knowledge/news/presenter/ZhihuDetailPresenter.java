@@ -7,25 +7,24 @@ import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
 import com.dante.knowledge.news.model.ZhihuNews;
-import com.dante.knowledge.news.other.NewsDetail;
 
 /**
  * Created by Dante on 2016/1/30.
  */
-public class NewsDetailPresenterImpl implements NewsDetailPresenter<ZhihuItem>, OnLoadDetailListener<ZhihuDetail> {
+public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuItem>, OnLoadDetailListener<ZhihuDetail> {
 
     private NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> newsModel;
     private NewsDetailView<ZhihuDetail> newsDetailView;
 
-    public NewsDetailPresenterImpl(NewsDetailView<ZhihuDetail> newsDetailView) {
-        this.newsModel = new NewsModelImpl();
+    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView) {
+        this.newsModel = new ZhihuNewsModel();
         this.newsDetailView = newsDetailView;
     }
 
     @Override
-    public void loadNewsDetail(ZhihuItem story) {
+    public void loadNewsDetail(ZhihuItem zhihuItem) {
         newsDetailView.showProgress();
-        newsModel.getNewsDetail(story, this);
+        newsModel.getNewsDetail(zhihuItem, this);
     }
 
     @Override

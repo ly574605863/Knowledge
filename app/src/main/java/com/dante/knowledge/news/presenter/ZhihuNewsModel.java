@@ -16,7 +16,7 @@ import okhttp3.Call;
 /**
  * Created by yons on 16/1/29.
  */
-public class NewsModelImpl implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> {
+public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> {
 
     private String date;
 
@@ -26,12 +26,12 @@ public class NewsModelImpl implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetai
             Net.get(API.NEWS_LATEST, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e) {
-                    listener.onFailure("load news failed", e);
+                    listener.onFailure("load zhihu news failed", e);
                 }
 
                 @Override
                 public void onResponse(String response) {
-                    ZhihuNews news = GsonUtil.parseNews(response);
+                    ZhihuNews news = GsonUtil.parseZhihuNews(response);
                     listener.onNewsSuccess(news);
                     date = news.getDate();
                 }
@@ -42,12 +42,12 @@ public class NewsModelImpl implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetai
             Net.get(API.NEWS_BEFORE + date, new StringCallback() {
                 @Override
                 public void onError(Call call, Exception e) {
-                    listener.onFailure("load before failed", e);
+                    listener.onFailure("load zhihu before news failed", e);
                 }
 
                 @Override
                 public void onResponse(String response) {
-                    ZhihuNews news = GsonUtil.parseNews(response);
+                    ZhihuNews news = GsonUtil.parseZhihuNews(response);
                     listener.onNewsSuccess(news);
                     date = news.getDate();
                 }
@@ -66,7 +66,7 @@ public class NewsModelImpl implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetai
 
             @Override
             public void onResponse(String response) {
-                ZhihuDetail detailNews = GsonUtil.parseDetail(response);
+                ZhihuDetail detailNews = GsonUtil.parseZhihuDetail(response);
                 listener.onDetailSuccess(detailNews);
             }
         });

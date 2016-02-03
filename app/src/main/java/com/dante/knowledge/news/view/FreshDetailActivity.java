@@ -1,68 +1,60 @@
 package com.dante.knowledge.news.view;
 
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
+import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toolbar;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.news.interf.NewsDetailView;
-import com.dante.knowledge.news.model.ZhihuDetail;
-import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.model.ZhihuTop;
-import com.dante.knowledge.news.other.NewsDetail;
-import com.dante.knowledge.news.other.NewsItem;
-import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
-import com.dante.knowledge.news.presenter.NewsDetailPresenterImpl;
+import com.dante.knowledge.news.interf.NewsDetailView;
+import com.dante.knowledge.news.model.FreshDetail;
+import com.dante.knowledge.news.model.FreshItem;
+import com.dante.knowledge.news.model.ZhihuItem;
+import com.dante.knowledge.news.other.FreshListAdapter;
+import com.dante.knowledge.news.other.NewsListAdapter;
+import com.dante.knowledge.news.presenter.FreshDetailPresenter;
+import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.ImageUtil;
 import com.dante.knowledge.utils.Tool;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class NewsDetailActivity extends BaseActivity implements NewsDetailView<ZhihuDetail> {
-    @Bind(R.id.detail_img)
-    ImageView detailImg;
-    @Bind(R.id.toolbar_layout)
-    CollapsingToolbarLayout toolbarLayout;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
-    @Bind(R.id.progress)
-    ProgressBar progress;
+public class FreshDetailActivity extends BaseActivity implements NewsDetailView<FreshDetail> {
+
+
     @Bind(R.id.web_container)
     FrameLayout webContainer;
+    @Bind(R.id.progress)
+    ProgressBar progress;
     private WebView webView;
-    private ZhihuItem story;
-    private NewsDetailPresenter<ZhihuItem> presenter;
+    private FreshItem freshItem;
+    private NewsDetailPresenter<FreshItem> presenter;
 
     @Override
     protected void initLayoutId() {
-        layoutId = R.layout.activity_news_detail;
+        layoutId = R.layout.activity_fresh_detail;
     }
+
 
     @Override
     protected void initViews() {
         super.initViews();
-        Object object = getIntent().getSerializableExtra(NewsListAdapter.STORY);
-        if (object instanceof ZhihuTop) {
-            story = new ZhihuItem();
-            story.setId(((ZhihuTop) object).getId());
-            story.setTitle(((ZhihuTop) object).getTitle());
-        } else {
-            story = (ZhihuItem) object;
-        }
-        toolbarLayout.setTitle(story.getTitle());
-        presenter = new NewsDetailPresenterImpl(this);
-        initWebView();
-        presenter.loadNewsDetail(story);
-    }
+        Object object = getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEM);
+        freshItem = (FreshItem) object;
 
+        toolbar.setTitle(freshItem.getTitle());
+        presenter = new FreshDetailPresenter(this);
+        initWebView();
+        presenter.loadNewsDetail(freshItem);
+
+    }
 
     private void initWebView() {
         webView = new WebView(this);
@@ -90,12 +82,6 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView<Z
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        webView.setVisibility(View.GONE);
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
         webView.onPause();
@@ -113,7 +99,6 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView<Z
         webContainer.removeView(webView);
         webView.removeAllViews();
         webView.destroy();
-        Tool.removeActivityFromTransitionManager(this);
     }
 
     @Override
@@ -122,13 +107,11 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView<Z
     }
 
     @Override
-    public void showDetail(ZhihuDetail detailNews) {
-        ImageUtil.load(this, detailNews.getImage(), detailImg);
-        String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">";
-        String html = "<html><head>" + css + "</head><body>" + detailNews.getBody() + "</body></html>";
-        html = html.replace("<div class=\"img-place-holder\">", "");
-        webView.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
+    public void showDetail(FreshDetail detailNews) {
+//        webView.loadData(detailNews.getPost().getContent(), "text/html", "UTF-8");
+        webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
     }
+
 
     @Override
     public void hideProgress() {
@@ -139,5 +122,6 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView<Z
     public void showLoadFailed(String msg) {
 
     }
+
 
 }

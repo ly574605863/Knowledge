@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".news.view.NewsDetailActivity"
-    tools:showIn="@layout/activity_news_detail">
+    tools:context=".news.view.ZhihuDetailActivity"
+    tools:showIn="@layout/activity_fresh_detail">
     <FrameLayout
         android:id="@+id/web_container"
         android:layout_width="match_parent"

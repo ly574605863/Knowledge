@@ -7,7 +7,7 @@
     android:name="com.dante.knowledge.ui.knowledgeFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".news.view.NewsFragment">
+    tools:context=".news.view.ZhihuFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"

@@ -1,17 +1,11 @@
 package com.dante.knowledge.news.view;
 
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
@@ -20,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * A fragment {@link Fragment} contains different news fragment.
@@ -46,7 +39,7 @@ public class NewsTabFragment extends BaseFragment {
     @Override
     protected void initData() {
         NewsTabPagerAdapter adapter = new NewsTabPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new NewsFragment(),"知乎日報");
+        adapter.addFragment(new ZhihuFragment(),"知乎日報");
         adapter.addFragment(new FreshFragment(),"新鮮事");
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);

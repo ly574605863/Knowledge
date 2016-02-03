@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dante.knowledge.KnowledgeApplication;
+import com.squareup.leakcanary.RefWatcher;
+
 import butterknife.ButterKnife;
 
 /**
@@ -54,5 +57,13 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        RefWatcher watcher = KnowledgeApplication.getRefWatcher(getActivity());
+        watcher.watch(this);
+//        Tool.removeActivityFromTransitionManager(getActivity());解决内存泄露
     }
 }
