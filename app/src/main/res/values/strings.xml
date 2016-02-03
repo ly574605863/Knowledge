@@ -10,4 +10,7 @@
     <string name="share_title">shared_title</string>
     <string name="shared_img">shared_img</string>
     <string name="title_activity_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

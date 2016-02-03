@@ -37,9 +37,7 @@ public class Tool {
             if (map.containsKey(decorView)) {
                 map.remove(decorView);
             }
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }

@@ -1,6 +1,5 @@
 package com.dante.knowledge.news.view;
 
-import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.view.View;
@@ -12,20 +11,22 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.news.model.DetailNews;
-import com.dante.knowledge.news.model.StoryEntity;
-import com.dante.knowledge.news.model.TopStoryEntity;
+import com.dante.knowledge.news.interf.NewsDetailView;
+import com.dante.knowledge.news.model.ZhihuDetail;
+import com.dante.knowledge.news.model.ZhihuItem;
+import com.dante.knowledge.news.model.ZhihuTop;
+import com.dante.knowledge.news.other.NewsDetail;
+import com.dante.knowledge.news.other.NewsItem;
 import com.dante.knowledge.news.other.NewsListAdapter;
-import com.dante.knowledge.news.presenter.NewsDetailPresenter;
+import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.presenter.NewsDetailPresenterImpl;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.ImageUtil;
 import com.dante.knowledge.utils.Tool;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
+public class NewsDetailActivity extends BaseActivity implements NewsDetailView<ZhihuDetail> {
     @Bind(R.id.detail_img)
     ImageView detailImg;
     @Bind(R.id.toolbar_layout)
@@ -37,8 +38,8 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     @Bind(R.id.web_container)
     FrameLayout webContainer;
     private WebView webView;
-    private StoryEntity story;
-    private NewsDetailPresenter presenter;
+    private ZhihuItem story;
+    private NewsDetailPresenter<ZhihuItem> presenter;
 
     @Override
     protected void initLayoutId() {
@@ -49,12 +50,12 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     protected void initViews() {
         super.initViews();
         Object object = getIntent().getSerializableExtra(NewsListAdapter.STORY);
-        if (object instanceof TopStoryEntity) {
-            story = new StoryEntity();
-            story.setId(((TopStoryEntity) object).getId());
-            story.setTitle(((TopStoryEntity) object).getTitle());
+        if (object instanceof ZhihuTop) {
+            story = new ZhihuItem();
+            story.setId(((ZhihuTop) object).getId());
+            story.setTitle(((ZhihuTop) object).getTitle());
         } else {
-            story = (StoryEntity) object;
+            story = (ZhihuItem) object;
         }
         toolbarLayout.setTitle(story.getTitle());
         presenter = new NewsDetailPresenterImpl(this);
@@ -121,7 +122,7 @@ public class NewsDetailActivity extends BaseActivity implements NewsDetailView {
     }
 
     @Override
-    public void showDetail(final DetailNews detailNews) {
+    public void showDetail(ZhihuDetail detailNews) {
         ImageUtil.load(this, detailNews.getImage(), detailImg);
         String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">";
         String html = "<html><head>" + css + "</head><body>" + detailNews.getBody() + "</body></html>";

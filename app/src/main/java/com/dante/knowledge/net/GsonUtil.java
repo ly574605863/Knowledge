@@ -1,7 +1,7 @@
 package com.dante.knowledge.net;
 
-import com.dante.knowledge.news.model.DetailNews;
-import com.dante.knowledge.news.model.LatestNews;
+import com.dante.knowledge.news.model.ZhihuDetail;
+import com.dante.knowledge.news.model.ZhihuNews;
 import com.google.gson.Gson;
 
 /**
@@ -10,10 +10,10 @@ import com.google.gson.Gson;
 public class GsonUtil {
     public static Gson mGson = new Gson();
 
-    public static LatestNews parseNews(String latest){
-        return mGson.fromJson(latest, LatestNews.class);
+    public static ZhihuNews parseNews(String latest){
+        return mGson.fromJson(latest, ZhihuNews.class);
     }
-    public static DetailNews parseDetail(String latest){
-        return mGson.fromJson(latest, DetailNews.class);
+    public static ZhihuDetail parseDetail(String latest){
+        return mGson.fromJson(latest, ZhihuDetail.class);
     }
 }

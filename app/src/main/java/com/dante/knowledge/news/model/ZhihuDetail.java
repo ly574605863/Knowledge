@@ -1,11 +1,13 @@
 package com.dante.knowledge.news.model;
 
+import com.dante.knowledge.news.other.NewsDetail;
+
 import java.util.List;
 
 /**
  * Created by Dante on 2016/1/30.
  */
-public class DetailNews {
+public class ZhihuDetail implements NewsDetail {
     /**
      * body : <div class="main-wrap content-wrap">
      <div class="headline">

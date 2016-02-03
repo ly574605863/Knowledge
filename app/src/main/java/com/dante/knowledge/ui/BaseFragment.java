@@ -20,7 +20,6 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    protected abstract void initData();
 
     @Nullable
     @Override
@@ -30,10 +29,15 @@ public abstract class BaseFragment extends Fragment {
             rootView = inflater.inflate(layoutId, container, false);
             ButterKnife.bind(this, rootView);
             initViews();
-            initData();
         }
         AlwaysInit();
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initData();
     }
 
     protected abstract void initLayoutId();
@@ -44,4 +48,11 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void initViews();
 
+    protected abstract void initData();
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
 }

@@ -9,18 +9,11 @@
     android:layout_height="match_parent"
     tools:context=".news.view.NewsFragment">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             tools:listitem="@layout/fragment_news_item" />
-
-
-    </android.support.design.widget.CoordinatorLayout>
 
 </android.support.v4.widget.SwipeRefreshLayout>

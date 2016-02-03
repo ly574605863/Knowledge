@@ -1,12 +1,14 @@
 package com.dante.knowledge.news.model;
 
+import com.dante.knowledge.news.other.NewsItem;
+
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by yons on 16/1/29.
  */
-public class StoryEntity implements Serializable{
+public class ZhihuItem implements Serializable, NewsItem{
 
     /**
      * images : ["http://pic1.zhimg.com/aef18b16a9a6dcb445d5c235784c25a8.jpg"]

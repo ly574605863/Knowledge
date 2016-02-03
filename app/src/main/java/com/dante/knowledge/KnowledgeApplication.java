@@ -3,6 +3,7 @@ package com.dante.knowledge;
 import android.app.Application;
 import android.content.Context;
 
+import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -17,6 +18,7 @@ public class KnowledgeApplication extends Application {
     public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
+        Logger.init("test");
     }
 
     public static RefWatcher getRefWatcher(Context context){

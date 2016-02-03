@@ -1,11 +1,13 @@
 package com.dante.knowledge.news.model;
 
+import com.dante.knowledge.news.other.News;
+
 import java.util.List;
 
 /**
  * Created by yons on 16/1/29.
  */
-public class LatestNews {
+public class ZhihuNews implements News {
 
     /**
      * date : 20160129
@@ -22,7 +24,7 @@ public class LatestNews {
      * title : 运气好的话，说不定 3 万年就把木星挪过来
      */
 
-    private List<StoryEntity> stories;
+    private List<ZhihuItem> stories;
     /**
      * image : http://pic2.zhimg.com/9c8804770cef7efe1b464eb394f73a19.jpg
      * type : 0
@@ -31,17 +33,17 @@ public class LatestNews {
      * title : 讲真，请不要用眼镜布擦眼镜
      */
 
-    private List<TopStoryEntity> top_stories;
+    private List<ZhihuTop> top_stories;
 
     public void setDate(String date) {
         this.date = date;
     }
 
-    public void setStories(List<StoryEntity> stories) {
+    public void setStories(List<ZhihuItem> stories) {
         this.stories = stories;
     }
 
-    public void setTop_stories(List<TopStoryEntity> top_stories) {
+    public void setTop_stories(List<ZhihuTop> top_stories) {
         this.top_stories = top_stories;
     }
 
@@ -49,11 +51,11 @@ public class LatestNews {
         return date;
     }
 
-    public List<StoryEntity> getStories() {
+    public List<ZhihuItem> getStories() {
         return stories;
     }
 
-    public List<TopStoryEntity> getTop_stories() {
+    public List<ZhihuTop> getTop_stories() {
         return top_stories;
     }
 

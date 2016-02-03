@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.dante.knowledge.news.view.NewsFragment;
+import com.dante.knowledge.news.view.NewsTabFragment;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingsActivity;
 
@@ -35,8 +36,6 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
 
     private Fragment currentFragment;
 
@@ -53,20 +52,9 @@ public class MainActivity extends BaseActivity
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         initNavigationView();
-        currentFragment = new NewsFragment();
+        currentFragment = new NewsTabFragment();
         replaceFragment(currentFragment, "main");
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, "这是个萌萌的按钮( ⊙ o ⊙ )", Snackbar.LENGTH_SHORT)
-                        .setAction("知道啦", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                scrollToTop();
-                            }
-                        }).show();
-            }
-        });
+
     }
 
     private void initNavigationView() {
@@ -74,19 +62,6 @@ public class MainActivity extends BaseActivity
 //        navView.inflateMenu(R.menu.activity_main_drawer);
     }
 
-    private void scrollToTop() {
-        NewsFragment fragment = ((NewsFragment) currentFragment);
-        RecyclerView recyclerView = fragment.getmRecyclerView();
-        if (null != recyclerView) {
-            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            if (manager.findLastVisibleItemPosition() < 35) {
-                recyclerView.smoothScrollToPosition(0);
-
-            } else {
-                recyclerView.scrollToPosition(0);
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -123,8 +98,8 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            if (!(currentFragment instanceof NewsFragment)){
-                currentFragment = new NewsFragment();
+            if (!(currentFragment instanceof NewsTabFragment)){
+                currentFragment = new NewsTabFragment();
                 replaceFragment(currentFragment, "main");
             }
         } else if (id == R.id.nav_fresh) {
@@ -141,11 +116,4 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
 }

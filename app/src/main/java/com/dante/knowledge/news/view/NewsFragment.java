@@ -15,15 +15,15 @@ import android.view.View;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.dante.knowledge.KnowledgeApplication;
 import com.dante.knowledge.R;
-import com.dante.knowledge.news.model.LatestNews;
-import com.dante.knowledge.news.model.StoryEntity;
+import com.dante.knowledge.news.other.News;
+import com.dante.knowledge.news.interf.NewsView;
+import com.dante.knowledge.news.model.ZhihuNews;
+import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.presenter.NewsPresenterImpl;
-import com.dante.knowledge.news.presenter.NewsPresenter;
-import com.dante.knowledge.news.other.OnListFragmentInteractionListener;
+import com.dante.knowledge.news.interf.NewsPresenter;
+import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
 import com.dante.knowledge.ui.BaseFragment;
-import com.dante.knowledge.utils.Tool;
-import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
@@ -33,14 +33,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class NewsFragment extends BaseFragment implements NewsView, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteractionListener {
+public class NewsFragment extends BaseFragment implements NewsView<ZhihuNews>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteractionListener {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     @Bind(R.id.list)
     RecyclerView mRecyclerView;
 
     private NewsPresenter mNewsPresenter;
-    private List<StoryEntity> storyEntities;
+    private List<ZhihuItem> storyEntities;
     private NewsListAdapter adapter;
     private ConvenientBanner banner;
     private LinearLayoutManager layoutManager;
@@ -60,10 +60,6 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
     @Override
     protected void initData() {
         mNewsPresenter = new NewsPresenterImpl(this);
-        GetData();
-    }
-
-    private void GetData() {
         onRefresh();
     }
 
@@ -79,7 +75,7 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
         layoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(layoutManager);
         storyEntities = new ArrayList<>();
-        adapter = new NewsListAdapter(this);
+        adapter = new NewsListAdapter(getActivity(), this);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
@@ -102,7 +98,7 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
             if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem +1== adapter.getItemCount()
+                    && lastVisibleItem + 1 == adapter.getItemCount()
                     && adapter.isHasFooter()) {
 
                 mNewsPresenter.loadBefore();
@@ -131,9 +127,8 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
     }
 
     @Override
-    public void addNews(LatestNews news) {
+    public void addNews(ZhihuNews news) {
         adapter.addNews(news);
-
     }
 
     @Override
@@ -152,7 +147,6 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
         adapter.clear();
         adapter.setShowHeader(false);
         mNewsPresenter.loadNews();
-        Logger.init("test");
     }
 
     @Override
@@ -181,10 +175,8 @@ public class NewsFragment extends BaseFragment implements NewsView, SwipeRefresh
             holder.mTitle.setTextColor(grey);
             Intent intent = new Intent(getActivity(), NewsDetailActivity.class);
             intent.putExtra(NewsListAdapter.STORY, holder.story);
-            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.
-                    makeSceneTransitionAnimation(getActivity(),
-                            Pair.create((View) holder.mImage, getString(R.string.shared_img))
-                    );
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                    holder.mImage, getString(R.string.shared_img));
             ActivityCompat.startActivity(getActivity(), intent, optionsCompat.toBundle());
         }
     }

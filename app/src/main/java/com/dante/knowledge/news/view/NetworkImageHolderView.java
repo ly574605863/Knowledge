@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
-import com.dante.knowledge.news.model.TopStoryEntity;
+import com.dante.knowledge.news.model.ZhihuTop;
 import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.utils.ImageUtil;
 
-public class NetworkImageHolderView implements Holder<TopStoryEntity> {
+public class NetworkImageHolderView implements Holder<ZhihuTop> {
     private View view;
 
     @Override
@@ -23,7 +23,7 @@ public class NetworkImageHolderView implements Holder<TopStoryEntity> {
     }
 
     @Override
-    public void UpdateUI(final Context context, int position, final TopStoryEntity entity) {
+    public void UpdateUI(final Context context, int position, final ZhihuTop entity) {
         ImageView imageView = (ImageView) view.findViewById(R.id.story_img);
         TextView textView = (TextView) view.findViewById(R.id.story_title);
         ImageUtil.load(context, entity.getImage(), imageView);
