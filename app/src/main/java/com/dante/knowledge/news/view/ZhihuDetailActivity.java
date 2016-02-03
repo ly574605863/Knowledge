@@ -15,7 +15,7 @@ import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.model.ZhihuTop;
-import com.dante.knowledge.news.other.NewsListAdapter;
+import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
@@ -47,7 +47,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void initViews() {
         super.initViews();
-        Object object = getIntent().getSerializableExtra(NewsListAdapter.ZHIHU_ITEM);
+        Object object = getIntent().getSerializableExtra(ZhihuListAdapter.ZHIHU_ITEM);
         if (object instanceof ZhihuTop) {
             story = new ZhihuItem();
             story.setId(((ZhihuTop) object).getId());

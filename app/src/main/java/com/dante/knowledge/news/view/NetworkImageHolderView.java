@@ -3,7 +3,6 @@ package com.dante.knowledge.news.view;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.dante.knowledge.news.model.ZhihuTop;
-import com.dante.knowledge.news.other.NewsListAdapter;
+import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.utils.ImageUtil;
 
 public class NetworkImageHolderView implements Holder<ZhihuTop> {
@@ -37,7 +36,7 @@ public class NetworkImageHolderView implements Holder<ZhihuTop> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZhihuDetailActivity.class);
-                intent.putExtra(NewsListAdapter.ZHIHU_ITEM, entity);
+                intent.putExtra(ZhihuListAdapter.ZHIHU_ITEM, entity);
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) context,
                         imageView, context.getString(R.string.shared_img));
                 ActivityCompat.startActivity((MainActivity) context, intent, optionsCompat.toBundle());

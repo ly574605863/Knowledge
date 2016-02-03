@@ -39,11 +39,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void initBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-//        if (null != getSupportActionBar()) {
+        if (null != toolbar) {
+            setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setHomeButtonEnabled(true);
-//        }
+        }
     }
 
     public void replaceFragment(Fragment fragment, String tag) {

@@ -16,7 +16,6 @@ import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.utils.ImageUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by yons on 16/2/3.
@@ -26,9 +25,13 @@ public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public static final String FRESH_ITEMS = "fresh_items";
     public static final String FRESH_ITEM_POSITION = "fresh_items_position";
     private Context context;
-    private List<FreshItem> freshItems = new ArrayList<>();
+    private ArrayList<FreshItem> freshItems = new ArrayList<>();
     private FreshNews news;
     private OnListFragmentInteractionListener mListener;
+
+    public ArrayList<FreshItem> getFreshItems() {
+        return freshItems;
+    }
 
     public FreshListAdapter(Context context, OnListFragmentInteractionListener listener) {
         this.context = context;
@@ -48,18 +51,19 @@ public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final FreshViewHolder viewHolder = (FreshViewHolder) holder;
         viewHolder.freshItem = freshItems.get(position);
         String imgUrl = viewHolder.freshItem.getCustom_fields().getThumb_c().get(0);
 
         viewHolder.mTitle.setText(viewHolder.freshItem.getTitle());
+        viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
         ImageUtil.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(viewHolder);
+                    mListener.onListFragmentInteraction(viewHolder, position);
                 }
 
             }

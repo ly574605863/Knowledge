@@ -1,6 +1,7 @@
 package com.dante.knowledge.news.other;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 0;
     private static final int TYPE_HEADER = 1;
     private static final int TYPE_ITEM = 2;
@@ -37,6 +38,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private boolean showHeader;
     private ZhihuNews news;
     List<ZhihuItem> newStories;
+    public static int textGrey;
+    public static int textDark;
 
     public boolean isShowHeader() {
         return showHeader;
@@ -55,7 +58,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         notifyDataSetChanged();
     }
 
-    public NewsListAdapter(Context context, OnListFragmentInteractionListener listener) {
+    public ZhihuListAdapter(Context context, OnListFragmentInteractionListener listener) {
         this.context = context;
         mListener = listener;
     }
@@ -116,7 +119,12 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+
+        Context context = holder.itemView.getContext();
+        textGrey = ContextCompat.getColor(context, R.color.darker_gray);
+        textDark = ContextCompat.getColor(context, android.support.design.R.color.abc_primary_text_material_light);
+
         if (holder instanceof ViewHolder) {
             final ViewHolder viewHolder = (ViewHolder) holder;
 
@@ -139,13 +147,14 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
 
             showHeader = true;
-            ImageUtil.load(viewHolder.itemView.getContext(), viewHolder.zhihuItem.getImages().get(0), viewHolder.mImage);
+            ImageUtil.load(context, viewHolder.zhihuItem.getImages().get(0), viewHolder.mImage);
             viewHolder.mTitle.setText(viewHolder.zhihuItem.getTitle());
+            viewHolder.mTitle.setTextColor(textDark);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (null != mListener) {
-                        mListener.onListFragmentInteraction(viewHolder);
+                        mListener.onListFragmentInteraction(viewHolder, position);
                     }
 
                 }

@@ -1,118 +1,60 @@
 package com.dante.knowledge.news.view;
 
-import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.news.interf.NewsDetailPresenter;
-import com.dante.knowledge.news.interf.NewsDetailView;
-import com.dante.knowledge.news.model.FreshDetail;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.other.FreshListAdapter;
-import com.dante.knowledge.news.presenter.FreshDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
+import com.orhanobut.logger.Logger;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class FreshDetailActivity extends BaseActivity implements NewsDetailView<FreshDetail> {
+public class FreshDetailActivity extends BaseActivity {
 
-
-    @Bind(R.id.web_container)
-    FrameLayout webContainer;
-    @Bind(R.id.progress)
-    ProgressBar progress;
-    private WebView webView;
-    private FreshItem freshItem;
-    private NewsDetailPresenter<FreshItem> presenter;
+    @Bind(R.id.pager)
+    ViewPager pager;
+    public ArrayList<FreshItem> freshItems;
 
     @Override
     protected void initLayoutId() {
         layoutId = R.layout.activity_fresh_detail;
     }
 
-
+    @SuppressWarnings("unchecked")
     @Override
     protected void initViews() {
         super.initViews();
-        Object object = getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEMS);
-        freshItem = (FreshItem) object;
-
-        toolbar.setTitle(freshItem.getTitle());
-        presenter = new FreshDetailPresenter(this);
-        initWebView();
-        presenter.loadNewsDetail(freshItem);
-
+        freshItems = (ArrayList<FreshItem>) getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEMS);
+        int position = getIntent().getIntExtra(FreshListAdapter.FRESH_ITEM_POSITION, 0);
+        pager.setAdapter(new FreshDetailPagerAdapter(getSupportFragmentManager()));
+        pager.setOffscreenPageLimit(2);
+        pager.setCurrentItem(position);
     }
 
-    private void initWebView() {
-        webView = new WebView(this);
-        webContainer.addView(webView);
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        settings.setAppCacheEnabled(true);
-        settings.setDomStorageEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override
-            public void onProgressChanged(final WebView view, int newProgress) {
-                super.onProgressChanged(view, newProgress);
-                if (newProgress == 100) {
-                    view.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            view.setVisibility(View.VISIBLE);
-                            hideProgress();
-                        }
-                    }, 300);
-                }
-            }
-        });
-    }
+    private class FreshDetailPagerAdapter extends FragmentPagerAdapter {
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        webView.onPause();
-    }
+        public FreshDetailPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        webView.onResume();
-    }
+        @Override
+        public Fragment getItem(int position) {
+            return FreshDetailFragment.newInstance(freshItems.get(position));
+        }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        webContainer.removeView(webView);
-        webView.removeAllViews();
-        webView.destroy();
-    }
-
-    @Override
-    public void showProgress() {
-        progress.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void showDetail(FreshDetail detailNews) {
-//        webView.loadData(detailNews.getPost().getContent(), "text/html", "UTF-8");
-        webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
-    }
-
-
-    @Override
-    public void hideProgress() {
-        progress.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void showLoadFailed(String msg) {
-
+        @Override
+        public int getCount() {
+            return freshItems.size();
+        }
     }
 
 

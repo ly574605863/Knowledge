@@ -38,8 +38,8 @@
         <activity
             android:name=".news.view.FreshDetailActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/title_activity_fresh_detail"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar.Default"
+            android:label="@string/title_activity_fresh_detail">
         </activity>
     </application>
 

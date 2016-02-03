@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,7 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.news.interf.NewsView;
 import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.other.NewsListAdapter;
+import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuNewsPresenter;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
@@ -36,7 +35,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     private NewsPresenter mNewsPresenter;
     private List<ZhihuItem> storyEntities;
-    private NewsListAdapter adapter;
+    private ZhihuListAdapter adapter;
     private ConvenientBanner banner;
     private LinearLayoutManager layoutManager;
 
@@ -44,7 +43,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
         return layoutManager;
     }
 
-    public NewsListAdapter getAdapter() {
+    public ZhihuListAdapter getAdapter() {
         return adapter;
     }
 
@@ -70,7 +69,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
         layoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(layoutManager);
         storyEntities = new ArrayList<>();
-        adapter = new NewsListAdapter(getActivity(), this);
+        adapter = new ZhihuListAdapter(getActivity(), this);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
@@ -145,21 +144,27 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
         if (banner != null) {
             return;
         }
-        if (mRecyclerView.getChildCount() != 0) {
-            banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
-            banner.setScrollDuration(1500);
-            banner.startTurning(5000);
-        }
+        mRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mRecyclerView.getChildCount() != 0) {
+                    banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
+                    banner.setScrollDuration(1500);
+                    banner.startTurning(5000);
+                }
+            }
+        });
     }
 
     @Override
-    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {
-        int grey = ContextCompat.getColor(getContext(), R.color.darker_gray);
-        if (viewHolder instanceof NewsListAdapter.ViewHolder) {
-            NewsListAdapter.ViewHolder holder = (NewsListAdapter.ViewHolder) viewHolder;
-            holder.mTitle.setTextColor(grey);
+    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
+//        int textGrey = ContextCompat.getColor(getContext(), R.color.darker_gray);
+
+        if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {
+            ZhihuListAdapter.ViewHolder holder = (ZhihuListAdapter.ViewHolder) viewHolder;
+            holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
             Intent intent = new Intent(getActivity(), ZhihuDetailActivity.class);
-            intent.putExtra(NewsListAdapter.ZHIHU_ITEM, holder.zhihuItem);
+            intent.putExtra(ZhihuListAdapter.ZHIHU_ITEM, holder.zhihuItem);
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
                     holder.mImage, getString(R.string.shared_img));
             ActivityCompat.startActivity(getActivity(), intent, optionsCompat.toBundle());

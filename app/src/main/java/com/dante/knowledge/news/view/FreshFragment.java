@@ -3,6 +3,7 @@ package com.dante.knowledge.news.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -13,11 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import com.dante.knowledge.R;
 import com.dante.knowledge.news.interf.NewsView;
 import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
+import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.other.FreshListAdapter;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.presenter.FreshNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 
@@ -120,15 +124,15 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     }
 
     @Override
-    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {
+    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
         int grey = ContextCompat.getColor(getContext(), R.color.darker_gray);
 
         if (viewHolder instanceof FreshListAdapter.FreshViewHolder) {
             FreshListAdapter.FreshViewHolder holder = (FreshListAdapter.FreshViewHolder) viewHolder;
             holder.mTitle.setTextColor(grey);
             Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
-            intent.putExtra(FreshListAdapter.FRESH_ITEMS, holder.freshItem);
-            intent.putExtra(FreshListAdapter.FRESH_ITEM_POSITION, holder.freshItem);
+            intent.putExtra(FreshListAdapter.FRESH_ITEMS, adapter.getFreshItems());
+            intent.putExtra(FreshListAdapter.FRESH_ITEM_POSITION, position);
             startActivity(intent);
         }
     }

@@ -8,6 +8,6 @@ import android.support.v7.widget.RecyclerView;
  */
 public interface OnListFragmentInteractionListener {
     void onTopLoad();
-    void onListFragmentInteraction(RecyclerView.ViewHolder holder);
+    void onListFragmentInteraction(RecyclerView.ViewHolder holder, int position);
 
 }
