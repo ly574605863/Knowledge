@@ -13,11 +13,11 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
- * Created by Dante on 2016/2/1.
+ * some tools not classified
  */
 public class Tool {
 
-    public static void removeActivityFromTransitionManager(Activity activity) {
+    public static void removeFromTransitionManager(Activity activity) {
         if (Build.VERSION.SDK_INT < 21) {
             return;
         }

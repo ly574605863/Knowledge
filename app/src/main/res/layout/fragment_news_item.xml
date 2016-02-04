@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
     android:layout_marginLeft="12dp"
     android:layout_marginRight="12dp"
     android:layout_height="match_parent">
@@ -42,7 +43,8 @@
             android:paddingLeft="10dp"
             android:textColor="@color/cardview_dark_background"
             android:text="如何看待当下这种越来越普遍的“沉默”人格？"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="RtlSymmetry"/>
 
         <View
             android:layout_width="match_parent"

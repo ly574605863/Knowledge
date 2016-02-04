@@ -10,7 +10,7 @@ import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.model.FreshNewsModel;
 
 /**
- * Created by yons on 16/2/3.
+ * helps to present fresh news list
  */
 public class FreshNewsPresenter implements NewsPresenter, OnLoadNewsListener<FreshNews> {
     private NewsView<FreshNews> mNewsView;

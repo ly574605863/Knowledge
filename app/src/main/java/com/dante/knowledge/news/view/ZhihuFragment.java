@@ -11,33 +11,35 @@ import android.support.v7.widget.RecyclerView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.API;
+import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
+import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.ZhihuNews;
-import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuNewsPresenter;
-import com.dante.knowledge.news.interf.NewsPresenter;
-import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
 import com.dante.knowledge.ui.BaseFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 
-public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteractionListener {
+public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     @Bind(R.id.list)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
 
-    private NewsPresenter mNewsPresenter;
-    private List<ZhihuItem> storyEntities;
+    private NewsPresenter presenter;
     private ZhihuListAdapter adapter;
     private ConvenientBanner banner;
     private LinearLayoutManager layoutManager;
+
+    @Override
+    public void onDestroyView() {
+        OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU_LATEST);
+        super.onDestroyView();
+    }
 
     public LinearLayoutManager getLayoutManager() {
         return layoutManager;
@@ -47,14 +49,8 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
         return adapter;
     }
 
-    public RecyclerView getmRecyclerView() {
-        return mRecyclerView;
-    }
-
-    @Override
-    protected void initData() {
-        mNewsPresenter = new ZhihuNewsPresenter(this);
-        onRefresh();
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
     }
 
     @Override
@@ -65,17 +61,22 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
     @Override
     protected void initViews() {
         Context context = rootView.getContext();
-        mRecyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(layoutManager);
-        storyEntities = new ArrayList<>();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new ZhihuListAdapter(getActivity(), this);
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(mOnScrollListener);
+
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
                 R.color.colorPrimaryDark, R.color.colorAccent);
         swipeRefresh.setOnRefreshListener(this);
+    }
 
+    @Override
+    protected void initData() {
+        presenter = new ZhihuNewsPresenter(this);
+        onRefresh();
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -94,23 +95,14 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
             if (newState == RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem + 1 == adapter.getItemCount()
                     && adapter.isHasFooter()) {
-
-                mNewsPresenter.loadBefore();
+                presenter.loadBefore();
             }
         }
     };
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-    @Override
     public void showProgress() {
-        if (!swipeRefresh.isRefreshing()) {
-            swipeRefresh.setRefreshing(true);
-        }
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
@@ -120,49 +112,45 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void hideProgress() {
-        if (swipeRefresh.isRefreshing()) {
-            swipeRefresh.setRefreshing(false);
-        }
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void showLoadFailed(String msg) {
         Snackbar.make(rootView, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onRefresh() {
         adapter.clear();
-        adapter.setShowHeader(false);
-        mNewsPresenter.loadNews();
+        presenter.loadNews();
     }
 
     @Override
     public void onTopLoad() {
-
-        if (banner != null) {
-            return;
-        }
-        mRecyclerView.post(new Runnable() {
-            @Override
-            public void run() {
-                if (mRecyclerView.getChildCount() != 0) {
-                    banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
-                    banner.setScrollDuration(1500);
-                    banner.startTurning(5000);
+        if (null == banner) {
+            recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (recyclerView.getChildCount() != 0) {
+                        banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
+                        banner.setScrollDuration(1500);
+                        banner.startTurning(5000);
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 
     @Override
     public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
-//        int textGrey = ContextCompat.getColor(getContext(), R.color.darker_gray);
 
         if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {
             ZhihuListAdapter.ViewHolder holder = (ZhihuListAdapter.ViewHolder) viewHolder;
+
             holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
+
             Intent intent = new Intent(getActivity(), ZhihuDetailActivity.class);
             intent.putExtra(ZhihuListAdapter.ZHIHU_ITEM, holder.zhihuItem);
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),

@@ -1,7 +1,9 @@
 package com.dante.knowledge.news.view;
 
+import android.annotation.SuppressLint;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -11,16 +13,15 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.model.ZhihuTop;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
-import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.ImageUtil;
-import com.dante.knowledge.utils.Tool;
 
 import butterknife.Bind;
 
@@ -30,7 +31,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Bind(R.id.toolbar_layout)
     CollapsingToolbarLayout toolbarLayout;
     @Bind(R.id.fab)
-    FloatingActionButton fab;
+    FloatingActionButton fab;// TODO: 16/2/4
     @Bind(R.id.progress)
     ProgressBar progress;
     @Bind(R.id.web_container)
@@ -62,7 +63,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
 
     }
 
-
+    @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
         webView = new WebView(this);
         webContainer.addView(webView);
@@ -112,7 +113,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         webContainer.removeView(webView);
         webView.removeAllViews();
         webView.destroy();
-        Tool.removeActivityFromTransitionManager(this);
+//        Tool.removeFromTransitionManager(this);
     }
 
     @Override
@@ -123,6 +124,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     public void showDetail(ZhihuDetail detailNews) {
         ImageUtil.load(this, detailNews.getImage(), detailImg);
+        //add css style to webView
         String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">";
         String html = "<html><head>" + css + "</head><body>" + detailNews.getBody() + "</body></html>";
         html = html.replace("<div class=\"img-place-holder\">", "");
@@ -136,7 +138,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
 
     @Override
     public void showLoadFailed(String msg) {
-
+        Snackbar.make(webContainer, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
 }

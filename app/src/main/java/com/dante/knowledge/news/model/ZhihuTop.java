@@ -3,7 +3,7 @@ package com.dante.knowledge.news.model;
 import java.io.Serializable;
 
 /**
- * Created by yons on 16/1/29.
+ * Zhihu news item in top banner
  */
 public class ZhihuTop implements Serializable{
     private String image;

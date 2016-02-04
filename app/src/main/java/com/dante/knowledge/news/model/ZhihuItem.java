@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by yons on 16/1/29.
+ * zhihu news item in list
  */
 public class ZhihuItem implements Serializable, NewsItem{
 

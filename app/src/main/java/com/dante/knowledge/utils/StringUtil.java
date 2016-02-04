@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by Dante on 2016/1/31.
+ * deals with string work like copy, parse.
  */
 public class StringUtil {
     public static String parseDate(String time) {

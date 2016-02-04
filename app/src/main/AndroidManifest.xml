@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.dante.knowledge"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest
+    package="com.dante.knowledge"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
     <application
-        android:name=".KnowledgeApplication"
+        android:name=".KnowledgeApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,9 +39,9 @@
         </activity>
         <activity
             android:name=".news.view.FreshDetailActivity"
+            android:label="@string/title_activity_fresh_detail"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar.Default"
-            android:label="@string/title_activity_fresh_detail">
+            android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
     </application>
 

@@ -1,4 +1,4 @@
-package com.dante.knowledge.news.presenter;
+package com.dante.knowledge.news.model;
 
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.GsonUtil;
@@ -6,15 +6,12 @@ import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
 import com.dante.knowledge.news.interf.OnLoadNewsListener;
-import com.dante.knowledge.news.model.ZhihuDetail;
-import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.model.ZhihuNews;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
 
 /**
- * Created by yons on 16/1/29.
+ * deals with the zhihu news' data work
  */
 public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> {
 
@@ -35,7 +32,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
                     listener.onNewsSuccess(news);
                     date = news.getDate();
                 }
-            });
+            }, API.TAG_ZHIHU_LATEST);
 
         } else if (type == API.TYPE_BEFORE) {
 
@@ -51,7 +48,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
                     listener.onNewsSuccess(news);
                     date = news.getDate();
                 }
-            });
+            }, API.TAG_ZHIHU_BEFORE);
         }
     }
 
@@ -61,7 +58,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
         Net.get(API.BASE_URL + newsItem.getId(), new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                listener.onFailure("load before failed", e);
+                listener.onFailure("load zhihu detail failed", e);
             }
 
             @Override
@@ -69,7 +66,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
                 ZhihuDetail detailNews = GsonUtil.parseZhihuDetail(response);
                 listener.onDetailSuccess(detailNews);
             }
-        });
+        }, API.TAG_ZHIHU_DETAIL);
     }
 
 }

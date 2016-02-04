@@ -1,7 +1,7 @@
 package com.dante.knowledge.news.interf;
 
 /**
- * Created by yons on 16/1/29.
+ * helps to present news page.
  */
 public interface NewsPresenter {
     void loadNews();

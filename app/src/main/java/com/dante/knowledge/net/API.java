@@ -5,19 +5,25 @@ package com.dante.knowledge.net;
  */
 public class API {
     /**
+     * request type, latest stands for getting newly information
+     */
+    public static final int TYPE_LATEST = 0;
+    public static final int TYPE_BEFORE = 1;
+    /**
+     * request tag, added to cancel that request conveniently (to avoid bugs).
+     */
+    public static final String TAG_ZHIHU_LATEST = "zhihu_latest";
+    public static final String TAG_ZHIHU_BEFORE = "zhihu_before";
+    public static final String TAG_ZHIHU_DETAIL = "zhihu_detail";
+    public static final String TAG_FRESH = "fresh_latest";
+    public static final String TAG_FRESH_DETAIL = "fresh_before";
+    /**
      * ZhiHu API
      */
-    public static final String BASE_URL="http://news-at.zhihu.com/api/4/news/";
-    public static final String TAG_LATEST="latest";
-    public static final String TAG_BEFORE="before";
-
-    public static final int TYPE_LATEST= 0;
-    public static final int TYPE_BEFORE= 1;
-
-    public static final String NEWS_LATEST="http://news-at.zhihu.com/api/4/news/latest";
-    public static final String NEWS_BEFORE="http://news-at.zhihu.com/api/4/news/before/";
-
-    public static final String SPLASH="http://news-at.zhihu.com/api/4/start-image/1080*1776";
+    public static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
+    public static final String NEWS_LATEST = "http://news-at.zhihu.com/api/4/news/latest";
+    public static final String NEWS_BEFORE = "http://news-at.zhihu.com/api/4/news/before/";
+    public static final String SPLASH = "http://news-at.zhihu.com/api/4/start-image/1080*1776";// TODO: 16/2/4  
 
     /**
      * Fresh things API

@@ -4,19 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.appcompat.R.anim;
 
 import com.dante.knowledge.R;
-import com.orhanobut.logger.Logger;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by yons on 16/1/29.
+ * BaseActivity includes a base layoutId, init its toolbar (if the layout has one)
  */
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
@@ -31,27 +27,27 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract void initLayoutId();
 
+    /**
+     * MUST override and call the SUPER method
+     */
     protected void initViews() {
         setContentView(layoutId);
         ButterKnife.bind(this);
-        initBar();
+        initAppBar();
     }
 
-    private void initBar() {
+    private void initAppBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (null != toolbar) {
             setSupportActionBar(toolbar);
+            assert getSupportActionBar() != null;
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//            getSupportActionBar().setHomeButtonEnabled(true);
         }
     }
 
     public void replaceFragment(Fragment fragment, String tag) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(anim.abc_grow_fade_in_from_bottom, anim.abc_fade_out,
-                anim.abc_fade_in, anim.abc_shrink_fade_out_from_bottom);
         transaction.replace(R.id.content_main, fragment, tag);
-//        transaction.addToBackStack("");
         transaction.commit();
     }
 }

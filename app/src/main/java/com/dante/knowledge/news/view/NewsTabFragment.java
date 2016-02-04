@@ -16,10 +16,9 @@ import java.util.List;
 import butterknife.Bind;
 
 /**
- * A fragment {@link Fragment} contains different news fragment.
+ * A tab fragment {@link Fragment} contains different news fragment.
  */
 public class NewsTabFragment extends BaseFragment {
-
 
     @Bind(R.id.pager)
     ViewPager pager;
@@ -33,30 +32,19 @@ public class NewsTabFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-
-    }
-
-    @Override
-    protected void initData() {
         NewsTabPagerAdapter adapter = new NewsTabPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ZhihuFragment(),"知乎日報");
-        adapter.addFragment(new FreshFragment(),"新鮮事");
+        adapter.addFragment(new ZhihuFragment(), getString(R.string.zhihu_news));
+        adapter.addFragment(new FreshFragment(), getString(R.string.fresh_news));
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
     }
 
-//    private void scrollToTop() {
-//        if (null != recyclerView) {
-//            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//            if (manager.findLastVisibleItemPosition() < 35) {
-//                recyclerView.smoothScrollToPosition(0);
-//
-//            } else {
-//                recyclerView.scrollToPosition(0);
-//            }
-//        }
-//    }
-//
+    @Override
+    protected void initData() {
+        //after activity created
+    }
+
+
     public static class NewsTabPagerAdapter extends FragmentPagerAdapter {
 
         private final List<Fragment> fragments = new ArrayList<>();

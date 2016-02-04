@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
+import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.utils.ImageUtil;
@@ -18,7 +18,7 @@ import com.dante.knowledge.utils.ImageUtil;
 import java.util.ArrayList;
 
 /**
- * Created by yons on 16/2/3.
+ * Fresh news' recyclerView adapter
  */
 public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -27,13 +27,13 @@ public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context context;
     private ArrayList<FreshItem> freshItems = new ArrayList<>();
     private FreshNews news;
-    private OnListFragmentInteractionListener mListener;
+    private OnListFragmentInteract mListener;
 
     public ArrayList<FreshItem> getFreshItems() {
         return freshItems;
     }
 
-    public FreshListAdapter(Context context, OnListFragmentInteractionListener listener) {
+    public FreshListAdapter(Context context, OnListFragmentInteract listener) {
         this.context = context;
         mListener = listener;
     }
@@ -59,6 +59,7 @@ public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         viewHolder.mTitle.setText(viewHolder.freshItem.getTitle());
         viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
         ImageUtil.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
+
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +69,6 @@ public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             }
         });
-
     }
 
     @Override

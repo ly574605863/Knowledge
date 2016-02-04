@@ -3,7 +3,7 @@ package com.dante.knowledge.news.model;
 import com.dante.knowledge.news.other.NewsDetail;
 
 /**
- * Created by yons on 16/2/3.
+ * fresh things detail class
  */
 public class FreshDetail implements NewsDetail{
 

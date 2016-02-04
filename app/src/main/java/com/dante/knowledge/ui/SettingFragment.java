@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.dante.knowledge.R;
 
 /**
- * Created by yons on 16/1/15.
+ * the view in setting activity.
  */
 public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     public static final String CLEAR_CACHE = "clear_cache";

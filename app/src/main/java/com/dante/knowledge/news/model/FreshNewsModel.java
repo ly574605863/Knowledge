@@ -11,7 +11,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import okhttp3.Call;
 
 /**
- * Created by yons on 16/2/3.
+ * deals with the fresh news' data work
  */
 public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDetail> {
     /**
@@ -46,7 +46,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
                 listener.onNewsSuccess(news);
                 page++;
             }
-        });
+        }, API.TAG_FRESH);
     }
 
     @Override
@@ -64,6 +64,6 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
                 FreshDetail detail = GsonUtil.parseFreshDetail(response);
                 listener.onDetailSuccess(detail);
             }
-        });
+        }, API.TAG_FRESH_DETAIL);
     }
 }

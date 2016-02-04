@@ -28,7 +28,7 @@ public class GsonUtil {
         return mGson.fromJson(detail, FreshDetail.class);
     }
 
-    public static <News>News parseNews(String response, Class<News> clz) {
+    public static <News> News parseNews(String response, Class<News> clz) {
         return mGson.fromJson(response, clz);
     }
 

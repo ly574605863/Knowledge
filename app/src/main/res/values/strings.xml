@@ -1,17 +1,33 @@
 <resources>
     <string name="app_name">知之</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_open" translatable="false">close drawer</string>
+    <string name="navigation_drawer_close" translatable="false">open drawer</string>
 
-    <string name="action_settings">Settings</string>
-    <string name="load_fail">Load failed</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
+    <string name="load_fail">加载失败</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
-    <string name="share_title">shared_title</string>
-    <string name="shared_img">shared_img</string>
+    <string name="share_title" translatable="false">shared_title</string>
+    <string name="shared_img" translatable="false">shared_img</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="nva_knowledge">知识</string>
+    <string name="nav_beauty">美图</string>
+    <string name="nav_xxoo" translatable="false">XXOO</string>
+    <string name="app">应用</string>
+    <string name="nav_share">分享</string>
+    <string name="nav_setting">设置</string>
+    <string name="title_activity_fresh_detail">title_activity_fresh_detail</string>
+    <string name="fresh_news">新鲜事</string>
+    <string name="zhihu_news">知乎日報</string>
+    <string name="loading">努力加载中…</string>
+    <string name="my_email" translatable="false">danteandroi@gmail.com</string>
+    <string name="contact_me">联系我</string>
+    <string name="set_clear_cache">清除缓存</string>
+    <string name="set_current_cache">当前缓存为</string>
+    <string name="set_big_photo">大图模式</string>
+    <string name="set_check_version">检查更新</string>
+    <string name="set_feedback">应用反馈</string>
+    <string name="set_post_feedback">提建议或反馈bug</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_fresh_detail">FreshDetailActivity</string>
 </resources>

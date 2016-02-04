@@ -12,9 +12,9 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.dante.knowledge.R;
-import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
-import com.dante.knowledge.news.model.ZhihuNews;
+import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.ZhihuItem;
+import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.model.ZhihuTop;
 import com.dante.knowledge.news.view.NetworkImageHolderView;
 import com.dante.knowledge.utils.ImageUtil;
@@ -23,27 +23,34 @@ import com.dante.knowledge.utils.StringUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Zhihu news' recyclerView adapter
+ */
 
 public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 0;
+    /**
+     * header is a title to display date
+     */
     private static final int TYPE_HEADER = 1;
     private static final int TYPE_ITEM = 2;
+    /**
+     * footer is to show load more hint
+     */
     private static final int TYPE_FOOTER = 3;
     public static final String ZHIHU_ITEM = "zhihu_item";
-    private Context context;
-    private List<ZhihuItem> storyEntities = new ArrayList<>();
-    private List<ZhihuTop> topEntities = new ArrayList<>();
-    private OnListFragmentInteractionListener mListener;
-    private boolean hasFooter;
-    private boolean showHeader;
-    private ZhihuNews news;
-    List<ZhihuItem> newStories;
     public static int textGrey;
     public static int textDark;
+    private final Context context;
 
-    public boolean isShowHeader() {
-        return showHeader;
-    }
+    private ZhihuNews news;
+    private List<ZhihuItem> zhihuItems = new ArrayList<>();
+    private List<ZhihuTop> tops = new ArrayList<>();
+
+    private OnListFragmentInteract mListener;
+    private boolean hasFooter;
+    private boolean showHeader;
+    private List<ZhihuItem> newItems;
 
     public void setShowHeader(boolean showHeader) {
         this.showHeader = showHeader;
@@ -58,42 +65,61 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         notifyDataSetChanged();
     }
 
-    public ZhihuListAdapter(Context context, OnListFragmentInteractionListener listener) {
+    public ZhihuListAdapter(Context context, OnListFragmentInteract listener) {
         this.context = context;
         mListener = listener;
     }
 
     public void addNews(ZhihuNews news) {
         this.news = news;
-        newStories = news.getStories();
-
-        if (null != news.getTop_stories()) {
-            topEntities.clear();
-            topEntities.addAll(news.getTop_stories());
-        }
-        setupHeaderFooter();
-        storyEntities.addAll(newStories);
+        newItems = news.getStories();
+        addTop(news);
+        initHeaderFooter();
+        zhihuItems.addAll(newItems);
         notifyDataSetChanged();
     }
 
-    private void setupHeaderFooter() {
+    /**
+     * add top stories for banner
+     *
+     * @param news get top_stories from ZhihuNews
+     */
+    private void addTop(ZhihuNews news) {
+        if (null != news.getTop_stories()) {
+            tops.clear();
+            tops.addAll(news.getTop_stories());
+        }
+    }
+
+    /**
+     * initialize header and footer
+     */
+    private void initHeaderFooter() {
         if (showHeader) {
             ZhihuItem entity = new ZhihuItem();
             entity.setId(1);
-            newStories.add(0, entity);
+            newItems.add(0, entity);
         }
-        setHasFooter(newStories.size() != 0);
-
+        setHasFooter(newItems.size() != 0);
     }
 
     public void clear() {
         showHeader = false;
-        storyEntities.clear();
+        zhihuItems.clear();
     }
-
-    public void scrollToTop() {
-
-    }
+// TODO: 16/2/4
+//    private void scrollToTop() {
+//        if (null != recyclerView) {
+//            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
+//            if (manager.findLastVisibleItemPosition() < 35) {
+//                recyclerView.smoothScrollToPosition(0);
+//
+//            } else {
+//                recyclerView.scrollToPosition(0);
+//            }
+//        }
+//    }
+//
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -127,13 +153,13 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         if (holder instanceof ViewHolder) {
             final ViewHolder viewHolder = (ViewHolder) holder;
-
             if (position == 1) {
                 viewHolder.header.setVisibility(View.VISIBLE);
                 viewHolder.mItem.setVisibility(View.GONE);
                 return;
             } else {
-                viewHolder.zhihuItem = storyEntities.get(position - 2);//这里position=0,1时，被banner,header占用了
+                viewHolder.zhihuItem = zhihuItems.get(position - 2);//position=0, 1 are occupied with banner, header
+                //id == 1 means this item is added by me, so it's a header to show date.
                 if (viewHolder.zhihuItem.getId() == 1) {
                     String date = StringUtil.parseDate(news.getDate());
                     viewHolder.header.setText(date);
@@ -146,7 +172,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
 
-            showHeader = true;
+            showHeader = true;//first header just shows stationary text (today), others use date.
             ImageUtil.load(context, viewHolder.zhihuItem.getImages().get(0), viewHolder.mImage);
             viewHolder.mTitle.setText(viewHolder.zhihuItem.getTitle());
             viewHolder.mTitle.setTextColor(textDark);
@@ -159,6 +185,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 }
             });
+
         } else if (holder instanceof BannerViewHolder) {
             final BannerViewHolder itemHolder = (BannerViewHolder) holder;
             itemHolder.banner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
@@ -166,7 +193,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 public NetworkImageHolderView createHolder() {
                     return new NetworkImageHolderView();
                 }
-            }, topEntities);
+            }, tops);
             mListener.onTopLoad();
         }
 
@@ -176,9 +203,9 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_BANNER;
-        } else if (hasFooter && position == storyEntities.size() + 1) {
-            //因为第一个position（0）是banner，所以count要减去一个
-            //就是footer应该出现的位置
+        } else if (hasFooter && position == zhihuItems.size() + 1) {
+            // position 0 is banner so
+            // the footer appears the size+1 position
             return TYPE_FOOTER;
         }
         return TYPE_ITEM;
@@ -186,19 +213,17 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        //story数量+banner+header+footer
+        //items + banner + footer
         if (hasFooter) {
-            return storyEntities.size() + 2;
+            return zhihuItems.size() + 2;
         }
-        return storyEntities.size() + 1;
+        return zhihuItems.size() + 1;
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
-
         public FooterViewHolder(View view) {
             super(view);
         }
-
     }
 
     public class HeaderViewHolder extends RecyclerView.ViewHolder {

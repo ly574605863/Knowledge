@@ -6,12 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.dante.knowledge.news.view.NewsTabFragment;
+import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingsActivity;
 
@@ -20,10 +19,6 @@ import butterknife.Bind;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.content_main)
-    FrameLayout contentMain;
     @Bind(R.id.nav_view)
     NavigationView navView;
     @Bind(R.id.drawer_layout)
@@ -39,27 +34,37 @@ public class MainActivity extends BaseActivity
     @Override
     protected void initViews() {
         super.initViews();
+        setupDrawer();
+        initNavigationView();
+        initMainFragment();
+
+    }
+
+    private void initMainFragment() {
+        //当前fragment为空或者不是NewsTabFragment（主fragment）
+        if (currentFragment == null || !(currentFragment instanceof NewsTabFragment)) {
+            currentFragment = new NewsTabFragment();
+        }
+        replaceFragment(currentFragment, "main");
+    }
+
+    private void setupDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        initNavigationView();
-        currentFragment = new NewsTabFragment();
-        replaceFragment(currentFragment, "main");
-
     }
 
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(this);
-//        navView.inflateMenu(R.menu.activity_main_drawer);
+//        navView.inflateMenu(R.menu.main_drawer);
     }
 
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -76,8 +81,8 @@ public class MainActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+        if (id == R.id.action_about) {
+            startActivity(new Intent(this, AboutActivity.class));
             return true;
         }
 
@@ -90,18 +95,15 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            if (!(currentFragment instanceof NewsTabFragment)){
-                currentFragment = new NewsTabFragment();
-                replaceFragment(currentFragment, "main");
-            }
-        } else if (id == R.id.nav_fresh) {
-
+            initMainFragment();
         } else if (id == R.id.nav_beauty) {
+
+        } else if (id == R.id.nav_xxoo) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_setting) {
-
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);

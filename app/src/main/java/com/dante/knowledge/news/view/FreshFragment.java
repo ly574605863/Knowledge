@@ -3,25 +3,23 @@ package com.dante.knowledge.news.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.API;
+import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
-import com.dante.knowledge.news.interf.OnListFragmentInteractionListener;
-import com.dante.knowledge.news.model.FreshItem;
+import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.other.FreshListAdapter;
-import com.dante.knowledge.news.interf.NewsPresenter;
+import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.FreshNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
-
-import java.util.ArrayList;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
 
@@ -29,16 +27,21 @@ import butterknife.Bind;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshNews>, OnListFragmentInteractionListener {
-
+public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshNews>, OnListFragmentInteract {
 
     @Bind(R.id.list)
-    RecyclerView mRecyclerView;
+    RecyclerView recyclerView;
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
-    private NewsPresenter mNewsPresenter;
+    private NewsPresenter presenter;
     private FreshListAdapter adapter;
     private LinearLayoutManager layoutManager;
+
+    @Override
+    public void onDestroyView() {
+        OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);
+        super.onDestroyView();
+    }
 
     @Override
     protected void initLayoutId() {
@@ -48,12 +51,13 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     @Override
     protected void initViews() {
         Context context = rootView.getContext();
-        mRecyclerView.setHasFixedSize(true);
+        recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new FreshListAdapter(getActivity(), this);
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
+        recyclerView.setAdapter(adapter);
+        recyclerView.addOnScrollListener(mOnScrollListener);
+
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
                 R.color.colorPrimaryDark, R.color.colorAccent);
         swipeRefresh.setOnRefreshListener(this);
@@ -75,22 +79,21 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
             if (newState == RecyclerView.SCROLL_STATE_IDLE
                     && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                mNewsPresenter.loadBefore();
+                presenter.loadBefore();
             }
         }
     };
 
     @Override
     protected void initData() {
-        mNewsPresenter = new FreshNewsPresenter(this);
+        presenter = new FreshNewsPresenter(this);
         onRefresh();
     }
-
 
     @Override
     public void onRefresh() {
         adapter.clear();
-        mNewsPresenter.loadNews();
+        presenter.loadNews();
     }
 
     @Override
@@ -115,21 +118,19 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     @Override
     public void showLoadFailed(String msg) {
         Snackbar.make(rootView, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onTopLoad() {
-
+        //no banner
     }
 
     @Override
     public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
-        int grey = ContextCompat.getColor(getContext(), R.color.darker_gray);
 
         if (viewHolder instanceof FreshListAdapter.FreshViewHolder) {
             FreshListAdapter.FreshViewHolder holder = (FreshListAdapter.FreshViewHolder) viewHolder;
-            holder.mTitle.setTextColor(grey);
+            holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
             Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
             intent.putExtra(FreshListAdapter.FRESH_ITEMS, adapter.getFreshItems());
             intent.putExtra(FreshListAdapter.FRESH_ITEM_POSITION, position);

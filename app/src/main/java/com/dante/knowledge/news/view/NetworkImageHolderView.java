@@ -1,8 +1,5 @@
 package com.dante.knowledge.news.view;
 
-import com.dante.knowledge.MainActivity;
-import com.dante.knowledge.R;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
@@ -13,10 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.dante.knowledge.MainActivity;
+import com.dante.knowledge.R;
 import com.dante.knowledge.news.model.ZhihuTop;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.utils.ImageUtil;
 
+/**
+ * deals with displaying the top banner
+ */
 public class NetworkImageHolderView implements Holder<ZhihuTop> {
     private View view;
 

@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by yons on 16/2/3.
+ * fresh things item in list
  */
 public class FreshItem implements NewsItem, Serializable{
     private int id;

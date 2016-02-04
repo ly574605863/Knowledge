@@ -1,22 +1,18 @@
 package com.dante.knowledge.news.view;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.other.FreshListAdapter;
 import com.dante.knowledge.ui.BaseActivity;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class FreshDetailActivity extends BaseActivity {
 
@@ -35,6 +31,7 @@ public class FreshDetailActivity extends BaseActivity {
         super.initViews();
         freshItems = (ArrayList<FreshItem>) getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEMS);
         int position = getIntent().getIntExtra(FreshListAdapter.FRESH_ITEM_POSITION, 0);
+
         pager.setAdapter(new FreshDetailPagerAdapter(getSupportFragmentManager()));
         pager.setOffscreenPageLimit(2);
         pager.setCurrentItem(position);

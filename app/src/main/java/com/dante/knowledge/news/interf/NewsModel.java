@@ -5,7 +5,7 @@ import com.dante.knowledge.news.other.NewsDetail;
 import com.dante.knowledge.news.other.NewsItem;
 
 /**
- * Created by yons on 16/1/29.
+ * deals with the data work
  */
 public interface NewsModel<I extends NewsItem, N extends News, D extends NewsDetail> {
 

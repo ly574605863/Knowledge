@@ -5,7 +5,7 @@ import com.dante.knowledge.news.other.News;
 import java.util.List;
 
 /**
- * Zhihu news class.
+ * Zhihu news class which contains date, stories and tops.
  */
 public class ZhihuNews implements News {
 

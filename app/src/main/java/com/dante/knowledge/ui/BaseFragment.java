@@ -7,18 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dante.knowledge.KnowledgeApplication;
+import com.dante.knowledge.KnowledgeApp;
 import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
 
 /**
- * Created by yons on 16/1/15.
+ * BaseFragment helps onCreateView, and initViews(when root is null), init data on Activity Created.
  */
 public abstract class BaseFragment extends Fragment {
     protected View rootView;
     protected int layoutId;
 
+    //onCreate only executed one time in an instance
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +63,8 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher watcher = KnowledgeApplication.getRefWatcher(getActivity());
+        RefWatcher watcher = KnowledgeApp.getRefWatcher(getActivity());
         watcher.watch(this);
-//        Tool.removeActivityFromTransitionManager(getActivity());解决内存泄露
+//      Tool.removeFromTransitionManager(getActivity());解决内存泄露
     }
 }

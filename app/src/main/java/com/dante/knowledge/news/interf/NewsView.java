@@ -3,7 +3,7 @@ package com.dante.knowledge.news.interf;
 import com.dante.knowledge.news.other.News;
 
 /**
- * Created by yons on 16/1/29.
+ * fragment or activity need to implement this to show news list.
  */
 public interface NewsView<T extends News> {
     void showProgress();

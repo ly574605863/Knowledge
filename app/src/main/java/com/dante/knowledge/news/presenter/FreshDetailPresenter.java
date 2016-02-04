@@ -8,10 +8,9 @@ import com.dante.knowledge.news.model.FreshDetail;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.model.FreshNewsModel;
-import com.dante.knowledge.news.model.ZhihuDetail;
 
 /**
- * Created by yons on 16/2/3.
+ * helps to present fresh news detail page
  */
 public class FreshDetailPresenter implements NewsDetailPresenter<FreshItem>, OnLoadDetailListener<FreshDetail>{
 

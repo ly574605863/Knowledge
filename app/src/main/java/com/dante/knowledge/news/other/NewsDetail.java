@@ -1,7 +1,7 @@
 package com.dante.knowledge.news.other;
 
 /**
- * Created by yons on 16/2/3.
+ * implement this means it's a news detail class
  */
 public interface NewsDetail {
 }

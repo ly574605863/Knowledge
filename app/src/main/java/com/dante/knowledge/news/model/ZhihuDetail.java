@@ -5,7 +5,7 @@ import com.dante.knowledge.news.other.NewsDetail;
 import java.util.List;
 
 /**
- * Created by Dante on 2016/1/30.
+ * zhihu news detail class
  */
 public class ZhihuDetail implements NewsDetail {
     /**

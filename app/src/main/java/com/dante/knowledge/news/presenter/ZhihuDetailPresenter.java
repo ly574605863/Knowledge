@@ -1,15 +1,16 @@
 package com.dante.knowledge.news.presenter;
 
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
-import com.dante.knowledge.news.model.ZhihuDetail;
-import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
+import com.dante.knowledge.news.model.ZhihuDetail;
+import com.dante.knowledge.news.model.ZhihuItem;
 import com.dante.knowledge.news.model.ZhihuNews;
+import com.dante.knowledge.news.model.ZhihuNewsModel;
 
 /**
- * Created by Dante on 2016/1/30.
+ * helps to present zhihu news detail page
  */
 public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuItem>, OnLoadDetailListener<ZhihuDetail> {
 

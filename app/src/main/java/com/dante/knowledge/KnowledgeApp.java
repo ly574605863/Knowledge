@@ -10,7 +10,7 @@ import com.squareup.leakcanary.RefWatcher;
 /**
  * Created by Dante on 2016/2/1.
  */
-public class KnowledgeApplication extends Application {
+public class KnowledgeApp extends Application {
 
     private RefWatcher refWatcher;
 
@@ -22,7 +22,7 @@ public class KnowledgeApplication extends Application {
     }
 
     public static RefWatcher getRefWatcher(Context context){
-        KnowledgeApplication application = (KnowledgeApplication) context.getApplicationContext();
+        KnowledgeApp application = (KnowledgeApp) context.getApplicationContext();
         return application.refWatcher;
     }
 }
