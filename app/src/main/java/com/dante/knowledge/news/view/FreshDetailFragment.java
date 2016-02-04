@@ -75,15 +75,14 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     protected void initViews() {
         presenter = new FreshDetailPresenter(this);
         presenter.loadNewsDetail(freshItem);
+
     }
 
     @Override
     protected void initData() {
         toolbar.setTitle(freshItem.getTitle());
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
-        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     @Override

@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
     private static final String LAST_TIME = "last_time";
     // Don't show splash too often, so give it a least duration
-    private static final long SPLASH_DURATION = 10 * 1000;
+    private static final long SPLASH_DURATION = 2000;
     private ImageView splash;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -95,7 +95,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
         animation.setFillAfter(true);
-        animation.setDuration(3000);
+        animation.setDuration(SPLASH_DURATION);
         splash.startAnimation(animation);
     }
 
@@ -135,7 +135,6 @@ public class SplashActivity extends AppCompatActivity {
         } else {
             Glide.with(this).load(R.mipmap.splash).crossFade().into(splash);
         }
-
 //        SharedPreferences.Editor sp=getPreferences(MODE_PRIVATE).edit();
 //        sp.putString(LAST_TIME, System.currentTimeMillis()+"");
 //        sp.apply();
