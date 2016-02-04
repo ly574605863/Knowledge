@@ -133,7 +133,9 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void hideProgress() {
-        progress.setVisibility(View.GONE);
+        if (null!=progress){
+            progress.setVisibility(View.GONE);
+        }
     }
 
     @Override

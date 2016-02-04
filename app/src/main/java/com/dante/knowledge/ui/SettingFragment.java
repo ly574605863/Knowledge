@@ -5,7 +5,6 @@ import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import com.dante.knowledge.R;
  */
 public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     public static final String CLEAR_CACHE = "clear_cache";
-    public static final String ABOUT_APP = "about";
+    public static final String FEED_BACK = "feedback";
     public static final String APP_VERSION = "version";
 
     private Preference clearCache;
@@ -30,9 +29,8 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         clearCache = findPreference(CLEAR_CACHE);
-        about = findPreference(ABOUT_APP);
+        about = findPreference(FEED_BACK);
         version = findPreference(APP_VERSION);
-        Log.i("test",">>>>>>>>>>>>");
         clearCache.setSummary(clearCache.getSummary() + "1.2 M");
         version.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
@@ -63,7 +61,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         String key = preference.getKey();
         if (key.equals(CLEAR_CACHE)) {
 
-        } else if (key.equals(ABOUT_APP)) {
+        } else if (key.equals(FEED_BACK)) {
 
         }
         return true;
