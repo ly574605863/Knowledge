@@ -3,13 +3,13 @@ It conforms to Material Design.
 
 In this project, you can learn:
 
-Use Desgn library.
+-Use Desgn library.
 
-Apply MVP framework.
+-Apply MVP framework.
 
-Okhttp request and parse response with Gson
+-Okhttp request and parse response with Gson
 
-Load image with Glide library
+-Load image with Glide library
 
-Add a splash page with ScaleAnimation
+-Add a splash page with ScaleAnimation
 
