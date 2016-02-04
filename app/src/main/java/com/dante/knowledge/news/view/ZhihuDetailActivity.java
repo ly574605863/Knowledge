@@ -22,6 +22,7 @@ import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.ImageUtil;
+import com.dante.knowledge.utils.Tool;
 
 import butterknife.Bind;
 
@@ -113,7 +114,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         webContainer.removeView(webView);
         webView.removeAllViews();
         webView.destroy();
-//        Tool.removeFromTransitionManager(this);
+        Tool.removeFromTransitionManager(this);
     }
 
     @Override
