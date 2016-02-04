@@ -7,17 +7,17 @@
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
     <string name="load_fail">加载失败</string>
-    <string name="title_activity_news_detail">NewsDetailActivity</string>
+    <string name="activity_news_detail">知乎日报详情</string>
     <string name="share_title" translatable="false">shared_title</string>
     <string name="shared_img" translatable="false">shared_img</string>
-    <string name="title_activity_settings">Settings</string>
+    <string name="activity_settings">设置</string>
     <string name="nva_knowledge">知识</string>
     <string name="nav_beauty">美图</string>
     <string name="nav_xxoo" translatable="false">XXOO</string>
     <string name="app">应用</string>
     <string name="nav_share">分享</string>
     <string name="nav_setting">设置</string>
-    <string name="title_activity_fresh_detail">title_activity_fresh_detail</string>
+    <string name="activity_fresh_detail">新鲜事详情</string>
     <string name="fresh_news">新鲜事</string>
     <string name="zhihu_news">知乎日報</string>
     <string name="loading">努力加载中…</string>
@@ -29,5 +29,9 @@
     <string name="set_check_version">检查更新</string>
     <string name="set_feedback">应用反馈</string>
     <string name="set_post_feedback">提建议或反馈bug</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 </resources>

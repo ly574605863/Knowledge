@@ -1,7 +1,7 @@
 package com.dante.knowledge.net;
 
 /**
- * Created by yons on 16/1/29.
+ * Net request APIs and types
  */
 public class API {
     /**

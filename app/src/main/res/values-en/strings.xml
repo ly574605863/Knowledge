@@ -18,4 +18,7 @@
     <string name="set_feedback">Feedback</string>
     <string name="set_post_feedback">Give advice or post bugs</string>
     <string name="zhihu_news">Zhihu daily</string>
+    <string name="activity_fresh_detail">activity_fresh_detail</string>
+    <string name="activity_news_detail">activity_zhihu_detail</string>
+    <string name="activity_settings">Settings</string>
 </resources>

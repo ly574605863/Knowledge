@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     package="com.dante.knowledge"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name=".KnowledgeApp"
@@ -24,7 +23,7 @@
         </activity>
         <activity
             android:name=".news.view.ZhihuDetailActivity"
-            android:label="@string/title_activity_news_detail"
+            android:label="@string/activity_news_detail"
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,14 +33,23 @@
         </activity>
         <activity
             android:name=".ui.SettingsActivity"
-            android:label="@string/title_activity_settings"
+            android:label="@string/activity_settings"
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
             android:name=".news.view.FreshDetailActivity"
-            android:label="@string/title_activity_fresh_detail"
+            android:label="@string/activity_fresh_detail"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar.Default">
+        </activity>
+        <activity
+            android:name=".ui.SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

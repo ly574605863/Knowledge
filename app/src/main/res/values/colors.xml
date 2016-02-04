@@ -7,4 +7,6 @@
     <color name="lighter_gray">#ddd</color>
     <color name="line_gray">#ccc</color>
     <color name="darker_gray">#aaa</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>
