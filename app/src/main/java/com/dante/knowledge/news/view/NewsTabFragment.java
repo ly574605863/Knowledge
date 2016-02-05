@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
@@ -25,6 +27,10 @@ public class NewsTabFragment extends BaseFragment {
     @Bind(R.id.tabs)
     TabLayout tabs;
 
+    private ZhihuFragment zhihuFragment = new ZhihuFragment();
+    private FreshFragment freshFragment = new FreshFragment();
+    private Fragment fragment;
+
     @Override
     protected void initLayoutId() {
         layoutId = R.layout.fragment_news_tab;
@@ -33,10 +39,44 @@ public class NewsTabFragment extends BaseFragment {
     @Override
     protected void initViews() {
         NewsTabPagerAdapter adapter = new NewsTabPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ZhihuFragment(), getString(R.string.zhihu_news));
-        adapter.addFragment(new FreshFragment(), getString(R.string.fresh_news));
+        adapter.addFragment(zhihuFragment, getString(R.string.zhihu_news));
+        adapter.addFragment(freshFragment, getString(R.string.fresh_news));
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
+        tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                String title = (String) tab.getText();
+                assert title != null;
+                if (title.equals(getString(R.string.zhihu_news))) {
+                    scrollToTop(zhihuFragment.getRecyclerView());
+                } else if (title.equals(getString(R.string.fresh_news))) {
+                    scrollToTop(freshFragment.getRecyclerView());
+                }
+            }
+        });
+    }
+
+    private void scrollToTop(RecyclerView list) {
+        if (null!=list){
+            LinearLayoutManager manager = (LinearLayoutManager) list.getLayoutManager();
+            if (manager.findLastVisibleItemPosition() < 35) {
+                list.smoothScrollToPosition(0);
+            } else {
+                list.scrollToPosition(0);
+            }
+        }
+
     }
 
     @Override

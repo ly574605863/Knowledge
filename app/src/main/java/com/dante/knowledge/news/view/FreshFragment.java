@@ -37,6 +37,10 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     private FreshListAdapter adapter;
     private LinearLayoutManager layoutManager;
 
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);

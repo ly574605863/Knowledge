@@ -2,6 +2,7 @@ package com.dante.knowledge.news.other;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,19 +108,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         showHeader = false;
         zhihuItems.clear();
     }
-// TODO: 16/2/4
-//    private void scrollToTop() {
-//        if (null != recyclerView) {
-//            LinearLayoutManager manager = (LinearLayoutManager) recyclerView.getLayoutManager();
-//            if (manager.findLastVisibleItemPosition() < 35) {
-//                recyclerView.smoothScrollToPosition(0);
-//
-//            } else {
-//                recyclerView.scrollToPosition(0);
-//            }
-//        }
-//    }
-//
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
