@@ -26,10 +26,11 @@ public class NewsTabFragment extends BaseFragment {
     ViewPager pager;
     @Bind(R.id.tabs)
     TabLayout tabs;
+    public static final int TAG_ZHIHU = 0;
+    public static final int TAG_FRESH = 1;
 
     private ZhihuFragment zhihuFragment = new ZhihuFragment();
     private FreshFragment freshFragment = new FreshFragment();
-    private Fragment fragment;
 
     @Override
     protected void initLayoutId() {
@@ -40,7 +41,7 @@ public class NewsTabFragment extends BaseFragment {
     protected void initViews() {
         NewsTabPagerAdapter adapter = new NewsTabPagerAdapter(getChildFragmentManager());
         adapter.addFragment(zhihuFragment, getString(R.string.zhihu_news));
-        adapter.addFragment(freshFragment, getString(R.string.fresh_news));
+        adapter.addFragment(freshFragment, getString(R.string.zhihu_news));
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -56,11 +57,10 @@ public class NewsTabFragment extends BaseFragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                String title = (String) tab.getText();
-                assert title != null;
-                if (title.equals(getString(R.string.zhihu_news))) {
+                if (TAG_ZHIHU == tab.getPosition()) {
                     scrollToTop(zhihuFragment.getRecyclerView());
-                } else if (title.equals(getString(R.string.fresh_news))) {
+
+                } else if (TAG_FRESH == tab.getPosition()) {
                     scrollToTop(freshFragment.getRecyclerView());
                 }
             }
@@ -68,7 +68,7 @@ public class NewsTabFragment extends BaseFragment {
     }
 
     private void scrollToTop(RecyclerView list) {
-        if (null!=list){
+        if (null != list) {
             LinearLayoutManager manager = (LinearLayoutManager) list.getLayoutManager();
             if (manager.findLastVisibleItemPosition() < 35) {
                 list.smoothScrollToPosition(0);
