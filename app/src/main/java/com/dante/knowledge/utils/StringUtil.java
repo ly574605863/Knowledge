@@ -9,6 +9,9 @@ import java.util.Locale;
  * deals with string work like copy, parse.
  */
 public class StringUtil {
+
+    public static final String LAST_DATE= "lastDate";
+
     public static String parseDate(String time) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
         formatter.setLenient(false);

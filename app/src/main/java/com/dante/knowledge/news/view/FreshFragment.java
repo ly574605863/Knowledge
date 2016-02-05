@@ -98,7 +98,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showProgress() {
-        if (!swipeRefresh.isRefreshing()) {
+        if (null!=swipeRefresh) {
             swipeRefresh.setRefreshing(true);
         }
     }
@@ -110,7 +110,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void hideProgress() {
-        if (swipeRefresh.isRefreshing()) {
+        if (null!=swipeRefresh) {
             swipeRefresh.setRefreshing(false);
         }
     }

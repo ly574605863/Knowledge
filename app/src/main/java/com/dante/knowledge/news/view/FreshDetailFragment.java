@@ -2,11 +2,18 @@ package com.dante.knowledge.news.view;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -22,6 +29,8 @@ import com.dante.knowledge.news.model.FreshDetail;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.presenter.FreshDetailPresenter;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.ShareUtil;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -46,6 +55,8 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     private FreshItem freshItem;
     private NewsDetailPresenter<FreshItem> presenter;
+    private ShareActionProvider mShareActionProvider;
+    private FreshDetail detail;
 
     public FreshDetailFragment() {
     }
@@ -64,6 +75,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
         if (getArguments() != null) {
             freshItem = (FreshItem) getArguments().getSerializable(FRESH_ITEM);
         }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -124,22 +136,21 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void showDetail(FreshDetail detailNews) {
-//        webView.loadData(detailNews.getPost().getContent(), "text/html", "UTF-8");
         webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
-
+        setShareIntent(detailNews);
     }
 
 
     @Override
     public void hideProgress() {
-        if (null!=progress){
+        if (null != progress) {
             progress.setVisibility(View.GONE);
         }
     }
 
     @Override
     public void showLoadFailed(String msg) {
-
+        Snackbar.make(rootView, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
@@ -163,11 +174,19 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
         ButterKnife.unbind(this);
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // TODO: inflate a fragment view
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        ButterKnife.bind(this, rootView);
-        return rootView;
+    private void setShareIntent(FreshDetail detailNews) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(
+                    ShareUtil.getShareIntent(detailNews.getPrevious_url()));
+        }
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        getActivity().getMenuInflater().inflate(R.menu.share_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+    }
+
 }

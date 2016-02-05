@@ -15,6 +15,7 @@ public class API {
     public static final String TAG_ZHIHU_LATEST = "zhihu_latest";
     public static final String TAG_ZHIHU_BEFORE = "zhihu_before";
     public static final String TAG_ZHIHU_DETAIL = "zhihu_detail";
+    public static final String TAG_SPLASH = "splash";
     public static final String TAG_FRESH = "fresh_latest";
     public static final String TAG_FRESH_DETAIL = "fresh_before";
     /**
@@ -23,7 +24,7 @@ public class API {
     public static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
     public static final String NEWS_LATEST = "http://news-at.zhihu.com/api/4/news/latest";
     public static final String NEWS_BEFORE = "http://news-at.zhihu.com/api/4/news/before/";
-    public static final String SPLASH = "http://news-at.zhihu.com/api/4/start-image/1080*1776";// TODO: 16/2/4  
+    public static final String SPLASH = "http://news-at.zhihu.com/api/4/start-image/1080*1920";// TODO: 16/2/4
 
     /**
      * Fresh things API
