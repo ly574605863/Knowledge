@@ -1,10 +1,13 @@
+[中文版点我](README_cn.md)
+==
+
 Introduction
 ===
 Knowledge is an app you can read Zhihu daily and JianDan science articles with. (and browse cute girls pictures :D)
 It conforms to Material Design.
 
 You can learn
-===
+==
 - Android Desgn library
 - BaseActivity and BaseFragment
 - MVP pattern
@@ -16,6 +19,6 @@ You can learn
 - Activity shared element transition animation
 
 Repositories
-===
+==
 - [To be added](http://www.google.com)
 
