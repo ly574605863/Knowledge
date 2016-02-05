@@ -43,6 +43,7 @@ import butterknife.ButterKnife;
 public class FreshDetailFragment extends BaseFragment implements NewsDetailView<FreshDetail> {
 
     private static final String FRESH_ITEM = "fresh_news";
+    private static final String FRESH_PREVIOUS_ITEM = "previous_news";
 
     @Bind(R.id.progress)
     ProgressBar progress;
@@ -56,7 +57,6 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     private FreshItem freshItem;
     private NewsDetailPresenter<FreshItem> presenter;
     private ShareActionProvider mShareActionProvider;
-    private FreshDetail detail;
 
     public FreshDetailFragment() {
     }
@@ -137,7 +137,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     @Override
     public void showDetail(FreshDetail detailNews) {
         webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
-        setShareIntent(detailNews);
+        setShareIntent();
     }
 
 
@@ -174,10 +174,10 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
         ButterKnife.unbind(this);
     }
 
-    private void setShareIntent(FreshDetail detailNews) {
+    private void setShareIntent() {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(
-                    ShareUtil.getShareIntent(detailNews.getPrevious_url()));
+                    ShareUtil.getShareIntent(freshItem.getUrl()));
         }
     }
 

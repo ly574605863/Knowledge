@@ -18,6 +18,7 @@ public class ShareUtil {
     public static Intent getShareHtmlIntent(String htmlText) {
         Intent textIntent = new Intent();
         textIntent.setAction(Intent.ACTION_SEND);
+        textIntent.putExtra(Intent.EXTRA_TEXT, "This is html");
         textIntent.putExtra(Intent.EXTRA_HTML_TEXT, htmlText);
         textIntent.setType("text/plain");
         return textIntent;
