@@ -41,7 +41,7 @@ public class NewsTabFragment extends BaseFragment {
     protected void initViews() {
         NewsTabPagerAdapter adapter = new NewsTabPagerAdapter(getChildFragmentManager());
         adapter.addFragment(zhihuFragment, getString(R.string.zhihu_news));
-        adapter.addFragment(freshFragment, getString(R.string.zhihu_news));
+        adapter.addFragment(freshFragment, getString(R.string.fresh_news));
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
