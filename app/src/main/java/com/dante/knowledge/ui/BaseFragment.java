@@ -19,11 +19,6 @@ public abstract class BaseFragment extends Fragment {
     protected View rootView;
     protected int layoutId;
 
-    //onCreate only executed one time in an instance
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
