@@ -108,6 +108,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
         webView = new WebView(getActivity());
         webContainer.addView(webView);
         WebSettings settings = webView.getSettings();
+        settings.setTextZoom(110);
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setAppCacheEnabled(true);

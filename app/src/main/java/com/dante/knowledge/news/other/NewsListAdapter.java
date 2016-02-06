@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Fresh news' recyclerView adapter
  */
-public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static final String FRESH_ITEMS = "fresh_items";
     public static final String FRESH_ITEM_POSITION = "fresh_items_position";
@@ -33,7 +33,7 @@ public class FreshListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return freshItems;
     }
 
-    public FreshListAdapter(Context context, OnListFragmentInteract listener) {
+    public NewsListAdapter(Context context, OnListFragmentInteract listener) {
         this.context = context;
         mListener = listener;
     }

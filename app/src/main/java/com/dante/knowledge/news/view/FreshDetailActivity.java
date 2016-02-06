@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.news.model.FreshItem;
-import com.dante.knowledge.news.other.FreshListAdapter;
+import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.ui.BaseActivity;
 
 import java.util.ArrayList;
@@ -29,8 +29,8 @@ public class FreshDetailActivity extends BaseActivity {
     @Override
     protected void initViews() {
         super.initViews();
-        freshItems = (ArrayList<FreshItem>) getIntent().getSerializableExtra(FreshListAdapter.FRESH_ITEMS);
-        int position = getIntent().getIntExtra(FreshListAdapter.FRESH_ITEM_POSITION, 0);
+        freshItems = (ArrayList<FreshItem>) getIntent().getSerializableExtra(NewsListAdapter.FRESH_ITEMS);
+        int position = getIntent().getIntExtra(NewsListAdapter.FRESH_ITEM_POSITION, 0);
 
         pager.setAdapter(new FreshDetailPagerAdapter(getSupportFragmentManager()));
         pager.setOffscreenPageLimit(2);

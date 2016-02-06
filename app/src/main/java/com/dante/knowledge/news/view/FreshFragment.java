@@ -15,7 +15,7 @@ import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
 import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.FreshNews;
-import com.dante.knowledge.news.other.FreshListAdapter;
+import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.FreshNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
@@ -34,7 +34,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     private NewsPresenter presenter;
-    private FreshListAdapter adapter;
+    private NewsListAdapter adapter;
     private LinearLayoutManager layoutManager;
 
     public RecyclerView getRecyclerView() {
@@ -58,7 +58,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new FreshListAdapter(getActivity(), this);
+        adapter = new NewsListAdapter(getActivity(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(mOnScrollListener);
 
@@ -132,12 +132,12 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     @Override
     public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
 
-        if (viewHolder instanceof FreshListAdapter.FreshViewHolder) {
-            FreshListAdapter.FreshViewHolder holder = (FreshListAdapter.FreshViewHolder) viewHolder;
+        if (viewHolder instanceof NewsListAdapter.FreshViewHolder) {
+            NewsListAdapter.FreshViewHolder holder = (NewsListAdapter.FreshViewHolder) viewHolder;
             holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
             Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
-            intent.putExtra(FreshListAdapter.FRESH_ITEMS, adapter.getFreshItems());
-            intent.putExtra(FreshListAdapter.FRESH_ITEM_POSITION, position);
+            intent.putExtra(NewsListAdapter.FRESH_ITEMS, adapter.getFreshItems());
+            intent.putExtra(NewsListAdapter.FRESH_ITEM_POSITION, position);
             startActivity(intent);
         }
     }
