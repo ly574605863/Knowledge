@@ -8,8 +8,11 @@ import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.io.File;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -41,4 +44,30 @@ public class Tool {
             e.printStackTrace();
         }
     }
+
+    public static long getFileLength(File dir) {
+        long length = 0;
+        for (File file :
+                dir.listFiles()) {
+            if (file.isFile()) {
+                length += file.length();
+            } else
+                length += getFileLength(file);
+        }
+        return length;
+    }
+
+    public static String getFileSize(File dir) {
+        BigDecimal bd;
+        if (getFileLength(dir) > 1024 * 1024) {
+            bd = new BigDecimal(getFileLength(dir) / 1000000);
+            return bd.setScale(2, BigDecimal.ROUND_HALF_EVEN) + " M";
+
+        } else {
+            bd = new BigDecimal(getFileLength(dir) / 1000);
+            return bd.setScale(0, BigDecimal.ROUND_HALF_EVEN) + " k";
+
+        }
+    }
+
 }

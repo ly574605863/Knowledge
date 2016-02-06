@@ -11,10 +11,10 @@
     <string name="nav_setting">Settings</string>
     <string name="nav_share">Share</string>
     <string name="nva_knowledge">Knowledge</string>
-    <string name="set_big_photo">Big photo mode</string>
+    <string name="original_splash">Original splash</string>
     <string name="set_check_version">Check version</string>
     <string name="set_clear_cache">Clear cache</string>
-    <string name="set_current_cache">Current cache is</string>
+    <string name="set_current_cache">Current cache is </string>
     <string name="set_feedback">Feedback</string>
     <string name="set_post_feedback">Give advice or post bugs</string>
     <string name="zhihu_news">Zhihu daily</string>
@@ -25,4 +25,10 @@
     <string name="app">APP</string>
     <string name="share_to">Share to</string>
     <string name="version">Version 1.0</string>
+    <string name="column_not_available">This column is not available now, please wait for next version or contact with me :D</string>
+    <string name="menu_share">Share</string>
+    <string name="license">lisence</string>
+    <string name="license_description">All the resources are from network, if it has become an infringement, please inform me</string>
+    <string name="clear_cache_failed">Fail to delete cache.</string>
+    <string name="clear_cache_success">Cache cleared.</string>
 </resources>

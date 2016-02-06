@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
@@ -31,7 +32,7 @@ import okhttp3.Call;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final long SPLASH_DURATION = 1500;
+    private static final int SPLASH_DURATION = 2000;
     private ImageView splash;
     private SharedPreferences sp;
     private String today;
@@ -45,16 +46,29 @@ public class SplashActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
+        initViews();
+        if (sp.getBoolean(SettingFragment.SPLASH, false)){
+            Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
+            startAppDelay();
+            return;
+        }
+        initSplash();
         loadImageFile();
-        setContentView(splash);
+    }
 
-        today = StringUtil.formatDate(new Date());
+    private void initViews() {
+        splash = new ImageView(this);
+        splash.setScaleType(ImageView.ScaleType.FIT_XY);
+        setContentView(splash);
         sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //if today is not last get splash date, get new splash.
+    }
+
+    private void initSplash() {
+        today = StringUtil.formatDate(new Date());
+        //if today is latest get splash date, no need to getSplash.
         if (!today.equals(sp.getString(StringUtil.LAST_DATE, ""))) {
             getSplash();
         }
-
     }
 
 
@@ -70,9 +84,9 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     getSplashFile(jsonObject.getString("img"));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    startApp();
                 }
             }
         }, API.TAG_SPLASH);
@@ -98,22 +112,19 @@ public class SplashActivity extends AppCompatActivity {
 
     }
 
-    private void startApp() {
-        startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(anim.abc_fade_in, anim.abc_fade_out);
-        finish();
-    }
-
     private void loadImageFile() {
-        splash = new ImageView(this);
-        splash.setScaleType(ImageView.ScaleType.CENTER_CROP);
         File imgFile = new File(getFilesDir(), "splash.jpg");
 
         if (imgFile.exists()) {
             Glide.with(this).load(imgFile).animate(R.anim.scale_anim).into(splash);
         } else {
-            Glide.with(this).load(R.mipmap.splash).animate(R.anim.scale_anim).into(splash);
+            getSplash();
+            Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
         }
+        startAppDelay();
+    }
+
+    private void startAppDelay() {
         splash.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -121,10 +132,10 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_DURATION);
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-//        OkHttpUtils.getInstance().cancelTag(API.TAG_SPLASH);
+    private void startApp() {
+        startActivity(new Intent(this, MainActivity.class));
+        overridePendingTransition(anim.abc_fade_in, anim.abc_fade_out);
+        finish();
     }
+
 }

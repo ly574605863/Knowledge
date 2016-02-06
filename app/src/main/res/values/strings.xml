@@ -24,17 +24,21 @@
     <string name="my_email" translatable="false">danteandroi@gmail.com</string>
     <string name="contact_me">联系我</string>
     <string name="set_clear_cache">清除缓存</string>
-    <string name="set_current_cache">当前缓存为</string>
-    <string name="set_big_photo">大图模式</string>
+    <string name="set_current_cache">当前缓存为 </string>
     <string name="set_check_version">检查更新</string>
     <string name="set_feedback">应用反馈</string>
     <string name="set_post_feedback">提建议或反馈bug</string>
     <string name="share_to">分享文章</string>
-    <string name="menu_share">Share</string>
+    <string name="menu_share">分享</string>
     <string name="version">版本 1.0</string>
     <string name="about_me">关于作者</string>
     <string name="about_me_description">我是一个热爱Google和Android的开发者，如果你喜欢我的app或者有任何疑问建议，不要犹豫，点击下面的邮件跟我交流吧~</string>
     <string name="license">免责声明</string>
     <string name="license_description">本APP接口，资源全部来源于网络，如有侵权请告知</string>
+    <string name="column_not_available">此栏目尚未完成，请等待下一版本或联系作者 :D</string>
+    <string name="clear_cache_success">缓存已清理</string>
+    <string name="clear_cache_failed">缓存删除失败</string>
+    <string name="original_splash">原始启动图</string>
+    <string name="set_original_splash">使用原始启动图而不是从网络获取</string>
 
 </resources>

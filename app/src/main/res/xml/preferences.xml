@@ -6,9 +6,10 @@
             android:summary="@string/set_current_cache"
             android:title="@string/set_clear_cache"/>
         <SwitchPreference
-            android:defaultValue="true"
-            android:key="big_photo"
-            android:title="@string/set_big_photo"/>
+            android:defaultValue="false"
+            android:summary="@string/set_original_splash"
+            android:key="splash"
+            android:title="@string/original_splash"/>
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/action_about">
