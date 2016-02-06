@@ -109,7 +109,6 @@ public class SplashActivity extends AppCompatActivity {
                         sp.edit().putString(StringUtil.LAST_DATE, today).apply();
                     }
                 });
-
     }
 
     private void loadImageFile() {
