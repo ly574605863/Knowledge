@@ -31,4 +31,6 @@
     <string name="license_description">All the resources are from network, if it has become an infringement, please inform me</string>
     <string name="clear_cache_failed">Fail to delete cache.</string>
     <string name="clear_cache_success">Cache cleared.</string>
+    <string name="set_original_splash">Use orignial splash instead of getting from net</string>
+    <string name="about_me">About author</string>
 </resources>

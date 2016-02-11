@@ -8,8 +8,11 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsPresenter;
@@ -19,6 +22,7 @@ import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
+import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
@@ -66,6 +70,13 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ZhihuListAdapter(getActivity(), this);
         recyclerView.setAdapter(adapter);
+        //fix recyclerView's bug (crash when scrolling fast after adapter cleared)
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return null != swipeRefresh && swipeRefresh.isRefreshing();
+            }
+        });
         recyclerView.addOnScrollListener(mOnScrollListener);
 
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
@@ -102,7 +113,9 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void showProgress() {
-        swipeRefresh.setRefreshing(true);
+        if (null != swipeRefresh&& !swipeRefresh.isRefreshing()) {
+            swipeRefresh.setRefreshing(true);
+        }
     }
 
     @Override
@@ -112,12 +125,14 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void hideProgress() {
-        swipeRefresh.setRefreshing(false);
+        if (null != swipeRefresh) {
+            swipeRefresh.setRefreshing(false);
+        }
     }
 
     @Override
     public void showLoadFailed(String msg) {
-        Snackbar.make(rootView, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(((MainActivity) getActivity()).getToolbar(), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

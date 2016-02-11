@@ -6,7 +6,7 @@
 
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
-    <string name="load_fail">加载失败</string>
+    <string name="load_fail">加载失败，请检查网络 :P</string>
     <string name="activity_news_detail">知乎日报详情</string>
     <string name="share_title" translatable="false">shared_title</string>
     <string name="shared_img" translatable="false">shared_img</string>

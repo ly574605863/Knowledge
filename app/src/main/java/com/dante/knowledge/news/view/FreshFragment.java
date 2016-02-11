@@ -8,7 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
+import android.view.View;
 
+import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsPresenter;
@@ -61,7 +64,12 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
         adapter = new NewsListAdapter(getActivity(), this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(mOnScrollListener);
-
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return null != swipeRefresh && swipeRefresh.isRefreshing();
+            }
+        });
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
                 R.color.colorPrimaryDark, R.color.colorAccent);
         swipeRefresh.setOnRefreshListener(this);
@@ -102,7 +110,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showProgress() {
-        if (null!=swipeRefresh) {
+        if (null != swipeRefresh&& !swipeRefresh.isRefreshing()) {
             swipeRefresh.setRefreshing(true);
         }
     }
@@ -121,7 +129,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showLoadFailed(String msg) {
-        Snackbar.make(rootView, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(((MainActivity)getActivity()).getToolbar(), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

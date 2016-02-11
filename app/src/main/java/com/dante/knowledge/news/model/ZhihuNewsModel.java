@@ -16,39 +16,40 @@ import okhttp3.Call;
 public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> {
 
     private String date;
+    private long lastGetTime;
+    public static final int GET_DURATION = 2000;
 
     @Override
-    public void getNews(int type, final OnLoadNewsListener<ZhihuNews> listener) {
-        if (type == API.TYPE_LATEST) {
-            Net.get(API.NEWS_LATEST, new StringCallback() {
-                @Override
-                public void onError(Call call, Exception e) {
-                    listener.onFailure("load zhihu news failed", e);
-                }
+    public void getNews(final int type, final OnLoadNewsListener<ZhihuNews> listener) {
+        lastGetTime = System.currentTimeMillis();
 
-                @Override
-                public void onResponse(String response) {
-                    ZhihuNews news = GsonUtil.parseZhihuNews(response);
-                    listener.onNewsSuccess(news);
-                    date = news.getDate();
+        final StringCallback callback = new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e) {
+                if (System.currentTimeMillis()-lastGetTime< GET_DURATION){
+                    getData(type, this);
+                    return;
                 }
-            }, API.TAG_ZHIHU_LATEST);
+                listener.onFailure("load zhihu news failed", e);
+            }
+
+            @Override
+            public void onResponse(String response) {
+                ZhihuNews news = GsonUtil.parseZhihuNews(response);
+                listener.onNewsSuccess(news);
+                date = news.getDate();
+            }
+        };
+
+        getData(type, callback);
+    }
+
+    private void getData(int type, StringCallback callback) {
+        if (type == API.TYPE_LATEST) {
+            Net.get(API.NEWS_LATEST, callback, API.TAG_ZHIHU_LATEST);
 
         } else if (type == API.TYPE_BEFORE) {
-
-            Net.get(API.NEWS_BEFORE + date, new StringCallback() {
-                @Override
-                public void onError(Call call, Exception e) {
-                    listener.onFailure("load zhihu before news failed", e);
-                }
-
-                @Override
-                public void onResponse(String response) {
-                    ZhihuNews news = GsonUtil.parseZhihuNews(response);
-                    listener.onNewsSuccess(news);
-                    date = news.getDate();
-                }
-            }, API.TAG_ZHIHU_BEFORE);
+            Net.get(API.NEWS_BEFORE + date, callback, API.TAG_ZHIHU_BEFORE);
         }
     }
 

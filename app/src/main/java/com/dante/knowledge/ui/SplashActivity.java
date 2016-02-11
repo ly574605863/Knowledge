@@ -48,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
         initViews();
         if (sp.getBoolean(SettingFragment.SPLASH, false)){
-            Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
+            Glide.with(this).load(R.drawable.splash).crossFade(1500).into(splash);
             startAppDelay();
             return;
         }

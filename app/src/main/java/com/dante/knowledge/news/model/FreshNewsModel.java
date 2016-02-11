@@ -24,9 +24,13 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
     public static final int TYPE_CONTINUOUS = 1;
 
     private int page;
+    private long lastGetTime;
+    public static final int GET_DURATION = 2000;
 
     @Override
     public void getNews(int type, final OnLoadNewsListener<FreshNews> listener) {
+        lastGetTime = System.currentTimeMillis();
+
         if (type == TYPE_FRESH) {
             page = 1;//如果是全新请求，就初始化page为1
         }
@@ -34,9 +38,13 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
     }
 
     private void getFreshNews(final OnLoadNewsListener<FreshNews> listener) {
-        Net.get(API.FRESH_NEWS + page, new StringCallback() {
+        StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
+                if (System.currentTimeMillis()-lastGetTime< GET_DURATION){
+                    Net.get(API.FRESH_NEWS + page, this, API.TAG_FRESH);
+                    return;
+                }
                 listener.onFailure("load fresh news failed", e);
             }
 
@@ -46,7 +54,9 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
                 listener.onNewsSuccess(news);
                 page++;
             }
-        }, API.TAG_FRESH);
+        };
+
+        Net.get(API.FRESH_NEWS + page, callback, API.TAG_FRESH);
     }
 
     @Override

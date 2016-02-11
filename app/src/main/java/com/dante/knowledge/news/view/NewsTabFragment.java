@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,8 @@ public class NewsTabFragment extends BaseFragment {
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+//                tab.select();
+                pager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -70,7 +72,7 @@ public class NewsTabFragment extends BaseFragment {
     private void scrollToTop(RecyclerView list) {
         if (null != list) {
             LinearLayoutManager manager = (LinearLayoutManager) list.getLayoutManager();
-            if (manager.findLastVisibleItemPosition() < 35) {
+            if (manager.findLastVisibleItemPosition() < 45) {
                 list.smoothScrollToPosition(0);
             } else {
                 list.scrollToPosition(0);
