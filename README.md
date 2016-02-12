@@ -18,4 +18,20 @@ Knowledge是我的MD风格和MVP框架的练习项目。你可以方便地阅读
 
 使用到的库
 ===
-- [稍后添加](www.Google.com)
+使用方法：复制到项目gradle文件下
+    dependencies {
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' // or 1.4-beta1
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1' // or 1.4-beta1
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:design:23.1.1'
+    compile 'com.bigkoo:convenientbanner:2.0.5'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.github.bumptech.glide:glide:3.6.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.google.code.gson:gson:2.5'
+    compile 'com.zhy:okhttputils:2.2.0'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.github.orhanobut:logger:1.12'
+    }
