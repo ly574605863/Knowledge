@@ -8,15 +8,16 @@ It conforms to Material Design.
 
 You can learn
 ==
-- Android Desgn library
-- BaseActivity and BaseFragment
-- MVP pattern
-- Use webview and avoid memory leak
-- Okhttp request encapsulation
+- Use Android Desgn library
+- Write your BaseActivity and BaseFragment
+- Apply MVP pattern
+- Avoid webview's memory leak
+- Use Okhttp to lanuch request
 - Parse response with Gson
 - Load image with Glide library
-- Splash page with scale animation
-- Activity shared element transition animation
+- Add a Splash page with animation
+- Add a Setting Activity
+- Add Activity transition animation
 
 Repositories
 ===
