@@ -1,4 +1,4 @@
-[中文版点我](README_cn.md)
+[中文版点我](README.md)
 --
 
 Introduction
