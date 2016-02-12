@@ -5,7 +5,11 @@ Introduction
 ===
 Knowledge is an app you can read Zhihu daily and JianDan science articles with. (and browse cute girls pictures :D)
 It conforms to Material Design.
-
+ScreenShots
+---
+![ScreenShots](screenshots/main.jpg)
+![ScreenShots](screenshots/menu.jpg)
+![ScreenShots](screenshots/detail.jpg)
 You can learn
 ==
 - Use Android Desgn library
