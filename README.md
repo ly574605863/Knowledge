@@ -8,13 +8,13 @@ Knowledge是我的MD风格和MVP框架的练习项目。你可以方便地阅读
 ===
 - Android Design库的使用
 - 自定义你的基类Activity
-- MVP模式的写法
-- 使用Webview的注意事项
-- OKhttp封装框架
+- 应用MVP模式到项目中
+- 使用Webview时避免内存泄露
+- OKhttp封装框架的用法
 - 用Gson解析网络数据
 - 用Glide加载图片
-- 加特效的启动页
-- Activity的转换特效（对，duang的那种）
+- 加特效的启动页的写法
+- 添加Activity的转换特效（对，duang的那种）
 
 使用到的库
 ===
