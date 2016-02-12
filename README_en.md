@@ -25,7 +25,6 @@ You can learn
 
 Repositories
 ===
-how to use: copy the following to app.gradle
 
     dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' //help you to find memory leak
