@@ -22,6 +22,7 @@ import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.UiUtils;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -132,7 +133,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void showLoadFailed(String msg) {
-        Snackbar.make(((MainActivity) getActivity()).getToolbar(), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
     }
 
     @Override

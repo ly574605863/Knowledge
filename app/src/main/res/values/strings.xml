@@ -32,13 +32,17 @@
     <string name="menu_share">分享</string>
     <string name="version">版本 1.0</string>
     <string name="about_me">关于作者</string>
-    <string name="about_me_description">我是一个热爱Google和Android的开发者，如果你喜欢我的app或者有任何疑问建议，不要犹豫，点击下面的邮件跟我交流吧~</string>
+    <string name="about_me_description">我是一个热爱Google和Android的开发者，如果你有好的idea或建议，不要犹豫，发送邮件跟我交流吧~</string>
     <string name="license">免责声明</string>
     <string name="license_description">本APP接口，资源全部来源于网络，如有侵权请告知</string>
-    <string name="column_not_available">此栏目尚未完成，请等待下一版本或联系作者 :D</string>
+    <string name="column_not_available">栏目未完成，请更新或联系作者 :D</string>
     <string name="clear_cache_success">缓存已清理</string>
     <string name="clear_cache_failed">缓存删除失败</string>
     <string name="original_splash">原始启动图</string>
     <string name="set_original_splash">使用原始启动图而不是从网络获取</string>
+    <string name="share_app_description">这个Android项目很不错 https://github.com/DanteAndroid/Knowledge/</string>
+    <string name="share_app">分享应用</string>
+    <string name="tips">贴士</string>
+    <string name="tips_content">浏览到下方时，点击标题栏可以快速返回顶部</string>
 
 </resources>

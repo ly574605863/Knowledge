@@ -22,6 +22,7 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
@@ -30,6 +31,7 @@ import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.presenter.FreshDetailPresenter;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.ShareUtil;
+import com.dante.knowledge.utils.UiUtils;
 import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
@@ -86,15 +88,15 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     @Override
     protected void initViews() {
         presenter = new FreshDetailPresenter(this);
-        presenter.loadNewsDetail(freshItem);
-
     }
 
     @Override
     protected void initData() {
+        presenter.loadNewsDetail(freshItem);
         toolbar.setTitle(freshItem.getTitle());
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
+
     }
 
     @Override
@@ -137,8 +139,8 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void showDetail(FreshDetail detailNews) {
-        webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
         setShareIntent();
+        webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
     }
 
 
@@ -151,7 +153,8 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void showLoadFailed(String msg) {
-        Snackbar.make(rootView, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        UiUtils.showSnackLong(rootView, R.string.load_fail);
+
     }
 
     @Override
@@ -168,11 +171,10 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void onDestroyView() {
-        webContainer.removeView(webView);
-        webView.removeAllViews();
-        webView.destroy();
+//        webContainer.removeView(webView);
+//        webView.removeAllViews();
+//        webView.destroy();// TODO: 2016/2/12
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     private void setShareIntent() {

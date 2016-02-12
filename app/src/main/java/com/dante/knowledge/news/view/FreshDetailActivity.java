@@ -54,5 +54,9 @@ public class FreshDetailActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.exit(0);// TODO: 2016/2/12
+    }
 }

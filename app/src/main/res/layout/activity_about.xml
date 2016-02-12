@@ -51,26 +51,43 @@
     <LinearLayout
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="@string/about_me"
+            android:text="@string/tips"
             android:textColor="@color/darker_gray" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@string/tips_content"
+            android:textSize="16sp" />
+        <TextView
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="@string/about_me"
+            android:textColor="@color/darker_gray" />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.2"
             android:text="@string/about_me_description"
             android:textSize="16sp" />
+
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="24dp"
             android:gravity="center_vertical"
             android:textStyle="bold"
             android:autoLink="email"

@@ -23,7 +23,9 @@ import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.ImageUtil;
+import com.dante.knowledge.utils.ShareUtil;
 import com.dante.knowledge.utils.Tool;
+import com.dante.knowledge.utils.UiUtils;
 
 import butterknife.Bind;
 
@@ -70,11 +72,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent share = new Intent();
-                share.setAction(Intent.ACTION_SEND);
-                share.putExtra(Intent.EXTRA_TEXT, zhihuDetail.getShare_url());
-                share.setType("text/plain");
-                startActivity(Intent.createChooser(share, getString(R.string.share_to)));
+                ShareUtil.shareText(ZhihuDetailActivity.this, zhihuDetail.getShare_url());
             }
         });
     }
@@ -127,9 +125,10 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        webContainer.removeView(webView);
-        webView.removeAllViews();
-        webView.destroy();
+//        webContainer.removeView(webView);
+//        webView.removeAllViews();
+//        webView.destroy();// TODO: 2016/2/12
+        System.exit(0);
         Tool.removeFromTransitionManager(this);
     }
 
@@ -156,7 +155,8 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
 
     @Override
     public void showLoadFailed(String msg) {
-        Snackbar.make(webContainer, getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        UiUtils.showSnackLong(webContainer, R.string.load_fail);
+
     }
 
 }

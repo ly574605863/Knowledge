@@ -15,6 +15,8 @@ import com.dante.knowledge.news.view.NewsTabFragment;
 import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingsActivity;
+import com.dante.knowledge.utils.ShareUtil;
+import com.dante.knowledge.utils.UiUtils;
 
 import butterknife.Bind;
 
@@ -42,9 +44,10 @@ public class MainActivity extends BaseActivity
 
     }
 
-    public Toolbar getToolbar() {
-        return toolbar;
+    public DrawerLayout getDrawerLayout() {
+        return drawerLayout;
     }
+
 
     private void initMainFragment() {
         //当前fragment为空或者不是NewsTabFragment（主fragment）
@@ -103,12 +106,15 @@ public class MainActivity extends BaseActivity
         if (id == R.id.nav_knowledge) {
             initMainFragment();
         } else if (id == R.id.nav_beauty) {
-            Snackbar.make(drawerLayout, getString(R.string.column_not_available), Snackbar.LENGTH_SHORT).show();
-
+            UiUtils.showSnackLong(drawerLayout, R.string.column_not_available);
 
         } else if (id == R.id.nav_xxoo) {
 
         } else if (id == R.id.nav_share) {
+            startActivity(
+                    Intent.createChooser(
+                            ShareUtil.getShareIntent(getString(R.string.share_app_description)),
+                            getString(R.string.share_app)));
 
         } else if (id == R.id.nav_setting) {
             startActivity(new Intent(this, SettingsActivity.class));

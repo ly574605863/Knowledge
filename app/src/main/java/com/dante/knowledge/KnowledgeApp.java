@@ -2,7 +2,10 @@ package com.dante.knowledge;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.design.widget.Snackbar;
+import android.view.View;
 
+import com.dante.knowledge.utils.UiUtils;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -18,11 +21,13 @@ public class KnowledgeApp extends Application {
     public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
-        Logger.init("test");
+        new UiUtils(getApplicationContext());
     }
 
     public static RefWatcher getRefWatcher(Context context){
         KnowledgeApp application = (KnowledgeApp) context.getApplicationContext();
         return application.refWatcher;
     }
+
+
 }

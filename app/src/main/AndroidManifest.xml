@@ -29,6 +29,7 @@
             android:name=".news.view.ZhihuDetailActivity"
             android:label="@string/activity_news_detail"
             android:launchMode="singleTop"
+            android:process=":remote"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -42,6 +43,7 @@
         </activity>
         <activity
             android:name=".news.view.FreshDetailActivity"
+            android:process=":remote"
             android:label="@string/activity_fresh_detail"
             android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>

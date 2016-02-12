@@ -64,6 +64,7 @@ public class Tool {
             return bd.setScale(2, BigDecimal.ROUND_HALF_EVEN) + " M";
 
         } else {
+            //length of file is less than 1 mb, use K as a unit
             bd = new BigDecimal(getFileLength(dir) / 1000);
             return bd.setScale(0, BigDecimal.ROUND_HALF_EVEN) + " k";
 

@@ -22,6 +22,7 @@ import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.FreshNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.UiUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
@@ -73,6 +74,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
         swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
                 R.color.colorPrimaryDark, R.color.colorAccent);
         swipeRefresh.setOnRefreshListener(this);
+        swipeRefresh.setRefreshing(true);
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -129,7 +131,8 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showLoadFailed(String msg) {
-        Snackbar.make(((MainActivity)getActivity()).getToolbar(), getString(R.string.load_fail), Snackbar.LENGTH_SHORT).show();
+        UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+
     }
 
     @Override

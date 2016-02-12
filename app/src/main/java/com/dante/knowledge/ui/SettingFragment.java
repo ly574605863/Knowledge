@@ -1,5 +1,7 @@
 package com.dante.knowledge.ui;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -85,9 +87,17 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
             clearCache.setSummary(getString(R.string.set_current_cache) + fileDirSize());
 
         } else if (key.equals(FEED_BACK)) {
-
+            sendEmail();
         }
         return true;
+    }
+
+    private void sendEmail() {
+        Intent email=new Intent(Intent.ACTION_SENDTO);
+        email.setData(Uri.parse("mailto:danteandroi@gmail.com"));
+        email.putExtra(Intent.EXTRA_SUBJECT, "Knowledge Feedback");
+        email.putExtra(Intent.EXTRA_TEXT, "Hi，");
+        startActivity(email);
     }
 
 }
