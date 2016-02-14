@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
@@ -37,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
     private SharedPreferences sp;
     private String today;
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
         initViews();
-        if (sp.getBoolean(SettingFragment.SPLASH, false)){
+        if (sp.getBoolean(SettingFragment.SPLASH, false)) {
             Glide.with(this).load(R.drawable.splash).crossFade(1500).into(splash);
             startAppDelay();
             return;
@@ -132,9 +131,10 @@ public class SplashActivity extends AppCompatActivity {
             }
         }, SPLASH_DURATION);
     }
+
     private void startApp() {
         startActivity(new Intent(this, MainActivity.class));
-        overridePendingTransition(anim.abc_fade_in, anim.abc_fade_out);
+        overridePendingTransition(anim.abc_grow_fade_in_from_bottom, anim.abc_shrink_fade_out_from_bottom);
         finish();
     }
 

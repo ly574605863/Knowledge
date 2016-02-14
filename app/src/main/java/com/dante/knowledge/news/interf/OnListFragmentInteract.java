@@ -10,6 +10,6 @@ public interface OnListFragmentInteract {
 
     void onTopLoad();
 
-    void onListFragmentInteraction(RecyclerView.ViewHolder holder, int position);
+    void onListFragmentInteraction(RecyclerView.ViewHolder holder);
 
 }
