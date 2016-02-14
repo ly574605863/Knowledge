@@ -131,7 +131,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void showLoadFailed(String msg) {
-        UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+        UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
     }
 
     @Override

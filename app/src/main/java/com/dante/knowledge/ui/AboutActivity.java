@@ -10,7 +10,6 @@ public class AboutActivity extends BaseActivity{
     protected void initLayoutId() {
         layoutId = R.layout.activity_about;
     }
-
     @Override
     protected void initViews() {
         super.initViews();

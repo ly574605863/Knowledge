@@ -130,7 +130,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showLoadFailed(String msg) {
-        UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+        UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
 
     }
 

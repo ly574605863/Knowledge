@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Fresh things news class
  */
-public class FreshNews  implements News{
+public class FreshNews implements News{
 
     /**
      * status : ok
