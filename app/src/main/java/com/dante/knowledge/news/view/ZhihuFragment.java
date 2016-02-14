@@ -2,7 +2,6 @@ package com.dante.knowledge.news.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,7 +22,6 @@ import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuNewsPresenter;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.UiUtils;
-import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
@@ -114,7 +112,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void showProgress() {
-        if (null != swipeRefresh&& !swipeRefresh.isRefreshing()) {
+        if (null != swipeRefresh && !swipeRefresh.isRefreshing()) {
             swipeRefresh.setRefreshing(true);
         }
     }
@@ -160,7 +158,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
     }
 
     @Override
-    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
+    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {
 
         if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {
             ZhihuListAdapter.ViewHolder holder = (ZhihuListAdapter.ViewHolder) viewHolder;

@@ -7,8 +7,8 @@ Knowledge是我的MD风格和MVP框架的练习项目。你可以方便地阅读
 截图
 ---
 ![ScreenShots](screenshots/main.jpg)
-[ScreenShots](screenshots/menu.jpg)
-[ScreenShots](screenshots/detail.jpg)
+![ScreenShots](screenshots/menu.jpg)
+![ScreenShots](screenshots/detail.jpg)
 可以学到的知识：
 ===
 - Android Design库的使用
@@ -24,8 +24,6 @@ Knowledge是我的MD风格和MVP框架的练习项目。你可以方便地阅读
 
 使用到的库
 ===
-使用方法：
-复制到项目gradle文件下
 
     dependencies {
         debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' //检测内存泄露

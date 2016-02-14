@@ -26,7 +26,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
         final StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                if (System.currentTimeMillis()-lastGetTime< GET_DURATION){
+                if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     getData(type, this);
                     return;
                 }
@@ -55,10 +55,16 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
 
 
     @Override
-    public void getNewsDetail(ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
-        Net.get(API.BASE_URL + newsItem.getId(), new StringCallback() {
+    public void getNewsDetail(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
+        lastGetTime = System.currentTimeMillis();
+
+        StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
+                if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
+                    Net.get(API.BASE_URL + newsItem.getId(), this, API.TAG_ZHIHU_DETAIL);
+                    return;
+                }
                 listener.onFailure("load zhihu detail failed", e);
             }
 
@@ -67,7 +73,8 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
                 ZhihuDetail detailNews = GsonUtil.parseZhihuDetail(response);
                 listener.onDetailSuccess(detailNews);
             }
-        }, API.TAG_ZHIHU_DETAIL);
+        };
+        Net.get(API.BASE_URL + newsItem.getId(), callback, API.TAG_ZHIHU_DETAIL);
     }
 
 }

@@ -47,12 +47,12 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_fresh_item, parent, false);
-        return new FreshViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        final FreshViewHolder viewHolder = (FreshViewHolder) holder;
+        final ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.freshItem = freshItems.get(position);
         String imgUrl = viewHolder.freshItem.getCustom_fields().getThumb_c().get(0);
 
@@ -64,7 +64,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(viewHolder, position);
+                    mListener.onListFragmentInteraction(viewHolder);
                 }
 
             }
@@ -80,13 +80,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         freshItems.clear();
     }
 
-    public class FreshViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView mImage;
         public final TextView mTitle;
         public final View mItem;
         public FreshItem freshItem;
 
-        public FreshViewHolder(View view) {
+        public ViewHolder(View view) {
             super(view);
             mImage = (ImageView) view.findViewById(R.id.story_img);
             mTitle = (TextView) view.findViewById(R.id.story_title);

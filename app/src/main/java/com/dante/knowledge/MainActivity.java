@@ -2,12 +2,10 @@ package com.dante.knowledge;
 
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,6 +15,7 @@ import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingsActivity;
 import com.dante.knowledge.utils.ShareUtil;
 import com.dante.knowledge.utils.UiUtils;
+import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
 
@@ -41,7 +40,7 @@ public class MainActivity extends BaseActivity
         setupDrawer();
         initNavigationView();
         initMainFragment();
-
+        TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
     }
 
     public DrawerLayout getDrawerLayout() {

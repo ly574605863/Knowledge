@@ -3,7 +3,6 @@ package com.dante.knowledge.news.view;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -141,14 +140,14 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
     }
 
     @Override
-    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder, int position) {
+    public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {
 
-        if (viewHolder instanceof NewsListAdapter.FreshViewHolder) {
-            NewsListAdapter.FreshViewHolder holder = (NewsListAdapter.FreshViewHolder) viewHolder;
+        if (viewHolder instanceof NewsListAdapter.ViewHolder) {
+            NewsListAdapter.ViewHolder holder = (NewsListAdapter.ViewHolder) viewHolder;
             holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
             Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
             intent.putExtra(NewsListAdapter.FRESH_ITEMS, adapter.getFreshItems());
-            intent.putExtra(NewsListAdapter.FRESH_ITEM_POSITION, position);
+            intent.putExtra(NewsListAdapter.FRESH_ITEM_POSITION, holder.getAdapterPosition());
             startActivity(intent);
         }
     }
