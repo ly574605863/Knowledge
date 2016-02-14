@@ -25,7 +25,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
 
     private int page;
     private long lastGetTime;
-    public static final int GET_DURATION = 2000;
+    public static final int GET_DURATION = 3000;
 
     @Override
     public void getNews(int type, final OnLoadNewsListener<FreshNews> listener) {
@@ -41,7 +41,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
         StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                if (System.currentTimeMillis()-lastGetTime< GET_DURATION){
+                if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     Net.get(API.FRESH_NEWS + page, this, API.TAG_FRESH);
                     return;
                 }
@@ -60,20 +60,25 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
     }
 
     @Override
-    public void getNewsDetail(FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
-
-        Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), new StringCallback() {
+    public void getNewsDetail(final FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
+        lastGetTime = System.currentTimeMillis();
+        StringCallback callback = new StringCallback() {
             @Override
-            public void onError(Call call, Exception e) {
+            public void onError (Call call, Exception e){
+                if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
+                    Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), this, API.TAG_FRESH_DETAIL);
+                    return;
+                }
                 listener.onFailure("load fresh detail failed", e);
 
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse (String response){
                 FreshDetail detail = GsonUtil.parseFreshDetail(response);
                 listener.onDetailSuccess(detail);
             }
-        }, API.TAG_FRESH_DETAIL);
+        } ;
+        Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), callback, API.TAG_FRESH_DETAIL);
     }
 }
