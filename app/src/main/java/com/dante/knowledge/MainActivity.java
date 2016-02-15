@@ -15,6 +15,7 @@ import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingsActivity;
 import com.dante.knowledge.utils.ShareUtil;
 import com.dante.knowledge.utils.UiUtils;
+import com.orhanobut.logger.Logger;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
@@ -40,6 +41,10 @@ public class MainActivity extends BaseActivity
         setupDrawer();
         initNavigationView();
         initMainFragment();
+        initUtils();
+    }
+
+    private void initUtils() {
         TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
     }
 

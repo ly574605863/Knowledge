@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.dante.knowledge.R;
+import com.orhanobut.logger.Logger;
 
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -36,6 +37,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         ButterKnife.bind(this);
         initAppBar();
+        Logger.init();
         realm = Realm.getDefaultInstance();
     }
 

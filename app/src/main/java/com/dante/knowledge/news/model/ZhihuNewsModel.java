@@ -62,6 +62,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
         ZhihuDetail detailNews = DB.getZhihuDetail(newsItem.getId());
         if (null != detailNews) {
             Logger.d("already has");
+
             listener.onDetailSuccess(detailNews);
             return;
         }

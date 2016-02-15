@@ -23,7 +23,6 @@ public class KnowledgeApp extends Application {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
         new UiUtils(this);
-        Logger.init();
         setupRealm();
     }
 
