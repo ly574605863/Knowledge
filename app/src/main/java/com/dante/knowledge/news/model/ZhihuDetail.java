@@ -4,6 +4,7 @@ import com.dante.knowledge.news.other.NewsDetail;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * zhihu news detail class
@@ -30,6 +31,7 @@ public class ZhihuDetail extends RealmObject implements NewsDetail {
     private String title;
     private String image;
     private String share_url;
+    @PrimaryKey
     private int id;
     private RealmList<RealmString> css;
 

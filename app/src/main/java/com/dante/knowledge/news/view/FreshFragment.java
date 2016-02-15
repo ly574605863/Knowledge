@@ -10,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsPresenter;
@@ -130,7 +129,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showLoadFailed(String msg) {
-        UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+        UiUtils.showSnack((getActivity()).findViewById(R.id.drawer_layout), R.string.load_fail);
 
     }
 

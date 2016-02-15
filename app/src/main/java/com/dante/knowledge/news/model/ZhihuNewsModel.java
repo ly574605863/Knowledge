@@ -1,11 +1,14 @@
 package com.dante.knowledge.news.model;
 
+
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
 import com.dante.knowledge.news.interf.OnLoadNewsListener;
+import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
@@ -56,6 +59,17 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
 
     @Override
     public void getNewsDetail(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
+        ZhihuDetail detailNews = DB.getZhihuDetail(newsItem.getId());
+        if (null != detailNews) {
+            Logger.d("already has");
+            listener.onDetailSuccess(detailNews);
+            return;
+        }
+
+        requestData(newsItem, listener);
+    }
+
+    private void requestData(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
         lastGetTime = System.currentTimeMillis();
 
         StringCallback callback = new StringCallback() {
@@ -71,10 +85,12 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
             @Override
             public void onResponse(String response) {
                 ZhihuDetail detailNews = Json.parseZhihuDetail(response);
+                DB.save(detailNews);
                 listener.onDetailSuccess(detailNews);
             }
         };
         Net.get(API.BASE_URL + newsItem.getId(), callback, API.TAG_ZHIHU_DETAIL);
     }
+
 
 }

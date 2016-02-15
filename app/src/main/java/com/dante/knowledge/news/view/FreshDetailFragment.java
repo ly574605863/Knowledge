@@ -102,6 +102,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     private void initWebView() {
         webView = new WebView(getActivity());
         webContainer.addView(webView);
+        webView.setVisibility(View.INVISIBLE);
         WebSettings settings = webView.getSettings();
         settings.setTextZoom(110);
         settings.setJavaScriptEnabled(true);
@@ -119,7 +120,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
                             view.setVisibility(View.VISIBLE);
                             hideProgress();
                         }
-                    }, 300);
+                    }, 200);
                 }
             }
         });

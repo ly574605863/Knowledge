@@ -21,7 +21,7 @@ import io.realm.RealmObject;
 import io.realm.internal.IOException;
 
 /**
- * Created by yons on 16/1/29.
+ * Json parser util.
  */
 public class Json {
     public Json() {

@@ -31,7 +31,6 @@ public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuItem>, OnL
     @Override
     public void onDetailSuccess(ZhihuDetail detailNews) {
         newsDetailView.showDetail(detailNews);
-//        newsDetailView.hideProgress();
     }
 
     @Override
