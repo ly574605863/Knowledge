@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.dante.knowledge.R;
 
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * BaseActivity includes a base layoutId, init its toolbar (if the layout has one)
@@ -17,6 +18,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
+    protected Realm realm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         ButterKnife.bind(this);
         initAppBar();
+        realm = Realm.getDefaultInstance();
     }
 
     private void initAppBar() {
@@ -49,5 +52,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_main, fragment, tag);
         transaction.commit();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close();
     }
 }

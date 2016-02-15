@@ -7,6 +7,9 @@ import com.dante.knowledge.utils.UiUtils;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 /**
  * Init LeakCanary, Utils.
  */
@@ -18,10 +21,16 @@ public class KnowledgeApp extends Application {
     public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
-        new UiUtils(getApplicationContext());
+        new UiUtils(this);
+        setupRealm();
     }
 
-    public static RefWatcher getRefWatcher(Context context){
+    private void setupRealm() {
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(realmConfiguration);
+    }
+
+    public static RefWatcher getWatcher(Context context) {
         KnowledgeApp application = (KnowledgeApp) context.getApplicationContext();
         return application.refWatcher;
     }

@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dante.knowledge.KnowledgeApp;
-import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * BaseFragment helps onCreateView, and initViews(when root is null), init data on Activity Created.
@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
     protected View rootView;
     protected int layoutId;
+    protected Realm realm;
 
 
     @Nullable
@@ -31,6 +32,12 @@ public abstract class BaseFragment extends Fragment {
         }
         AlwaysInit();
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -59,8 +66,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        RefWatcher watcher = KnowledgeApp.getRefWatcher(getActivity());
-        watcher.watch(this);
-//      Tool.removeFromTransitionManager(getActivity());解决内存泄露
+        KnowledgeApp.getWatcher(getActivity()).watch(this);
+        realm.close();
     }
 }

@@ -1,7 +1,7 @@
 package com.dante.knowledge.news.model;
 
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.GsonUtil;
+import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
@@ -35,7 +35,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
 
             @Override
             public void onResponse(String response) {
-                ZhihuNews news = GsonUtil.parseZhihuNews(response);
+                ZhihuNews news = Json.parseZhihuNews(response);
                 listener.onNewsSuccess(news);
                 date = news.getDate();
             }
@@ -70,7 +70,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
 
             @Override
             public void onResponse(String response) {
-                ZhihuDetail detailNews = GsonUtil.parseZhihuDetail(response);
+                ZhihuDetail detailNews = Json.parseZhihuDetail(response);
                 listener.onDetailSuccess(detailNews);
             }
         };

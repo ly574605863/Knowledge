@@ -1,7 +1,7 @@
 package com.dante.knowledge.news.model;
 
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.GsonUtil;
+import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
@@ -50,7 +50,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
 
             @Override
             public void onResponse(String response) {
-                FreshNews news = GsonUtil.parseFreshNews(response);
+                FreshNews news = Json.parseFreshNews(response);
                 listener.onNewsSuccess(news);
                 page++;
             }
@@ -75,7 +75,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
 
             @Override
             public void onResponse (String response){
-                FreshDetail detail = GsonUtil.parseFreshDetail(response);
+                FreshDetail detail = Json.parseFreshDetail(response);
                 listener.onDetailSuccess(detail);
             }
         } ;
