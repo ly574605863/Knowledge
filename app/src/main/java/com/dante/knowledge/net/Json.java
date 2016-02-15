@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 /**
  * Created by yons on 16/1/29.
  */
-public class GsonUtil {
+public class Json {
     public static Gson mGson = new Gson();
 
     public static ZhihuNews parseZhihuNews(String latest) {
