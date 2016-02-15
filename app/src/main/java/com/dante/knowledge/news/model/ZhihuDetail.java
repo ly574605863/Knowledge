@@ -2,12 +2,13 @@ package com.dante.knowledge.news.model;
 
 import com.dante.knowledge.news.other.NewsDetail;
 
-import java.util.List;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 /**
  * zhihu news detail class
  */
-public class ZhihuDetail implements NewsDetail {
+public class ZhihuDetail extends RealmObject implements NewsDetail {
     /**
      * body : <div class="main-wrap content-wrap">
      <p>致敬是对某个桥段，某几个镜头，某个造型，某段对话高度复制，属于表达导演对自己偶像的敬仰，一般只有资深影迷才会发现。</p>
@@ -30,8 +31,15 @@ public class ZhihuDetail implements NewsDetail {
     private String image;
     private String share_url;
     private int id;
-    private List<?> js;
-    private List<String> css;
+    private RealmList<RealmString> css;
+
+    public RealmList<RealmString> getCss() {
+        return css;
+    }
+
+    public void setCss(RealmList<RealmString> css) {
+        this.css = css;
+    }
 
     public void setBody(String body) {
         this.body = body;
@@ -57,13 +65,7 @@ public class ZhihuDetail implements NewsDetail {
         this.id = id;
     }
 
-    public void setJs(List<?> js) {
-        this.js = js;
-    }
 
-    public void setCss(List<String> css) {
-        this.css = css;
-    }
 
     public String getBody() {
         return body;
@@ -89,11 +91,4 @@ public class ZhihuDetail implements NewsDetail {
         return id;
     }
 
-    public List<?> getJs() {
-        return js;
-    }
-
-    public List<String> getCss() {
-        return css;
-    }
 }

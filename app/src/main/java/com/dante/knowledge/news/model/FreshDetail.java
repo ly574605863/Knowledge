@@ -2,10 +2,12 @@ package com.dante.knowledge.news.model;
 
 import com.dante.knowledge.news.other.NewsDetail;
 
+import io.realm.RealmObject;
+
 /**
  * fresh things detail class
  */
-public class FreshDetail implements NewsDetail{
+public class FreshDetail extends RealmObject implements NewsDetail{
 
     /**
      * status : ok
@@ -58,24 +60,5 @@ public class FreshDetail implements NewsDetail{
         return next_url;
     }
 
-    public static class PostEntity {
-        private int id;
-        private String content;
 
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getContent() {
-            return content;
-        }
-    }
 }

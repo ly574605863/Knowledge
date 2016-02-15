@@ -162,14 +162,13 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
         if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {
             ZhihuListAdapter.ViewHolder holder = (ZhihuListAdapter.ViewHolder) viewHolder;
-
-            holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
-
             Intent intent = new Intent(getActivity(), ZhihuDetailActivity.class);
             intent.putExtra(ZhihuListAdapter.ZHIHU_ITEM, holder.zhihuItem);
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
                     holder.mImage, getString(R.string.shared_img));
             ActivityCompat.startActivity(getActivity(), intent, optionsCompat.toBundle());
+
+            holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
         }
     }
 

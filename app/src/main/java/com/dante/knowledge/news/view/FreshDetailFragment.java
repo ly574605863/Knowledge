@@ -2,27 +2,22 @@ package com.dante.knowledge.news.view;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
-import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
@@ -32,10 +27,8 @@ import com.dante.knowledge.news.presenter.FreshDetailPresenter;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.ShareUtil;
 import com.dante.knowledge.utils.UiUtils;
-import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -173,7 +166,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     public void onDestroyView() {
 //        webContainer.removeView(webView);
 //        webView.removeAllViews();
-//        webView.destroy();// TODO: 2016/2/12
+//        webView.destroy();
         super.onDestroyView();
     }
 

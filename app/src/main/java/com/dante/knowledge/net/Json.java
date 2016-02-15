@@ -2,19 +2,35 @@ package com.dante.knowledge.net;
 
 import com.dante.knowledge.news.model.FreshDetail;
 import com.dante.knowledge.news.model.FreshNews;
+import com.dante.knowledge.news.model.RealmString;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuNews;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
+import java.lang.reflect.Type;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.internal.IOException;
 
 /**
  * Created by yons on 16/1/29.
  */
 public class Json {
+    public Json() {
+    }
+
+    public static Type token = new TypeToken<RealmList<RealmString>>() {
+    }.getType();
+
+
     public static Gson mGson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
@@ -25,7 +41,25 @@ public class Json {
         public boolean shouldSkipClass(Class<?> clazz) {
             return false;
         }
-    }).create();
+    })
+            .registerTypeAdapter(token, new TypeAdapter<RealmList<RealmString>>() {
+
+                @Override
+                public void write(JsonWriter out, RealmList<RealmString> value) throws IOException {
+                    // Ignore
+                }
+
+                @Override
+                public RealmList<RealmString> read(JsonReader in) throws IOException, java.io.IOException {
+                    RealmList<RealmString> list = new RealmList<>();
+                    in.beginArray();
+                    while (in.hasNext()) {
+                        list.add(new RealmString(in.nextString()));
+                    }
+                    in.endArray();
+                    return list;
+                }
+            }).create();
 
     public static ZhihuNews parseZhihuNews(String latest) {
         return mGson.fromJson(latest, ZhihuNews.class);

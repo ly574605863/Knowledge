@@ -1,10 +1,8 @@
 package com.dante.knowledge.news.view;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -81,6 +79,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     private void initWebView() {
         webView = new WebView(this);
         webContainer.addView(webView);
+        webView.setVisibility(View.INVISIBLE);
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -95,7 +94,6 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
                         @Override
                         public void run() {
                             view.setVisibility(View.VISIBLE);
-                            initFAB();
                             hideProgress();
                         }
                     }, 300);
@@ -107,7 +105,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        webView.setVisibility(View.GONE);
+        webView.setVisibility(View.INVISIBLE);
     }
 
     @Override

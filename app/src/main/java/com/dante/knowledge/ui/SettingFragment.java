@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.utils.Tool;
 
 import java.io.File;
-import java.util.List;
 
 /**
  * the view in setting activity.
