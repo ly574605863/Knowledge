@@ -1,5 +1,7 @@
 package com.dante.knowledge.news.presenter;
 
+import android.content.Context;
+
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
@@ -16,9 +18,9 @@ public class FreshNewsPresenter implements NewsPresenter, OnLoadNewsListener<Fre
     private NewsView<FreshNews> mNewsView;
     private NewsModel<FreshItem, FreshNews, FreshDetail> mNewsModel;
 
-    public FreshNewsPresenter(NewsView<FreshNews> newsView) {
+    public FreshNewsPresenter(NewsView<FreshNews> newsView, Context context) {
         this.mNewsView = newsView;
-        mNewsModel = new FreshNewsModel();
+        mNewsModel = new FreshNewsModel(context);
     }
 
     @Override
@@ -43,6 +45,6 @@ public class FreshNewsPresenter implements NewsPresenter, OnLoadNewsListener<Fre
     @Override
     public void onFailure(String msg, Exception e) {
         mNewsView.hideProgress();
-        mNewsView.showLoadFailed(msg);
+        mNewsView.loadFailed(msg);
     }
 }

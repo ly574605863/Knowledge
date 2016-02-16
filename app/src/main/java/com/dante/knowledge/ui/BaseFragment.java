@@ -20,7 +20,6 @@ public abstract class BaseFragment extends Fragment {
     protected int layoutId;
     protected Realm realm;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,5 +67,9 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         KnowledgeApp.getWatcher(getActivity()).watch(this);
         realm.close();
+    }
+
+    public boolean isLive() {
+        return getActivity() != null && !getActivity().isDestroyed();
     }
 }

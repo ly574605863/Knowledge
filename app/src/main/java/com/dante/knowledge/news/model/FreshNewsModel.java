@@ -1,5 +1,7 @@
 package com.dante.knowledge.news.model;
 
+import android.content.Context;
+
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
@@ -24,6 +26,11 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
      * a continuous request with increasing one page each time
      */
     public static final int TYPE_CONTINUOUS = 1;
+    private Context context;
+
+    public FreshNewsModel(Context context) {
+        this.context = context;
+    }
 
     private int page;
     private long lastGetTime;
@@ -31,8 +38,12 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
 
     @Override
     public void getNews(int type, final OnLoadNewsListener<FreshNews> listener) {
-        lastGetTime = System.currentTimeMillis();
 
+        if (!Net.isOnline(context)) {
+
+        }
+
+        lastGetTime = System.currentTimeMillis();
         if (type == TYPE_FRESH) {
             page = 1;//如果是全新请求，就初始化page为1
         }
@@ -63,7 +74,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
 
     @Override
     public void getNewsDetail(final FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
-        PostEntity post = DB.getFreshDetail(freshItem.getId());
+        PostEntity post = DB.getById(freshItem.getId(), PostEntity.class);
         if (null != post) {
             FreshDetail detailNews = new FreshDetail();
             detailNews.setPost(post);
@@ -74,13 +85,18 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
         requestData(freshItem, listener);
     }
 
+    @Override
+    public void init() {
+
+    }
+
     private void requestData(final FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
         lastGetTime = System.currentTimeMillis();
         StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
-                    Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), this, API.TAG_FRESH_DETAIL);
+                    Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), this, API.TAG_FRESH);
                     Logger.d("try again");
                     return;
                 }
@@ -95,6 +111,6 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
                 listener.onDetailSuccess(detail);
             }
         };
-        Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), callback, API.TAG_FRESH_DETAIL);
+        Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), callback, API.TAG_FRESH);
     }
 }

@@ -80,7 +80,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     protected void initViews() {
-        presenter = new FreshDetailPresenter(this);
+        presenter = new FreshDetailPresenter(this,getContext());
     }
 
     @Override

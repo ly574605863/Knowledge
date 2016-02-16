@@ -51,6 +51,7 @@ public class SplashActivity extends AppCompatActivity {
             startAppDelay();
             return;
         }
+
         initSplash();
         loadImageFile();
     }
@@ -63,15 +64,19 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initSplash() {
-        today = StringUtil.formatDate(new Date());
-        //if today is latest get splash date, no need to getSplash.
-        if (!today.equals(sp.getString(StringUtil.LAST_DATE, ""))) {
-            getSplash();
-        }
+            today = StringUtil.getDisplayDate(new Date());
+            //if today is latest get splash date, no need to getSplash.
+            if (!today.equals(sp.getString(StringUtil.LAST_DATE, ""))) {
+                getSplash();
+            }
     }
 
 
     private void getSplash() {
+        if (!Net.isOnline(this)) {
+            return;
+        }
+
         Net.get(API.SPLASH, new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -138,4 +143,9 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OkHttpUtils.getInstance().cancelTag(API.TAG_SPLASH);
+    }
 }

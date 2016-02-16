@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.news.model.ZhihuTop;
-import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.utils.ImageUtil;
 
 /**
@@ -38,7 +38,7 @@ public class NetworkImageHolderView implements Holder<ZhihuTop> {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ZhihuDetailActivity.class);
-                intent.putExtra(ZhihuListAdapter.ZHIHU_ITEM, entity);
+                intent.putExtra(Constants.ID, entity.getId());
                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((MainActivity) context,
                         imageView, context.getString(R.string.shared_img));
                 ActivityCompat.startActivity((MainActivity) context, intent, optionsCompat.toBundle());

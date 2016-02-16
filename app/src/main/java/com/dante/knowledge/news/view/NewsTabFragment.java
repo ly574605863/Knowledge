@@ -1,6 +1,7 @@
 package com.dante.knowledge.news.view;
 
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
 
@@ -29,8 +31,21 @@ public class NewsTabFragment extends BaseFragment {
     public static final int TAG_ZHIHU = 0;
     public static final int TAG_FRESH = 1;
 
-    private ZhihuFragment zhihuFragment = new ZhihuFragment();
-    private FreshFragment freshFragment = new FreshFragment();
+    public static final String TYPE_NEWS = "news";
+    public static final String TYPE_PIC = "pic";
+
+    private List<RecyclerFragment> fragments = new ArrayList<>();
+    private List<String> titles = new ArrayList<>();
+    private NewsTabPagerAdapter adapter;
+    private String type;
+
+    public static NewsTabFragment newInstance(String type) {
+        Bundle args = new Bundle();
+        args.putString(MainActivity.TYPE, type);
+        NewsTabFragment fragment = new NewsTabFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     protected void initLayoutId() {
@@ -39,9 +54,8 @@ public class NewsTabFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        NewsTabPagerAdapter adapter = new NewsTabPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(zhihuFragment, getString(R.string.zhihu_news));
-        adapter.addFragment(freshFragment, getString(R.string.fresh_news));
+        adapter = new NewsTabPagerAdapter(getChildFragmentManager());
+        initFragments();
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -57,14 +71,25 @@ public class NewsTabFragment extends BaseFragment {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-                if (TAG_ZHIHU == tab.getPosition()) {
-                    scrollToTop(zhihuFragment.getRecyclerView());
-
-                } else if (TAG_FRESH == tab.getPosition()) {
-                    scrollToTop(freshFragment.getRecyclerView());
-                }
+                scrollToTop(fragments.get(tab.getPosition()).getRecyclerView());
             }
         });
+    }
+
+    private void initFragments() {
+        type = getArguments().getString(MainActivity.TYPE);
+
+        if (TYPE_PIC.equals(type)) {
+            fragments.add(new PictureFragment());
+            // TODO: 16/2/16
+        } else {
+            fragments.add(new ZhihuFragment());
+            fragments.add(new FreshFragment());
+            titles.add(getString(R.string.zhihu_news));
+            titles.add(getString(R.string.fresh_news));
+        }
+
+        adapter.setFragments(fragments, titles);
     }
 
     private void scrollToTop(RecyclerView list) {
@@ -80,20 +105,25 @@ public class NewsTabFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        //after activity created
+
     }
 
 
     public static class NewsTabPagerAdapter extends FragmentPagerAdapter {
 
-        private final List<Fragment> fragments = new ArrayList<>();
-        private final List<String> titles = new ArrayList<>();
+        private List<RecyclerFragment> fragments;
+        private List<String> titles;
 
         public NewsTabPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void setFragments(List<RecyclerFragment> fragments, List<String> titles) {
+            this.fragments = fragments;
+            this.titles = titles;
+        }
+
+        public void addFragment(RecyclerFragment fragment, String title) {
             fragments.add(fragment);
             titles.add(title);
         }

@@ -6,9 +6,11 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.ui.BaseActivity;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
 
@@ -57,6 +59,7 @@ public class FreshDetailActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.exit(0);// TODO: 2016/2/12
+        OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);
+        System.exit(0);
     }
 }

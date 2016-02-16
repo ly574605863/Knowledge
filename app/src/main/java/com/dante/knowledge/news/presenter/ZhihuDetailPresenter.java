@@ -1,5 +1,7 @@
 package com.dante.knowledge.news.presenter;
 
+import android.content.Context;
+
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.interf.NewsModel;
@@ -17,8 +19,8 @@ public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuItem>, OnL
     private NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> newsModel;
     private NewsDetailView<ZhihuDetail> newsDetailView;
 
-    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView) {
-        this.newsModel = new ZhihuNewsModel();
+    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView, Context context) {
+        this.newsModel = new ZhihuNewsModel(context);
         this.newsDetailView = newsDetailView;
     }
 

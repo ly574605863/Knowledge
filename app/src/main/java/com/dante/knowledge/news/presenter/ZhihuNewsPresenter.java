@@ -1,5 +1,7 @@
 package com.dante.knowledge.news.presenter;
 
+import android.content.Context;
+
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.NewsPresenter;
@@ -18,13 +20,15 @@ public class ZhihuNewsPresenter implements NewsPresenter, OnLoadNewsListener<Zhi
     private NewsView<ZhihuNews> mNewsView;
     private NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> mNewsModel;
 
-    public ZhihuNewsPresenter(NewsView<ZhihuNews> newsView) {
+    public ZhihuNewsPresenter(NewsView<ZhihuNews> newsView, Context context) {
         this.mNewsView = newsView;
-        mNewsModel = new ZhihuNewsModel();
+        mNewsModel = new ZhihuNewsModel(context);
     }
+
 
     @Override
     public void loadNews() {
+        mNewsModel.init();
         mNewsView.showProgress();
         mNewsModel.getNews(API.TYPE_LATEST, this);
     }
@@ -45,7 +49,7 @@ public class ZhihuNewsPresenter implements NewsPresenter, OnLoadNewsListener<Zhi
     @Override
     public void onFailure(String msg, Exception e) {
         mNewsView.hideProgress();
-        mNewsView.showLoadFailed(msg);
+        mNewsView.loadFailed(msg);
     }
 
 }

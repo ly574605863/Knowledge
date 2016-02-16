@@ -2,10 +2,12 @@ package com.dante.knowledge.news.model;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Zhihu news item in top banner
  */
-public class ZhihuTop implements Serializable{
+public class ZhihuTop extends RealmObject implements Serializable{
     private String image;
     private int id;
     private String title;

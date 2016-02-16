@@ -12,12 +12,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.Constants;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.model.ZhihuTop;
-import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.ImageUtil;
@@ -39,6 +39,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Bind(R.id.web_container)
     FrameLayout webContainer;
     private WebView webView;
+    private int id;
     private ZhihuItem story;
     private ZhihuDetail zhihuDetail;
     private NewsDetailPresenter<ZhihuItem> presenter;
@@ -51,16 +52,11 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void initViews() {
         super.initViews();
-        Object object = getIntent().getSerializableExtra(ZhihuListAdapter.ZHIHU_ITEM);
-        if (object instanceof ZhihuTop) {
-            story = new ZhihuItem();
-            story.setId(((ZhihuTop) object).getId());
-            story.setTitle(((ZhihuTop) object).getTitle());
-        } else {
-            story = (ZhihuItem) object;
-        }
+        id=getIntent().getIntExtra(Constants.ID, 0);
+        story= DB.getById(id, ZhihuItem.class);
+
         toolbarLayout.setTitle(story.getTitle());
-        presenter = new ZhihuDetailPresenter(this);
+        presenter = new ZhihuDetailPresenter(this, this);
         initWebView();
         presenter.loadNewsDetail(story);
         initFAB();

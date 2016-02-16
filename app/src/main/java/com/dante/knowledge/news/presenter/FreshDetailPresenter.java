@@ -1,5 +1,7 @@
 package com.dante.knowledge.news.presenter;
 
+import android.content.Context;
+
 import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.interf.NewsModel;
@@ -17,8 +19,8 @@ public class FreshDetailPresenter implements NewsDetailPresenter<FreshItem>, OnL
     private NewsModel<FreshItem, FreshNews, FreshDetail> mNewsModel;
     private NewsDetailView<FreshDetail> newsDetailView;
 
-    public FreshDetailPresenter(NewsDetailView<FreshDetail> newsDetailView) {
-        this.mNewsModel = new FreshNewsModel();
+    public FreshDetailPresenter(NewsDetailView<FreshDetail> newsDetailView, Context context) {
+        this.mNewsModel = new FreshNewsModel(context);
         this.newsDetailView = newsDetailView;
     }
 

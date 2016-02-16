@@ -14,7 +14,6 @@ import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingsActivity;
 import com.dante.knowledge.utils.ShareUtil;
-import com.dante.knowledge.utils.UiUtils;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
@@ -26,7 +25,8 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
+    public static final String TYPE = "type";
+    private String currentType;
     private Fragment currentFragment;
 
     @Override
@@ -39,7 +39,7 @@ public class MainActivity extends BaseActivity
         super.initViews();
         setupDrawer();
         initNavigationView();
-        initMainFragment();
+        replace(NewsTabFragment.TYPE_NEWS);
         TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
     }
 
@@ -48,12 +48,12 @@ public class MainActivity extends BaseActivity
     }
 
 
-    private void initMainFragment() {
-        //当前fragment为空或者不是NewsTabFragment（主fragment）
-        if (currentFragment == null || !(currentFragment instanceof NewsTabFragment)) {
-            currentFragment = new NewsTabFragment();
+    private void replace(String type) {
+        if (! type.equals(currentType)) {
+            currentType = type;
+            replaceFragment(NewsTabFragment.newInstance(type), type);
         }
-        replaceFragment(currentFragment, "main");
+
     }
 
     private void setupDrawer() {
@@ -103,9 +103,10 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            initMainFragment();
+            replace(NewsTabFragment.TYPE_NEWS);
         } else if (id == R.id.nav_beauty) {
-            UiUtils.showSnackLong(drawerLayout, R.string.column_not_available);
+//            UiUtils.showSnackLong(drawerLayout, R.string.column_not_available);
+            replace(NewsTabFragment.TYPE_PIC);
 
         } else if (id == R.id.nav_xxoo) {
 

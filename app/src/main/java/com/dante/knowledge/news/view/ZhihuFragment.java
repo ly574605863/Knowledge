@@ -14,20 +14,20 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
 import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.ZhihuNewsPresenter;
-import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.UiUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
 
 
-public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
+public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuNews>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     @Bind(R.id.list)
@@ -40,7 +40,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     public void onDestroyView() {
-        OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU_LATEST);
+        OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU);
         super.onDestroyView();
     }
 
@@ -58,7 +58,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     protected void initLayoutId() {
-        layoutId = R.layout.fragment_news_list;
+        layoutId = R.layout.fragment_recycler;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
 
     @Override
     protected void initData() {
-        presenter = new ZhihuNewsPresenter(this);
+        presenter = new ZhihuNewsPresenter(this, getContext());
         onRefresh();
     }
 
@@ -130,13 +130,17 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
     }
 
     @Override
-    public void showLoadFailed(String msg) {
-        UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+    public void loadFailed(String msg) {
+        if (isLive()) {
+            UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+        }
     }
+
 
     @Override
     public void onRefresh() {
         adapter.clear();
+
         presenter.loadNews();
     }
 
@@ -148,7 +152,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
                 public void run() {
                     if (recyclerView.getChildCount() != 0) {
                         banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
-                        banner.setScrollDuration(1500);
+                        banner.setScrollDuration(1000);
                         banner.startTurning(5000);
                     }
                 }
@@ -163,7 +167,7 @@ public class ZhihuFragment extends BaseFragment implements NewsView<ZhihuNews>, 
         if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {
             ZhihuListAdapter.ViewHolder holder = (ZhihuListAdapter.ViewHolder) viewHolder;
             Intent intent = new Intent(getActivity(), ZhihuDetailActivity.class);
-            intent.putExtra(ZhihuListAdapter.ZHIHU_ITEM, holder.zhihuItem);
+            intent.putExtra(Constants.ID, holder.zhihuItem.getId());
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
                     holder.mImage, getString(R.string.shared_img));
             ActivityCompat.startActivity(getActivity(), intent, optionsCompat.toBundle());

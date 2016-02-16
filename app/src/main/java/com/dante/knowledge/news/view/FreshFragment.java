@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsPresenter;
@@ -19,7 +20,6 @@ import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
 import com.dante.knowledge.news.presenter.FreshNewsPresenter;
-import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.UiUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -29,7 +29,7 @@ import butterknife.Bind;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshNews>, OnListFragmentInteract {
+public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshNews>, OnListFragmentInteract {
 
     @Bind(R.id.list)
     RecyclerView recyclerView;
@@ -51,7 +51,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     protected void initLayoutId() {
-        layoutId = R.layout.fragment_news_list;
+        layoutId = R.layout.fragment_recycler;
     }
 
     @Override
@@ -98,7 +98,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     protected void initData() {
-        presenter = new FreshNewsPresenter(this);
+        presenter = new FreshNewsPresenter(this, getContext());
         onRefresh();
     }
 
@@ -110,7 +110,7 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void showProgress() {
-        if (null != swipeRefresh&& !swipeRefresh.isRefreshing()) {
+        if (null != swipeRefresh && !swipeRefresh.isRefreshing()) {
             swipeRefresh.setRefreshing(true);
         }
     }
@@ -122,15 +122,16 @@ public class FreshFragment extends BaseFragment implements SwipeRefreshLayout.On
 
     @Override
     public void hideProgress() {
-        if (null!=swipeRefresh) {
+        if (null != swipeRefresh) {
             swipeRefresh.setRefreshing(false);
         }
     }
 
     @Override
-    public void showLoadFailed(String msg) {
-        UiUtils.showSnack((getActivity()).findViewById(R.id.drawer_layout), R.string.load_fail);
-
+    public void loadFailed(String msg) {
+        if (isLive()) {
+            UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+        }
     }
 
     @Override

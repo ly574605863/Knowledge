@@ -9,5 +9,5 @@ public interface NewsView<T extends News> {
     void showProgress();
     void addNews(T news);
     void hideProgress();
-    void showLoadFailed(String msg);
+    void loadFailed(String msg);
 }
