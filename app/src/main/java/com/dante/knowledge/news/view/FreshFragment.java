@@ -104,7 +104,6 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        adapter.clear();
         presenter.loadNews();
     }
 
@@ -146,7 +145,6 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
             NewsListAdapter.ViewHolder holder = (NewsListAdapter.ViewHolder) viewHolder;
             holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
             Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
-            intent.putExtra(NewsListAdapter.FRESH_ITEMS, adapter.getFreshItems());
             intent.putExtra(NewsListAdapter.FRESH_ITEM_POSITION, holder.getAdapterPosition());
             startActivity(intent);
         }

@@ -2,9 +2,6 @@ package com.dante.knowledge.news.model;
 
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.Constants;
@@ -14,6 +11,7 @@ import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
 import com.dante.knowledge.news.interf.OnLoadNewsListener;
+import com.dante.knowledge.utils.Shared;
 import com.dante.knowledge.utils.StringUtil;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -46,7 +44,8 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
     public void getNews(final int type, final OnLoadNewsListener<ZhihuNews> listener) {
         this.type = type;
         if (!Net.isOnline(context)) {
-            if (getFromDB(listener)) return;
+            if (getFromDB(listener))
+                return;
         }
 
         lastGetTime = System.currentTimeMillis();
@@ -66,13 +65,10 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
             public void onResponse(String response) {
                 ZhihuNews news = Json.parseZhihuNews(response);
                 date = news.getDate();
-                if (type ==API.TYPE_BEFORE) {
-                    addFooter(news);
-                }
-                DB.save(news);
-                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-                editor.putString(Constants.DATE, date);
-                editor.apply();
+                addFooter(news);
+                DB.deleteAll(ZhihuTop.class);
+                DB.saveOrUpdate(news);
+                Shared.save(Constants.DATE, date);
                 listener.onNewsSuccess(news);
             }
         };
@@ -81,18 +77,10 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
     }
 
     private boolean getFromDB(OnLoadNewsListener<ZhihuNews> listener) {
-        String date = PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(Constants.DATE,
-                        StringUtil.parseStandardDate(new Date()));
-
-        if (isBefore && type == API.TYPE_BEFORE) {
-            date = StringUtil.lastDay(date);
-        }
-
+        String date = Shared.get(Constants.DATE, StringUtil.parseStandardDate(new Date()));
         ZhihuNews zhihuNews = DB.getZhihuNews(date);
 
         if (null != zhihuNews) {
-            isBefore = true;
             addFooter(zhihuNews);
             listener.onNewsSuccess(zhihuNews);
             return true;
@@ -101,12 +89,13 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
     }
 
     private void addFooter(ZhihuNews zhihuNews) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        Log.i("test", "add "+zhihuNews.getDate());
+        if (type == API.TYPE_BEFORE) {
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(new ZhihuItem(Integer.valueOf(zhihuNews.getDate()), 1));
+            realm.commitTransaction();
+        }
 
-        realm.copyToRealmOrUpdate(new ZhihuItem(Integer.valueOf(zhihuNews.getDate()), 1));
-        realm.commitTransaction();
     }
 
     private void getData(StringCallback callback) {
@@ -153,7 +142,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
             @Override
             public void onResponse(String response) {
                 ZhihuDetail detailNews = Json.parseZhihuDetail(response);
-                DB.save(detailNews);
+                DB.saveOrUpdate(detailNews);
                 listener.onDetailSuccess(detailNews);
             }
         };

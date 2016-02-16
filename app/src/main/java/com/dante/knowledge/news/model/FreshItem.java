@@ -5,10 +5,13 @@ import com.dante.knowledge.news.other.NewsItem;
 import java.io.Serializable;
 import java.util.List;
 
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+
 /**
  * fresh things item in list
  */
-public class FreshItem implements NewsItem, Serializable{
+public class FreshItem extends RealmObject implements NewsItem, Serializable{
     private int id;
     private String url;
     private String title;
@@ -23,7 +26,7 @@ public class FreshItem implements NewsItem, Serializable{
      * url :
      * description :
      */
-
+    @Ignore
     private AuthorEntity author;
     private int comment_count;
     private CustomFieldsEntity custom_fields;
@@ -34,7 +37,7 @@ public class FreshItem implements NewsItem, Serializable{
      * description :
      * post_count : 3769
      */
-
+    @Ignore
     private List<TagsEntity> tags;
 
     public void setId(int id) {
@@ -176,17 +179,6 @@ public class FreshItem implements NewsItem, Serializable{
         }
     }
 
-    public static class CustomFieldsEntity  implements Serializable{
-        private List<String> thumb_c;
-
-        public void setThumb_c(List<String> thumb_c) {
-            this.thumb_c = thumb_c;
-        }
-
-        public List<String> getThumb_c() {
-            return thumb_c;
-        }
-    }
 
     public static class TagsEntity  implements Serializable{
         private int id;

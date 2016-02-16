@@ -21,7 +21,6 @@ import com.dante.knowledge.news.view.NetworkImageHolderView;
 import com.dante.knowledge.utils.ImageUtil;
 import com.dante.knowledge.utils.StringUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -46,7 +45,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private ZhihuNews news;
     private List<ZhihuItem> zhihuItems;
-    private List<ZhihuTop> tops = new ArrayList<>();
+    private List<ZhihuTop> tops ;
 
     private OnListFragmentInteract mListener;
     private boolean hasFooter;
@@ -70,33 +69,13 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.context = context;
         mListener = listener;
         zhihuItems = DB.findAll(ZhihuItem.class);
+        tops = DB.findAll(ZhihuTop.class);
     }
 
     public void addNews(ZhihuNews news) {
         this.news = news;
-        newItems = news.getStories();
-        addTop(news);
-        initHeaderFooter();
+        setHasFooter(news.getStories().size() != 0);
         notifyDataSetChanged();
-    }
-
-    /**
-     * add top stories for banner
-     *
-     * @param news get top_stories from ZhihuNews
-     */
-    private void addTop(ZhihuNews news) {
-        if (null != news.getTop_stories()) {
-            tops.clear();
-            tops.addAll(news.getTop_stories());
-        }
-    }
-
-    /**
-     * initialize header and footer
-     */
-    private void initHeaderFooter() {
-        setHasFooter(newItems.size() != 0);
     }
 
     public void clear() {

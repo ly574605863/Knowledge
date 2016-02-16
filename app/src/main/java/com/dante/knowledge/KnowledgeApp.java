@@ -3,8 +3,6 @@ package com.dante.knowledge;
 import android.app.Application;
 import android.content.Context;
 
-import com.dante.knowledge.utils.UiUtils;
-import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -17,12 +15,13 @@ import io.realm.RealmConfiguration;
 public class KnowledgeApp extends Application {
 
     private RefWatcher refWatcher;
+    public static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
         refWatcher = LeakCanary.install(this);
-        new UiUtils(this);
+        context = this;
         setupRealm();
     }
 

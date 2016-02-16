@@ -10,12 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.news.interf.OnListFragmentInteract;
 import com.dante.knowledge.news.model.FreshItem;
 import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.utils.ImageUtil;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fresh news' recyclerView adapter
@@ -25,22 +26,19 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final String FRESH_ITEMS = "fresh_items";
     public static final String FRESH_ITEM_POSITION = "fresh_items_position";
     private Context context;
-    private ArrayList<FreshItem> freshItems = new ArrayList<>();
+    private List<FreshItem> freshItems ;
     private FreshNews news;
     private OnListFragmentInteract mListener;
-
-    public ArrayList<FreshItem> getFreshItems() {
-        return freshItems;
-    }
 
     public NewsListAdapter(Context context, OnListFragmentInteract listener) {
         this.context = context;
         mListener = listener;
+        freshItems = DB.findAll(FreshItem.class);
     }
 
     public void addNews(FreshNews news) {
         this.news=news;
-        freshItems.addAll(news.getPosts());
+//        freshItems.addAll(news.getPosts());
         notifyDataSetChanged();
     }
 
@@ -54,7 +52,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.freshItem = freshItems.get(position);
-        String imgUrl = viewHolder.freshItem.getCustom_fields().getThumb_c().get(0);
+        String imgUrl = viewHolder.freshItem.getCustom_fields().getThumb_c().get(0).getVal();
 
         viewHolder.mTitle.setText(viewHolder.freshItem.getTitle());
         viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
@@ -74,10 +72,6 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount() {
         return freshItems.size();
-    }
-
-    public void clear() {
-        freshItems.clear();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -3,12 +3,14 @@ package com.dante.knowledge.news.model;
 import android.content.Context;
 
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
 import com.dante.knowledge.news.interf.OnLoadNewsListener;
+import com.dante.knowledge.utils.Shared;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,7 +42,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
     public void getNews(int type, final OnLoadNewsListener<FreshNews> listener) {
 
         if (!Net.isOnline(context)) {
-
+            if (getFromDB(listener)) return;
         }
 
         lastGetTime = System.currentTimeMillis();
@@ -64,6 +66,8 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
             @Override
             public void onResponse(String response) {
                 FreshNews news = Json.parseFreshNews(response);
+                DB.save(news);
+                Shared.save(Constants.PAGE, page);
                 listener.onNewsSuccess(news);
                 page++;
             }
@@ -72,17 +76,32 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
         Net.get(API.FRESH_NEWS + page, callback, API.TAG_FRESH);
     }
 
+    private boolean getFromDB(OnLoadNewsListener<FreshNews> listener) {
+        FreshNews freshNews = DB.getFreshNews(page);
+
+        if (null != freshNews) {
+            listener.onNewsSuccess(freshNews);
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public void getNewsDetail(final FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
+        if (getDetailFromDB(freshItem, listener)) return;
+
+        requestData(freshItem, listener);
+    }
+
+    private boolean getDetailFromDB(FreshItem freshItem, OnLoadDetailListener<FreshDetail> listener) {
         PostEntity post = DB.getById(freshItem.getId(), PostEntity.class);
         if (null != post) {
             FreshDetail detailNews = new FreshDetail();
             detailNews.setPost(post);
-            Logger.d("already has");
             listener.onDetailSuccess(detailNews);
-            return;
+            return true;
         }
-        requestData(freshItem, listener);
+        return false;
     }
 
     @Override
