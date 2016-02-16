@@ -66,7 +66,6 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
                 ZhihuNews news = Json.parseZhihuNews(response);
                 date = news.getDate();
                 addFooter(news);
-                DB.deleteAll(ZhihuTop.class);
                 DB.saveOrUpdate(news);
                 Shared.save(Constants.DATE, date);
                 listener.onNewsSuccess(news);
@@ -81,7 +80,6 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
         ZhihuNews zhihuNews = DB.getZhihuNews(date);
 
         if (null != zhihuNews) {
-            addFooter(zhihuNews);
             listener.onNewsSuccess(zhihuNews);
             return true;
         }

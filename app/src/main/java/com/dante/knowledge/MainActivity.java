@@ -25,7 +25,6 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    public static final String TYPE = "type";
     private String currentType;
     private Fragment currentFragment;
 
@@ -105,7 +104,6 @@ public class MainActivity extends BaseActivity
         if (id == R.id.nav_knowledge) {
             replace(NewsTabFragment.TYPE_NEWS);
         } else if (id == R.id.nav_beauty) {
-//            UiUtils.showSnackLong(drawerLayout, R.string.column_not_available);
             replace(NewsTabFragment.TYPE_PIC);
 
         } else if (id == R.id.nav_xxoo) {

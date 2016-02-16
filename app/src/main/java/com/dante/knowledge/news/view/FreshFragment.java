@@ -31,10 +31,6 @@ import butterknife.Bind;
  */
 public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshNews>, OnListFragmentInteract {
 
-    @Bind(R.id.list)
-    RecyclerView recyclerView;
-    @Bind(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefresh;
     private NewsPresenter presenter;
     private NewsListAdapter adapter;
     private LinearLayoutManager layoutManager;

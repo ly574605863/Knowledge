@@ -6,18 +6,18 @@ import android.support.v7.widget.RecyclerView;
 
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.Constants;
 
 /**
- * Created by yons on 16/2/16.
+ * Gank and DB beauty fragment.
  */
 public class PictureFragment extends RecyclerFragment {
 
-    private LinearLayoutManager layoutManager;
 
-    public static NewsTabFragment newInstance(int type) {
+    public static PictureFragment newInstance(int type) {
         Bundle args = new Bundle();
-        args.putInt(MainActivity.TYPE, type);
-        NewsTabFragment fragment = new NewsTabFragment();
+        args.putInt(Constants.TYPE, type);
+        PictureFragment fragment = new PictureFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,8 +38,5 @@ public class PictureFragment extends RecyclerFragment {
 
     }
 
-    @Override
-    RecyclerView getRecyclerView() {
-        return null;
-    }
+
 }

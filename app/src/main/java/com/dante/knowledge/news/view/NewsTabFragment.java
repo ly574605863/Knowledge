@@ -12,9 +12,12 @@ import android.support.v7.widget.RecyclerView;
 
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.ui.BaseFragment;
 
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,18 +33,23 @@ public class NewsTabFragment extends BaseFragment {
     TabLayout tabs;
     public static final int TAG_ZHIHU = 0;
     public static final int TAG_FRESH = 1;
+    private static final int TYPE_GANK = 0;
+    private static final int TYPE_DB_BREAST = 1;
+    private static final int TYPE_DB_BUTT = 2;
+    private static final int TYPE_DB_SILK = 3;
+    private static final int TYPE_DB_LEG = 4;
 
     public static final String TYPE_NEWS = "news";
     public static final String TYPE_PIC = "pic";
 
     private List<RecyclerFragment> fragments = new ArrayList<>();
-    private List<String> titles = new ArrayList<>();
+    private List<String> titles;
     private NewsTabPagerAdapter adapter;
     private String type;
 
     public static NewsTabFragment newInstance(String type) {
         Bundle args = new Bundle();
-        args.putString(MainActivity.TYPE, type);
+        args.putString(Constants.TYPE, type);
         NewsTabFragment fragment = new NewsTabFragment();
         fragment.setArguments(args);
         return fragment;
@@ -57,6 +65,9 @@ public class NewsTabFragment extends BaseFragment {
         adapter = new NewsTabPagerAdapter(getChildFragmentManager());
         initFragments();
         pager.setAdapter(adapter);
+        if (TYPE_PIC.equals(type)){
+            tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+        }
         tabs.setupWithViewPager(pager);
         tabs.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -77,12 +88,23 @@ public class NewsTabFragment extends BaseFragment {
     }
 
     private void initFragments() {
-        type = getArguments().getString(MainActivity.TYPE);
+        type = getArguments().getString(Constants.TYPE);
 
         if (TYPE_PIC.equals(type)) {
-            fragments.add(new PictureFragment());
-            // TODO: 16/2/16
+            String[] titles = new String[]{getString(R.string.gank),
+                    getString(R.string.db_breast),
+                    getString(R.string.db_butt),
+                    getString(R.string.db_silk),
+                    getString(R.string.db_leg)};
+            this.titles = Arrays.asList(titles);
+
+            for (int i = 0; i < titles.length; i++) {
+                //ensure the types are from 0 to length before using 'for' loop
+                fragments.add(PictureFragment.newInstance(i));
+            }
+
         } else {
+            titles = new ArrayList<>();
             fragments.add(new ZhihuFragment());
             fragments.add(new FreshFragment());
             titles.add(getString(R.string.zhihu_news));

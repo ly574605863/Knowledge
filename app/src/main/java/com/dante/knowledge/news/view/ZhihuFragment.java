@@ -28,10 +28,6 @@ import butterknife.Bind;
 
 
 public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuNews>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
-    @Bind(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefresh;
-    @Bind(R.id.list)
-    RecyclerView recyclerView;
 
     private NewsPresenter presenter;
     private ZhihuListAdapter adapter;
@@ -42,14 +38,6 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuNew
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU);
         super.onDestroyView();
-    }
-
-    public LinearLayoutManager getLayoutManager() {
-        return layoutManager;
-    }
-
-    public ZhihuListAdapter getAdapter() {
-        return adapter;
     }
 
     public RecyclerView getRecyclerView() {

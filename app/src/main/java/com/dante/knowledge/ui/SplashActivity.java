@@ -15,7 +15,11 @@ import com.bumptech.glide.Glide;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.net.Constants;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.news.model.ZhihuTop;
+import com.dante.knowledge.utils.Shared;
 import com.dante.knowledge.utils.StringUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.FileCallBack;
@@ -64,9 +68,10 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void initSplash() {
-            today = StringUtil.getDisplayDate(new Date());
+            today = StringUtil.parseStandardDate(new Date());
             //if today is latest get splash date, no need to getSplash.
-            if (!today.equals(sp.getString(StringUtil.LAST_DATE, ""))) {
+            if (!today.equals(Shared.get(Constants.DATE, ""))) {
+                DB.deleteAll(ZhihuTop.class);
                 getSplash();
             }
     }
@@ -110,7 +115,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(File file) {
-                        sp.edit().putString(StringUtil.LAST_DATE, today).apply();
+                        Shared.save(Constants.DATE, today);
                     }
                 });
 

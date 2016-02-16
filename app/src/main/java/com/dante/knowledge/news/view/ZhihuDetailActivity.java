@@ -121,9 +121,8 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         super.onDestroy();
 //        webContainer.removeView(webView);
 //        webView.removeAllViews();
-//        webView.destroy();// TODO: 2016/2/12
+//        webView.destroy();
         System.exit(0);
-        Tool.removeFromTransitionManager(this);
     }
 
     @Override

@@ -48,5 +48,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hottest">今日热闻</string>
+    <string name="gank">Gank</string>
+    <string name="db">豆瓣美女</string>
+    <string name="db_breast">波涛胸涌</string>
+    <string name="db_butt">悬崖翘臂</string>
+    <string name="db_silk">黑丝控</string>
+    <string name="db_leg">美腿</string>
 
 </resources>
