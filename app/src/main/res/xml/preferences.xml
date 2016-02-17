@@ -8,7 +8,7 @@
         <SwitchPreference
             android:defaultValue="false"
             android:summary="@string/set_original_splash"
-            android:key="splash"
+            android:key="original_splash"
             android:title="@string/original_splash"/>
 
     </PreferenceCategory>

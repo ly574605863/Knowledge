@@ -49,7 +49,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
         PictureParser.cancelTask();
-        Shared.save(Constants.POSITION + type, lastPosition);
+        Shared.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[1]);
         super.onDestroyView();
     }
 
@@ -173,7 +173,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             fetch();
             return;
         }
-        recyclerView.scrollToPosition(Shared.getInt(Constants.POSITION + type) - layoutManager.getSpanCount());
+        recyclerView.scrollToPosition(Shared.getInt(Constants.POSITION + type));
         adapter.addAll(images);
         adapter.notifyDataSetChanged();
     }
