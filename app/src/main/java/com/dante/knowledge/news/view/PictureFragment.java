@@ -49,7 +49,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
         PictureParser.cancelTask();
-        Shared.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[1]);
+        Shared.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[0]);
         super.onDestroyView();
     }
 
