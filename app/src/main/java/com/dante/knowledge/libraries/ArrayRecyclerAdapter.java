@@ -52,6 +52,7 @@ public abstract class ArrayRecyclerAdapter<E, VH extends RecyclerView.ViewHolder
         list = new ArrayList<>(collection);
     }
 
+
     @Override
     public int getItemCount() {
         return size();

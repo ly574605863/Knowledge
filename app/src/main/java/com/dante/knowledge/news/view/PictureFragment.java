@@ -32,6 +32,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public static final int TYPE_DB_SILK = 3;
     public static final int TYPE_DB_LEG = 4;
     private static final int LOAD_COUNT = 20;
+    private static final int PRELOAD_COUNT = 3;
 
     private String url;
     private int page;
@@ -39,6 +40,13 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private StaggeredGridLayoutManager layoutManager;
     private PictureAdapter adapter;
     private RealmResults<Image> images;
+
+    @Override
+    public void onDestroyView() {
+        OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
+        PictureParser.cancelTask();
+        super.onDestroyView();
+    }
 
     public static PictureFragment newInstance(int type) {
         Bundle args = new Bundle();
@@ -71,12 +79,14 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                int lastPosition = layoutManager.findLastVisibleItemPositions(
+                        new int[layoutManager.getSpanCount()])[1];
+                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
                     onListScrolled();
                 }
+
             }
         });
-
         type = getArguments().getInt(Constants.TYPE);
     }
 
@@ -85,15 +95,13 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void onListScrolled() {
+        changeProgress(true);
         page++;
         fetch();
     }
 
     private void fetch() {
         switch (type) {
-            case TYPE_GANK:
-                url = API.GANK + LOAD_COUNT + "/" + page;
-                break;
             case TYPE_DB_BREAST:
                 url = API.DB_BREAST + page;
                 break;
@@ -105,6 +113,9 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                 break;
             case TYPE_DB_SILK:
                 url = API.DB_SILK + page;
+                break;
+            default://type = 0, 代表GANK
+                url = API.GANK + LOAD_COUNT + "/" + page;
                 break;
         }
         getData();
@@ -128,8 +139,9 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initData() {
-        images= DB.findAll(Image.class);
-        fetch();
+        images = DB.findAll(Image.class);
+        adapter.addAll(images);
+        adapter.notifyDataSetChanged();
     }
 
 
@@ -139,24 +151,24 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     @Override
-    public void onDestroyView() {
-        OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
-        PictureParser.cancelTask();
-        super.onDestroyView();
-    }
-
-    @Override
     public void onDataSuccess(Image data) {
-        swipeRefresh.setRefreshing(false);
+        changeProgress(false);
         adapter.replaceWith(images);
     }
 
     @Override
     public void onFailure(String msg, Exception e) {
-        swipeRefresh.setRefreshing(false);
+        changeProgress(false);
         adapter.replaceWith(images);
         if (isLive()) {
             UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }
+
+    public void changeProgress(boolean refreshState) {
+        if (null != swipeRefresh) {
+            swipeRefresh.setRefreshing(refreshState);
+        }
+    }
+
 }
