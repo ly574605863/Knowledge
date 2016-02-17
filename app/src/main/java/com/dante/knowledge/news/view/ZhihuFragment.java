@@ -94,9 +94,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
 
     @Override
     public void showProgress() {
-        if (null != swipeRefresh && !swipeRefresh.isRefreshing()) {
-            swipeRefresh.setRefreshing(true);
-        }
+        changeProgress(true);
     }
 
     @Override
@@ -106,9 +104,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
 
     @Override
     public void hideProgress() {
-        if (null != swipeRefresh) {
-            swipeRefresh.setRefreshing(false);
-        }
+        changeProgress(false);
     }
 
     @Override

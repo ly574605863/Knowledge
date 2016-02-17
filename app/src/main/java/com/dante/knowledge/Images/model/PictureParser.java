@@ -9,6 +9,10 @@ import com.dante.knowledge.news.view.PictureFragment;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +43,14 @@ public class PictureParser {
     }
 
     private void parseDB() {
-
+        Document document = Jsoup.parse(response);
+        Elements elements = document.select("div[class=thumbnail]>div[class=img_single]>a>img");
+        final int size = elements.size();
+        String[] urls = new String[size];
+        for (int i = 0; i < size; i++) {
+            urls[i]=elements.get(i).attr("src");
+        }
+        saveImages(urls);
     }
 
     public static void cancelTask() {
@@ -77,7 +88,7 @@ public class PictureParser {
             if (!isCancelled()) {
                 for (String url : strings) {
                     try {
-                        images.add(Image.getFixedImage(url));
+                        images.add(Image.getFixedImage(url, type));
                     } catch (ExecutionException | InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -88,7 +99,7 @@ public class PictureParser {
 
         @Override
         protected void onPostExecute(List<Image> images) {
-            if (images.size()==0) {
+            if (images.size() == 0) {
                 listener.onFailure("image task failed", null);
                 return;
             }

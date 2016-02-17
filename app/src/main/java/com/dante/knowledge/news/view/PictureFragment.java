@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
 import com.dante.knowledge.Images.model.Image;
@@ -15,6 +16,7 @@ import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.OnLoadDataListener;
+import com.dante.knowledge.utils.Shared;
 import com.dante.knowledge.utils.UiUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -31,20 +33,23 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public static final int TYPE_DB_BUTT = 2;
     public static final int TYPE_DB_SILK = 3;
     public static final int TYPE_DB_LEG = 4;
-    private static final int LOAD_COUNT = 20;
-    private static final int PRELOAD_COUNT = 3;
+    private static final int LOAD_COUNT_LARGE = 20;
+    private static int LOAD_COUNT = 10;
+    private static int PRELOAD_COUNT = 10;
 
     private String url;
-    private int page;
+    private int page = 1;
     private int type;
     private StaggeredGridLayoutManager layoutManager;
     private PictureAdapter adapter;
     private RealmResults<Image> images;
+    private int lastPosition;
 
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
         PictureParser.cancelTask();
+        Shared.save(Constants.POSITION + type, lastPosition);
         super.onDestroyView();
     }
 
@@ -78,10 +83,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                int lastPosition = layoutManager.findLastVisibleItemPositions(
-                        new int[layoutManager.getSpanCount()])[1];
-                if (newState == RecyclerView.SCROLL_STATE_IDLE && lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     onListScrolled();
                 }
 
@@ -95,9 +97,26 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void onListScrolled() {
-        changeProgress(true);
-        page++;
-        fetch();
+        lastPosition = layoutManager.findLastVisibleItemPositions(
+                new int[layoutManager.getSpanCount()])[1];
+
+        Log.i("test", layoutManager.getItemCount() + ">>>> last:" + lastPosition);
+        if (isFirst) {
+            if (lastPosition > images.size() / 3) {
+                changeProgress(true);
+                page++;
+                fetch();
+                isFirst = false;
+            }
+
+        } else if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
+            PRELOAD_COUNT++;
+            changeProgress(true);
+            page++;
+            fetch();
+        }
+
+
     }
 
     private void fetch() {
@@ -115,6 +134,10 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                 url = API.DB_SILK + page;
                 break;
             default://type = 0, 代表GANK
+                if (!isFirst) {
+                    //if not first load, we load more (coz user has images to see)
+                    LOAD_COUNT = LOAD_COUNT_LARGE;
+                }
                 url = API.GANK + LOAD_COUNT + "/" + page;
                 break;
         }
@@ -139,7 +162,18 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initData() {
-        images = DB.findAll(Image.class);
+        images = DB.getImages(type);
+        if (images.isEmpty()) {
+            swipeRefresh.post(new Runnable() {
+                @Override
+                public void run() {
+                    changeProgress(true);
+                }
+            });
+            fetch();
+            return;
+        }
+        recyclerView.scrollToPosition(Shared.getInt(Constants.POSITION + type) - layoutManager.getSpanCount());
         adapter.addAll(images);
         adapter.notifyDataSetChanged();
     }
@@ -147,6 +181,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     public void onRefresh() {
+        Log.i("test", "onRefresh");
         fetch();
     }
 
@@ -165,10 +200,5 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         }
     }
 
-    public void changeProgress(boolean refreshState) {
-        if (null != swipeRefresh) {
-            swipeRefresh.setRefreshing(refreshState);
-        }
-    }
 
 }

@@ -32,8 +32,8 @@ public class Image extends RealmObject implements Data {
     private int width;
     private int height;
 
-    public static Image getFixedImage(String url) throws ExecutionException, InterruptedException {
-        Image image = new Image(url);
+    public static Image getFixedImage(String url, int type) throws ExecutionException, InterruptedException {
+        Image image = new Image(url, type);
         Bitmap bitmap = Glide.with(KnowledgeApp.context)
                 .load(url)
                 .asBitmap()
@@ -81,6 +81,12 @@ public class Image extends RealmObject implements Data {
     }
 
     public Image() {
+    }
+
+    public Image(String url, int type) {
+        this.url = url;
+        this.type = type;
+
     }
 
 }

@@ -9,4 +9,5 @@ public class Constants {
     public static final String DATE = "date";
     public static final String ID = "id";
     public static final String PAGE = "page";
+    public static final String POSITION = "position";
 }

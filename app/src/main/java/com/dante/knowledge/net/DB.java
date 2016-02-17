@@ -1,11 +1,13 @@
 package com.dante.knowledge.net;
 
+import com.dante.knowledge.Images.model.Image;
 import com.dante.knowledge.news.model.FreshData;
 import com.dante.knowledge.news.model.ZhihuData;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -54,5 +56,8 @@ public class DB {
 
     public static FreshData getFreshNews(int page) {
         return realm.where(FreshData.class).findFirst();
+    }
+    public static RealmResults<Image> getImages(int type) {
+        return realm.where(Image.class).equalTo(Constants.TYPE, type).findAll();
     }
 }
