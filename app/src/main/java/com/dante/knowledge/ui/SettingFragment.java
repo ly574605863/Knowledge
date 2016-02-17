@@ -23,7 +23,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
     public static final String CLEAR_CACHE = "clear_cache";
     public static final String FEED_BACK = "feedback";
     public static final String APP_VERSION = "version";
-    public static final String SPLASH = "splash";
+    public static final String ORIGINAL_SPLASH = "original_splash";
 
     private Preference clearCache;
     private Preference about;

@@ -5,20 +5,20 @@ import android.content.Context;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
-import com.dante.knowledge.news.interf.OnLoadNewsListener;
+import com.dante.knowledge.news.interf.OnLoadDataListener;
+import com.dante.knowledge.news.model.FreshData;
 import com.dante.knowledge.news.model.FreshDetail;
 import com.dante.knowledge.news.model.FreshItem;
-import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.model.FreshNewsModel;
 
 /**
  * helps to present fresh news list
  */
-public class FreshNewsPresenter implements NewsPresenter, OnLoadNewsListener<FreshNews> {
-    private NewsView<FreshNews> mNewsView;
-    private NewsModel<FreshItem, FreshNews, FreshDetail> mNewsModel;
+public class FreshDataPresenter implements NewsPresenter, OnLoadDataListener<FreshData> {
+    private NewsView<FreshData> mNewsView;
+    private NewsModel<FreshItem, FreshData, FreshDetail> mNewsModel;
 
-    public FreshNewsPresenter(NewsView<FreshNews> newsView, Context context) {
+    public FreshDataPresenter(NewsView<FreshData> newsView, Context context) {
         this.mNewsView = newsView;
         mNewsModel = new FreshNewsModel(context);
     }
@@ -37,7 +37,7 @@ public class FreshNewsPresenter implements NewsPresenter, OnLoadNewsListener<Fre
     }
 
     @Override
-    public void onNewsSuccess(FreshNews news) {
+    public void onDataSuccess(FreshData news) {
         mNewsView.addNews(news);
         mNewsView.hideProgress();
     }

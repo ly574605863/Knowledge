@@ -6,9 +6,9 @@ import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
+import com.dante.knowledge.news.model.ZhihuData;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.model.ZhihuNewsModel;
 
 /**
@@ -16,7 +16,7 @@ import com.dante.knowledge.news.model.ZhihuNewsModel;
  */
 public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuItem>, OnLoadDetailListener<ZhihuDetail> {
 
-    private NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> newsModel;
+    private NewsModel<ZhihuItem, ZhihuData, ZhihuDetail> newsModel;
     private NewsDetailView<ZhihuDetail> newsDetailView;
 
     public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView, Context context) {

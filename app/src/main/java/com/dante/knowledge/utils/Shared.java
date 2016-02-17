@@ -27,4 +27,10 @@ public class Shared {
     public static String get(String key, String defaultValue) {
         return sp.getString(key, defaultValue);
     }
+    public static int getInt(String key) {
+        return sp.getInt(key, 0);
+    }
+    public static boolean getBoolean(String key) {
+        return sp.getBoolean(key, false);
+    }
 }

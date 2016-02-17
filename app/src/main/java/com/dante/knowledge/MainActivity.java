@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity
         super.initViews();
         setupDrawer();
         initNavigationView();
-        replace(NewsTabFragment.TYPE_NEWS);
+        replace(NewsTabFragment.MENU_NEWS);
         TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
     }
 
@@ -102,9 +102,9 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            replace(NewsTabFragment.TYPE_NEWS);
+            replace(NewsTabFragment.MENU_NEWS);
         } else if (id == R.id.nav_beauty) {
-            replace(NewsTabFragment.TYPE_PIC);
+            replace(NewsTabFragment.MENU_PIC);
 
         } else if (id == R.id.nav_xxoo) {
 

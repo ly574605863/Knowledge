@@ -9,13 +9,10 @@ import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
+import com.dante.knowledge.news.interf.OnLoadDataListener;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
-import com.dante.knowledge.news.interf.OnLoadNewsListener;
 import com.dante.knowledge.utils.Shared;
-import com.dante.knowledge.utils.StringUtil;
 import com.zhy.http.okhttp.callback.StringCallback;
-
-import java.util.Date;
 
 import io.realm.Realm;
 import okhttp3.Call;
@@ -23,7 +20,7 @@ import okhttp3.Call;
 /**
  * deals with the zhihu news' data work
  */
-public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> {
+public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDetail> {
 
     private String date;
     private long lastGetTime;
@@ -41,12 +38,8 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
     }
 
     @Override
-    public void getNews(final int type, final OnLoadNewsListener<ZhihuNews> listener) {
+    public void getNews(final int type, final OnLoadDataListener<ZhihuData> listener) {
         this.type = type;
-        if (!Net.isOnline(context)) {
-            if (getFromDB(listener))
-                return;
-        }
 
         lastGetTime = System.currentTimeMillis();
         final StringCallback callback = new StringCallback() {
@@ -55,38 +48,25 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuNews, ZhihuDeta
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     getData(this);
                     return;
-                } else {
-                    if (getFromDB(listener)) return;
                 }
                 listener.onFailure("load zhihu news failed", e);
             }
 
             @Override
             public void onResponse(String response) {
-                ZhihuNews news = Json.parseZhihuNews(response);
+                ZhihuData news = Json.parseZhihuNews(response);
                 date = news.getDate();
                 addFooter(news);
                 DB.saveOrUpdate(news);
                 Shared.save(Constants.DATE, date);
-                listener.onNewsSuccess(news);
+                listener.onDataSuccess(news);
             }
         };
 
         getData(callback);
     }
 
-    private boolean getFromDB(OnLoadNewsListener<ZhihuNews> listener) {
-        String date = Shared.get(Constants.DATE, StringUtil.parseStandardDate(new Date()));
-        ZhihuNews zhihuNews = DB.getZhihuNews(date);
-
-        if (null != zhihuNews) {
-            listener.onNewsSuccess(zhihuNews);
-            return true;
-        }
-        return false;
-    }
-
-    private void addFooter(ZhihuNews zhihuNews) {
+    private void addFooter(ZhihuData zhihuNews) {
         if (type == API.TYPE_BEFORE) {
             Realm realm = Realm.getDefaultInstance();
             realm.beginTransaction();

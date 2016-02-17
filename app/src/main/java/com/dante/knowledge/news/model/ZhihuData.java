@@ -1,6 +1,6 @@
 package com.dante.knowledge.news.model;
 
-import com.dante.knowledge.news.other.News;
+import com.dante.knowledge.news.other.Data;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Zhihu news class which contains date, stories and tops.
  */
-public class ZhihuNews extends RealmObject implements News {
+public class ZhihuData extends RealmObject implements Data {
 
     /**
      * date : 20160129

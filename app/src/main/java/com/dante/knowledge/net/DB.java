@@ -1,7 +1,9 @@
 package com.dante.knowledge.net;
 
-import com.dante.knowledge.news.model.FreshNews;
-import com.dante.knowledge.news.model.ZhihuNews;
+import com.dante.knowledge.news.model.FreshData;
+import com.dante.knowledge.news.model.ZhihuData;
+
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -19,6 +21,13 @@ public class DB {
         realm.copyToRealmOrUpdate(realmObject);
         realm.commitTransaction();
     }
+
+    public static <T extends RealmObject> void saveList(List<T> realmObjects) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(realmObjects);
+        realm.commitTransaction();
+    }
+
     public static void save(RealmObject realmObject) {
         realm.beginTransaction();
         realm.copyToRealm(realmObject);
@@ -29,8 +38,8 @@ public class DB {
         return realm.where(realmObjectClass).equalTo("id", id).findFirst();
     }
 
-    public static ZhihuNews getZhihuNews(String date) {
-        return realm.where(ZhihuNews.class).equalTo(Constants.DATE, date).findFirst();
+    public static ZhihuData getZhihuNews(String date) {
+        return realm.where(ZhihuData.class).equalTo(Constants.DATE, date).findFirst();
     }
 
     public static <T extends RealmObject> RealmResults<T> findAll(Class<T> realmObjectClass) {
@@ -43,7 +52,7 @@ public class DB {
         realm.commitTransaction();
     }
 
-    public static FreshNews getFreshNews(int page) {
-        return realm.where(FreshNews.class).findFirst();
+    public static FreshData getFreshNews(int page) {
+        return realm.where(FreshData.class).findFirst();
     }
 }

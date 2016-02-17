@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.news.interf.OnListFragmentInteract;
+import com.dante.knowledge.news.model.FreshData;
 import com.dante.knowledge.news.model.FreshItem;
-import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.utils.ImageUtil;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public static final String FRESH_ITEM_POSITION = "fresh_items_position";
     private Context context;
     private List<FreshItem> freshItems ;
-    private FreshNews news;
+    private FreshData news;
     private OnListFragmentInteract mListener;
 
     public NewsListAdapter(Context context, OnListFragmentInteract listener) {
@@ -36,7 +36,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         freshItems = DB.findAll(FreshItem.class);
     }
 
-    public void addNews(FreshNews news) {
+    public void addNews(FreshData news) {
         this.news=news;
 //        freshItems.addAll(news.getPosts());
         notifyDataSetChanged();

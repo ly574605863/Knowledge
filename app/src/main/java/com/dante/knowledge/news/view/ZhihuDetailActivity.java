@@ -18,11 +18,11 @@ import com.dante.knowledge.news.interf.NewsDetailPresenter;
 import com.dante.knowledge.news.interf.NewsDetailView;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuItem;
+import com.dante.knowledge.news.model.ZhihuTop;
 import com.dante.knowledge.news.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.ImageUtil;
 import com.dante.knowledge.utils.ShareUtil;
-import com.dante.knowledge.utils.Tool;
 import com.dante.knowledge.utils.UiUtils;
 
 import butterknife.Bind;
@@ -52,10 +52,15 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void initViews() {
         super.initViews();
-        id=getIntent().getIntExtra(Constants.ID, 0);
-        story= DB.getById(id, ZhihuItem.class);
-
-        toolbarLayout.setTitle(story.getTitle());
+        id = getIntent().getIntExtra(Constants.ID, 0);
+        story = DB.getById(id, ZhihuItem.class);
+        zhihuDetail = DB.getById(id, ZhihuDetail.class);
+        if (story == null) {
+            //can't find zhihuItem, so this id is passed by Zhihutop
+            toolbarLayout.setTitle(DB.getById(id, ZhihuTop.class).getTitle());
+        } else {
+            toolbarLayout.setTitle(story.getTitle());
+        }
         presenter = new ZhihuDetailPresenter(this, this);
         initWebView();
         presenter.loadNewsDetail(story);

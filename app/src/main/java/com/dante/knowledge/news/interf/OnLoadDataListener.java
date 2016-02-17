@@ -1,11 +1,11 @@
 package com.dante.knowledge.news.interf;
 
-import com.dante.knowledge.news.other.News;
+import com.dante.knowledge.news.other.Data;
 
 /**
  * when news loaded, this interface is called
  */
-public interface OnLoadNewsListener<T extends News> {
-    void onNewsSuccess(T news);
+public interface OnLoadDataListener<T extends Data> {
+    void onDataSuccess(T news);
     void onFailure(String msg, Exception e);
 }

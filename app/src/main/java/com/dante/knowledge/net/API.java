@@ -15,6 +15,7 @@ public class API {
     public static final String TAG_ZHIHU_DETAIL = "zhihu_detail";
     public static final String TAG_SPLASH = "splash";
     public static final String TAG_FRESH = "fresh";
+    public static final String TAG_PICTURE = "picture";
     public static final String TAG_FRESH_LATEST = "fresh_latest";
     public static final String TAG_FRESH_DETAIL = "fresh_before";
     //Zhihu API

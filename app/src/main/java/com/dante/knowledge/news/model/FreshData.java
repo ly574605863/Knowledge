@@ -1,6 +1,6 @@
 package com.dante.knowledge.news.model;
 
-import com.dante.knowledge.news.other.News;
+import com.dante.knowledge.news.other.Data;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -8,7 +8,7 @@ import io.realm.RealmObject;
 /**
  * Fresh things news class
  */
-public class FreshNews extends RealmObject implements News {
+public class FreshData extends RealmObject implements Data {
 
     /**
      * status : ok

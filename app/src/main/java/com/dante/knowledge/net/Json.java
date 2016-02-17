@@ -1,10 +1,10 @@
 package com.dante.knowledge.net;
 
+import com.dante.knowledge.news.model.FreshData;
 import com.dante.knowledge.news.model.FreshDetail;
-import com.dante.knowledge.news.model.FreshNews;
 import com.dante.knowledge.news.model.RealmString;
+import com.dante.knowledge.news.model.ZhihuData;
 import com.dante.knowledge.news.model.ZhihuDetail;
-import com.dante.knowledge.news.model.ZhihuNews;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -61,16 +61,16 @@ public class Json {
                 }
             }).create();
 
-    public static ZhihuNews parseZhihuNews(String latest) {
-        return mGson.fromJson(latest, ZhihuNews.class);
+    public static ZhihuData parseZhihuNews(String latest) {
+        return mGson.fromJson(latest, ZhihuData.class);
     }
 
     public static ZhihuDetail parseZhihuDetail(String detail) {
         return mGson.fromJson(detail, ZhihuDetail.class);
     }
 
-    public static FreshNews parseFreshNews(String fresh) {
-        return mGson.fromJson(fresh, FreshNews.class);
+    public static FreshData parseFreshNews(String fresh) {
+        return mGson.fromJson(fresh, FreshData.class);
     }
 
     public static FreshDetail parseFreshDetail(String detail) {

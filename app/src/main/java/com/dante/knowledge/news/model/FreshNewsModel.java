@@ -8,8 +8,8 @@ import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.news.interf.NewsModel;
+import com.dante.knowledge.news.interf.OnLoadDataListener;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
-import com.dante.knowledge.news.interf.OnLoadNewsListener;
 import com.dante.knowledge.utils.Shared;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -19,7 +19,7 @@ import okhttp3.Call;
 /**
  * deals with the fresh news' data work
  */
-public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDetail> {
+public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDetail> {
     /**
      * clear page record to zero and start new request
      */
@@ -39,7 +39,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
     public static final int GET_DURATION = 3000;
 
     @Override
-    public void getNews(int type, final OnLoadNewsListener<FreshNews> listener) {
+    public void getNews(int type, final OnLoadDataListener<FreshData> listener) {
 
         if (!Net.isOnline(context)) {
             if (getFromDB(listener)) return;
@@ -52,7 +52,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
         getFreshNews(listener);
     }
 
-    private void getFreshNews(final OnLoadNewsListener<FreshNews> listener) {
+    private void getFreshNews(final OnLoadDataListener<FreshData> listener) {
         StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -65,10 +65,10 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
 
             @Override
             public void onResponse(String response) {
-                FreshNews news = Json.parseFreshNews(response);
+                FreshData news = Json.parseFreshNews(response);
                 DB.save(news);
                 Shared.save(Constants.PAGE, page);
-                listener.onNewsSuccess(news);
+                listener.onDataSuccess(news);
                 page++;
             }
         };
@@ -76,11 +76,11 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshNews, FreshDeta
         Net.get(API.FRESH_NEWS + page, callback, API.TAG_FRESH);
     }
 
-    private boolean getFromDB(OnLoadNewsListener<FreshNews> listener) {
-        FreshNews freshNews = DB.getFreshNews(page);
+    private boolean getFromDB(OnLoadDataListener<FreshData> listener) {
+        FreshData freshNews = DB.getFreshNews(page);
 
         if (null != freshNews) {
-            listener.onNewsSuccess(freshNews);
+            listener.onDataSuccess(freshNews);
             return true;
         }
         return false;

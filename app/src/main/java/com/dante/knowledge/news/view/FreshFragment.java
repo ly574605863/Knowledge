@@ -7,8 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
@@ -16,20 +14,18 @@ import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
 import com.dante.knowledge.news.interf.OnListFragmentInteract;
-import com.dante.knowledge.news.model.FreshNews;
+import com.dante.knowledge.news.model.FreshData;
 import com.dante.knowledge.news.other.NewsListAdapter;
 import com.dante.knowledge.news.other.ZhihuListAdapter;
-import com.dante.knowledge.news.presenter.FreshNewsPresenter;
+import com.dante.knowledge.news.presenter.FreshDataPresenter;
 import com.dante.knowledge.utils.UiUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
-
-import butterknife.Bind;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshNews>, OnListFragmentInteract {
+public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshData>, OnListFragmentInteract {
 
     private NewsPresenter presenter;
     private NewsListAdapter adapter;
@@ -52,49 +48,31 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     protected void initViews() {
-        Context context = rootView.getContext();
-        recyclerView.setHasFixedSize(true);
+        super.initViews();
+        Context context = getActivity();
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NewsListAdapter(getActivity(), this);
+        adapter = new NewsListAdapter(context, this);
         recyclerView.setAdapter(adapter);
-        recyclerView.addOnScrollListener(mOnScrollListener);
-        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return null != swipeRefresh && swipeRefresh.isRefreshing();
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastVisibleItem + 1 == adapter.getItemCount()) {
+
+                    presenter.loadBefore();
+                }
             }
         });
-        swipeRefresh.setColorSchemeColors(R.color.colorPrimary,
-                R.color.colorPrimaryDark, R.color.colorAccent);
-        swipeRefresh.setOnRefreshListener(this);
-        swipeRefresh.setRefreshing(true);
+
     }
-
-    private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
-
-        private int lastVisibleItem;
-
-        @Override
-        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled(recyclerView, dx, dy);
-            lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-        }
-
-        @Override
-        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-            super.onScrollStateChanged(recyclerView, newState);
-            if (newState == RecyclerView.SCROLL_STATE_IDLE
-                    && lastVisibleItem + 1 == adapter.getItemCount()) {
-
-                presenter.loadBefore();
-            }
-        }
-    };
 
     @Override
     protected void initData() {
-        presenter = new FreshNewsPresenter(this, getContext());
+        presenter = new FreshDataPresenter(this, getContext());
         onRefresh();
     }
 
@@ -105,13 +83,13 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void showProgress() {
-        if (null != swipeRefresh && !swipeRefresh.isRefreshing()) {
+        if (null != swipeRefresh) {
             swipeRefresh.setRefreshing(true);
         }
     }
 
     @Override
-    public void addNews(FreshNews news) {
+    public void addNews(FreshData news) {
         adapter.addNews(news);
     }
 

@@ -3,7 +3,7 @@
                                                  xmlns:tools="http://schemas.android.com/tools"
                                                  android:layout_width="match_parent"
                                                  android:layout_height="match_parent"
-                                                 tools:context="com.dante.knowledge.news.view.NewsTabFragment">
+                                                 tools:context="com.dante.knowledge.data.view.NewsTabFragment">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

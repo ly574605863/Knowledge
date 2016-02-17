@@ -14,8 +14,8 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.news.interf.OnListFragmentInteract;
+import com.dante.knowledge.news.model.ZhihuData;
 import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.model.ZhihuTop;
 import com.dante.knowledge.news.view.NetworkImageHolderView;
 import com.dante.knowledge.utils.ImageUtil;
@@ -43,7 +43,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public static int textDark;
     private final Context context;
 
-    private ZhihuNews news;
+    private ZhihuData news;
     private List<ZhihuItem> zhihuItems;
     private List<ZhihuTop> tops ;
 
@@ -72,7 +72,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         tops = DB.findAll(ZhihuTop.class);
     }
 
-    public void addNews(ZhihuNews news) {
+    public void addNews(ZhihuData news) {
         this.news = news;
         setHasFooter(news.getStories().size() != 0);
         notifyDataSetChanged();

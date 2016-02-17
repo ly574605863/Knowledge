@@ -2,10 +2,8 @@ package com.dante.knowledge.ui;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.appcompat.R.anim;
 import android.view.View;
@@ -16,19 +14,16 @@ import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.Constants;
-import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.news.model.ZhihuTop;
+import com.dante.knowledge.utils.ImageUtil;
 import com.dante.knowledge.utils.Shared;
 import com.dante.knowledge.utils.StringUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.FileCallBack;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.Date;
 
 import okhttp3.Call;
@@ -36,44 +31,38 @@ import okhttp3.Call;
 public class SplashActivity extends AppCompatActivity {
 
     private static final int SPLASH_DURATION = 2000;
+    private static final String SPLASH = "splash";
     private ImageView splash;
-    private SharedPreferences sp;
     private String today;
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
-        initViews();
-        if (sp.getBoolean(SettingFragment.SPLASH, false)) {
+        splash = (ImageView) findViewById(R.id.splash);
+        if (Shared.getBoolean(SettingFragment.ORIGINAL_SPLASH)) {
             Glide.with(this).load(R.drawable.splash).crossFade(1500).into(splash);
             startAppDelay();
             return;
         }
-
         initSplash();
-        loadImageFile();
     }
 
-    private void initViews() {
-        splash = new ImageView(this);
-        splash.setScaleType(ImageView.ScaleType.FIT_XY);
-        setContentView(splash);
-        sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-    }
 
     private void initSplash() {
-            today = StringUtil.parseStandardDate(new Date());
-            //if today is latest get splash date, no need to getSplash.
-            if (!today.equals(Shared.get(Constants.DATE, ""))) {
-                DB.deleteAll(ZhihuTop.class);
-                getSplash();
-            }
+        today = StringUtil.parseStandardDate(new Date());
+        if (today.equals(Shared.get(Constants.DATE, ""))) {
+            loadImageFile();
+        } else {
+            //if today is not latest getBoolean splash date, getSplash.
+            getSplash();
+        }
     }
 
 
@@ -92,7 +81,10 @@ public class SplashActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    getSplashFile(jsonObject.getString("img"));
+                    String url = jsonObject.getString("img");
+                    Shared.save(SPLASH, url);
+                    Shared.save(Constants.DATE, today);
+                    loadImageFile();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -101,34 +93,13 @@ public class SplashActivity extends AppCompatActivity {
         }, API.TAG_SPLASH);
     }
 
-    private void getSplashFile(final String imgUrl) {
-        OkHttpUtils.get().url(imgUrl).build().execute(
-                new FileCallBack(getFilesDir().getAbsolutePath(), "splash.jpg") {
-                    @Override
-                    public void inProgress(float progress) {
-
-                    }
-
-                    @Override
-                    public void onError(Call call, Exception e) {
-                    }
-
-                    @Override
-                    public void onResponse(File file) {
-                        Shared.save(Constants.DATE, today);
-                    }
-                });
-
-    }
-
     private void loadImageFile() {
-        File imgFile = new File(getFilesDir(), "splash.jpg");
-
-        if (imgFile.exists()) {
-            Glide.with(this).load(imgFile).animate(R.anim.scale_anim).into(splash);
-        } else {
-            getSplash();
+        String url = Shared.get(SPLASH, "");
+        if ("".equals(url)) {
             Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
+            getSplash();
+        } else {
+            ImageUtil.load(url, R.anim.scale_anim, splash);
         }
         startAppDelay();
     }

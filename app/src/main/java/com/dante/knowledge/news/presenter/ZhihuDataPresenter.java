@@ -6,21 +6,21 @@ import com.dante.knowledge.net.API;
 import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.NewsPresenter;
 import com.dante.knowledge.news.interf.NewsView;
-import com.dante.knowledge.news.interf.OnLoadNewsListener;
+import com.dante.knowledge.news.interf.OnLoadDataListener;
+import com.dante.knowledge.news.model.ZhihuData;
 import com.dante.knowledge.news.model.ZhihuDetail;
 import com.dante.knowledge.news.model.ZhihuItem;
-import com.dante.knowledge.news.model.ZhihuNews;
 import com.dante.knowledge.news.model.ZhihuNewsModel;
 
 /**
  * helps to present zhihu news list
  */
-public class ZhihuNewsPresenter implements NewsPresenter, OnLoadNewsListener<ZhihuNews> {
+public class ZhihuDataPresenter implements NewsPresenter, OnLoadDataListener<ZhihuData> {
 
-    private NewsView<ZhihuNews> mNewsView;
-    private NewsModel<ZhihuItem, ZhihuNews, ZhihuDetail> mNewsModel;
+    private NewsView<ZhihuData> mNewsView;
+    private NewsModel<ZhihuItem, ZhihuData, ZhihuDetail> mNewsModel;
 
-    public ZhihuNewsPresenter(NewsView<ZhihuNews> newsView, Context context) {
+    public ZhihuDataPresenter(NewsView<ZhihuData> newsView, Context context) {
         this.mNewsView = newsView;
         mNewsModel = new ZhihuNewsModel(context);
     }
@@ -41,7 +41,7 @@ public class ZhihuNewsPresenter implements NewsPresenter, OnLoadNewsListener<Zhi
 
 
     @Override
-    public void onNewsSuccess(ZhihuNews news) {
+    public void onDataSuccess(ZhihuData news) {
         mNewsView.addNews(news);
         mNewsView.hideProgress();
     }
