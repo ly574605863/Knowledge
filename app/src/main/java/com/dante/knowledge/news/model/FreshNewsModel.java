@@ -11,7 +11,6 @@ import com.dante.knowledge.news.interf.NewsModel;
 import com.dante.knowledge.news.interf.OnLoadDataListener;
 import com.dante.knowledge.news.interf.OnLoadDetailListener;
 import com.dante.knowledge.utils.Shared;
-import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
@@ -41,10 +40,6 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
     @Override
     public void getNews(int type, final OnLoadDataListener<FreshData> listener) {
 
-        if (!Net.isOnline(context)) {
-            if (getFromDB(listener)) return;
-        }
-
         lastGetTime = System.currentTimeMillis();
         if (type == TYPE_FRESH) {
             page = 1;//如果是全新请求，就初始化page为1
@@ -66,7 +61,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
             @Override
             public void onResponse(String response) {
                 FreshData news = Json.parseFreshNews(response);
-                DB.save(news);
+                DB.saveList(news.getPosts());
                 Shared.save(Constants.PAGE, page);
                 listener.onDataSuccess(news);
                 page++;
@@ -74,16 +69,6 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
         };
 
         Net.get(API.FRESH_NEWS + page, callback, API.TAG_FRESH);
-    }
-
-    private boolean getFromDB(OnLoadDataListener<FreshData> listener) {
-        FreshData freshNews = DB.getFreshNews(page);
-
-        if (null != freshNews) {
-            listener.onDataSuccess(freshNews);
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -116,7 +101,6 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
             public void onError(Call call, Exception e) {
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), this, API.TAG_FRESH);
-                    Logger.d("try again");
                     return;
                 }
                 listener.onFailure("load fresh detail failed", e);

@@ -123,11 +123,6 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     }
 
     @Override
-    public void onTopLoad() {
-
-    }
-
-    @Override
     public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {
 
         if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {

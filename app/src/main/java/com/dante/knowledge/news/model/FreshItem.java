@@ -7,14 +7,16 @@ import java.util.List;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * fresh things item in list
  */
-public class FreshItem extends RealmObject implements NewsItem, Serializable{
+public class FreshItem extends RealmObject implements NewsItem, Serializable {
     private int id;
     private String url;
     private String title;
+    @PrimaryKey
     private String date;
     /**
      * id : 593
@@ -104,7 +106,7 @@ public class FreshItem extends RealmObject implements NewsItem, Serializable{
         return tags;
     }
 
-    public static class AuthorEntity implements Serializable{
+    public static class AuthorEntity implements Serializable {
         private int id;
         private String slug;
         private String name;
@@ -180,7 +182,7 @@ public class FreshItem extends RealmObject implements NewsItem, Serializable{
     }
 
 
-    public static class TagsEntity  implements Serializable{
+    public static class TagsEntity implements Serializable {
         private int id;
         private String slug;
         private String title;

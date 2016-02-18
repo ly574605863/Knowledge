@@ -11,6 +11,7 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/nav_beauty"/>
 
+
     </group>
 
     <item android:title="@string/app">

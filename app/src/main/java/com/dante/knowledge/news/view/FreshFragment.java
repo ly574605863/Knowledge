@@ -104,11 +104,6 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void onTopLoad() {
-        //no banner
-    }
-
-    @Override
     public void onListFragmentInteraction(RecyclerView.ViewHolder viewHolder) {
 
         if (viewHolder instanceof NewsListAdapter.ViewHolder) {

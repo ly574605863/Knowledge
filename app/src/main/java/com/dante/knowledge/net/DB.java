@@ -1,15 +1,14 @@
 package com.dante.knowledge.net;
 
 import com.dante.knowledge.Images.model.Image;
-import com.dante.knowledge.news.model.FreshData;
-import com.dante.knowledge.news.model.ZhihuData;
+import com.dante.knowledge.news.view.PictureFragment;
 
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * Created by yons on 16/2/15.
@@ -40,24 +39,29 @@ public class DB {
         return realm.where(realmObjectClass).equalTo("id", id).findFirst();
     }
 
-    public static ZhihuData getZhihuNews(String date) {
-        return realm.where(ZhihuData.class).equalTo(Constants.DATE, date).findFirst();
-    }
-
     public static <T extends RealmObject> RealmResults<T> findAll(Class<T> realmObjectClass) {
         return realm.where(realmObjectClass).findAll();
     }
 
-    public static <T extends RealmObject> void deleteAll(Class<T> realmObjectClass) {
+    public static <T extends RealmObject> RealmResults<T> findAllDateSorted(Class<T> realmObjectClass) {
+        RealmResults<T> results = findAll(realmObjectClass);
+        results.sort(Constants.DATE, Sort.DESCENDING);
+        return results;
+    }
+
+    public static <T extends RealmObject> void clear(Class<T> realmObjectClass) {
         realm.beginTransaction();
-        realm.where(realmObjectClass).findAll().clear();
+        findAll(realmObjectClass).clear();
         realm.commitTransaction();
     }
 
-    public static FreshData getFreshNews(int page) {
-        return realm.where(FreshData.class).findFirst();
-    }
     public static RealmResults<Image> getImages(int type) {
-        return realm.where(Image.class).equalTo(Constants.TYPE, type).findAll();
+        RealmResults<Image> results = realm.where(Image.class).equalTo("type", type).findAll();
+        if (type == PictureFragment.TYPE_GANK) {
+            results.sort("publishedAt", Sort.DESCENDING);
+        } else {
+            results.sort("url");
+        }
+        return results;
     }
 }

@@ -30,7 +30,7 @@ import okhttp3.Call;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DURATION = 2000;
+    private static final int SPLASH_DURATION = 0;
     private static final String SPLASH = "splash";
     private ImageView splash;
     private String today;
@@ -67,6 +67,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void getSplash() {
+        loadImageFile();
         if (!Net.isOnline(this)) {
             return;
         }
@@ -84,7 +85,6 @@ public class SplashActivity extends AppCompatActivity {
                     String url = jsonObject.getString("img");
                     Shared.save(SPLASH, url);
                     Shared.save(Constants.DATE, today);
-                    loadImageFile();
 
                 } catch (JSONException e) {
                     e.printStackTrace();

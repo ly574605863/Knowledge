@@ -12,8 +12,10 @@ import android.view.MenuItem;
 import com.dante.knowledge.news.view.NewsTabFragment;
 import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
+import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
 import com.dante.knowledge.utils.ShareUtil;
+import com.dante.knowledge.utils.Shared;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
@@ -48,7 +50,7 @@ public class MainActivity extends BaseActivity
 
 
     private void replace(String type) {
-        if (! type.equals(currentType)) {
+        if (!type.equals(currentType)) {
             currentType = type;
             replaceFragment(NewsTabFragment.newInstance(type), type);
         }
@@ -64,7 +66,11 @@ public class MainActivity extends BaseActivity
 
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(this);
-//        navView.inflateMenu(R.menu.main_drawer);
+        if (Shared.getBoolean(SettingFragment.SECRET_MODE)){
+            navView.inflateMenu(R.menu.main_menu_all);
+        }else {
+            navView.inflateMenu(R.menu.main_drawer);
+        }
     }
 
 
@@ -80,6 +86,7 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -106,7 +113,8 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_beauty) {
             replace(NewsTabFragment.MENU_PIC);
 
-        } else if (id == R.id.nav_xxoo) {
+        } else if (id == R.id.nav_secret_mode) {
+            replace(NewsTabFragment.MENU_SECRET);
 
         } else if (id == R.id.nav_share) {
             startActivity(

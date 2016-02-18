@@ -33,7 +33,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public NewsListAdapter(Context context, OnListFragmentInteract listener) {
         this.context = context;
         mListener = listener;
-        freshItems = DB.findAll(FreshItem.class);
+        freshItems = DB.findAllDateSorted(FreshItem.class);
     }
 
     public void addNews(FreshData news) {

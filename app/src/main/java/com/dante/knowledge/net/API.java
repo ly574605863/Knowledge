@@ -34,5 +34,5 @@ public class API {
     public static String DB_BUTT = "http://www.dbmeinv.com/dbgroup/show.htm?cid=6&pager_offset=";
     public static String DB_SILK = "http://www.dbmeinv.com/dbgroup/show.htm?cid=7&pager_offset=";
     public static String DB_LEG = "http://www.dbmeinv.com/dbgroup/show.htm?cid=3&pager_offset=";
-    public static String DB_RANK="http://www.dbmeinv.com/dbgroup/rank.htm";
+    public static String DB_RANK="http://www.dbmeinv.com/dbgroup/rank.htm?pager_offset=";
 }

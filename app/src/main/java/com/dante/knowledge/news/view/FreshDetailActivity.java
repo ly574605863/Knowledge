@@ -32,7 +32,7 @@ public class FreshDetailActivity extends BaseActivity {
     @Override
     protected void initViews() {
         super.initViews();
-        freshItems = DB.findAll(FreshItem.class);
+        freshItems = DB.findAllDateSorted(FreshItem.class);
         int position = getIntent().getIntExtra(NewsListAdapter.FRESH_ITEM_POSITION, 0);
 
         pager.setAdapter(new FreshDetailPagerAdapter(getSupportFragmentManager()));

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.dante.knowledge.Images.model.Image;
+import com.dante.knowledge.Images.model.PictureAdapter;
 import com.dante.knowledge.Images.model.PictureParser;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
@@ -33,7 +34,14 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public static final int TYPE_DB_BUTT = 2;
     public static final int TYPE_DB_SILK = 3;
     public static final int TYPE_DB_LEG = 4;
-    private static final int LOAD_COUNT_LARGE = 20;
+    public static final int TYPE_DB_RANK = 5;
+
+    public static final int TYPE_H_ASIA= 10;
+    public static final int TYPE_H_SELFIE = 11;
+    public static final int TYPE_H_SILK = 12;
+    public static final int TYPE_H_STREET = 13;
+
+    private static final int LOAD_COUNT_LARGE = 15;
     private static int LOAD_COUNT = 10;
     private static int PRELOAD_COUNT = 10;
 
@@ -43,13 +51,17 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private StaggeredGridLayoutManager layoutManager;
     private PictureAdapter adapter;
     private RealmResults<Image> images;
-    private int lastPosition;
+    private long GET_DURATION = 3000;
+    private PictureParser parser;
 
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
-        PictureParser.cancelTask();
+        if (null !=parser){
+            parser.cancelTask();
+        }
         Shared.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[0]);
+        Shared.save(Constants.PAGE, page);
         super.onDestroyView();
     }
 
@@ -82,14 +94,12 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    onListScrolled();
-                }
-
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                onListScrolled();
             }
         });
         type = getArguments().getInt(Constants.TYPE);
+        page = Shared.getInt(Constants.PAGE);
     }
 
     private void startViewerActivity(View view, int position) {
@@ -97,14 +107,13 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void onListScrolled() {
-        lastPosition = layoutManager.findLastVisibleItemPositions(
+        int lastPosition = layoutManager.findLastVisibleItemPositions(
                 new int[layoutManager.getSpanCount()])[1];
 
         Log.i("test", layoutManager.getItemCount() + ">>>> last:" + lastPosition);
         if (isFirst) {
             if (lastPosition > images.size() / 3) {
                 changeProgress(true);
-                page++;
                 fetch();
                 isFirst = false;
             }
@@ -112,7 +121,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         } else if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
             PRELOAD_COUNT++;
             changeProgress(true);
-            page++;
             fetch();
         }
 
@@ -133,6 +141,9 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             case TYPE_DB_SILK:
                 url = API.DB_SILK + page;
                 break;
+            case TYPE_DB_RANK:
+                url = API.DB_RANK + page;
+                break;
             default://type = 0, 代表GANK
                 if (!isFirst) {
                     //if not first load, we load more (coz user has images to see)
@@ -144,19 +155,28 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         getData();
     }
 
+    private long lastGetTime;
+
     private void getData() {
-        Net.get(url, new StringCallback() {
+        lastGetTime = System.currentTimeMillis();
+        StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
-                onFailure("getBoolean data failed", e);
+                if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
+                    Net.get(url, this, API.TAG_PICTURE);
+                    return;
+                }
+                onFailure("load fresh news failed", e);
             }
 
             @Override
             public void onResponse(String response) {
-                new PictureParser(type, response, PictureFragment.this).parse();
+                parser = new PictureParser(type, response, PictureFragment.this);
+                parser.parse();
             }
+        };
 
-        }, API.TAG_PICTURE);
+        Net.get(url, callback, API.TAG_PICTURE);
     }
 
 
@@ -181,7 +201,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     public void onRefresh() {
-        Log.i("test", "onRefresh");
         fetch();
     }
 
@@ -189,6 +208,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onDataSuccess(Image data) {
         changeProgress(false);
         adapter.replaceWith(images);
+        page++;
     }
 
     @Override
@@ -196,7 +216,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         changeProgress(false);
         adapter.replaceWith(images);
         if (isLive()) {
-            UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+            UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }
 

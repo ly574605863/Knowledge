@@ -77,7 +77,7 @@ public class Json {
         return mGson.fromJson(detail, FreshDetail.class);
     }
 
-    public static <News> News parseNews(String response, Class<News> clz) {
+    public static <Data> Data parseNews(String response, Class<Data> clz) {
         return mGson.fromJson(response, clz);
     }
 

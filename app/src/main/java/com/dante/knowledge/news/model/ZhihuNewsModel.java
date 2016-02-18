@@ -15,6 +15,7 @@ import com.dante.knowledge.utils.Shared;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import io.realm.Realm;
+import io.realm.Sort;
 import okhttp3.Call;
 
 /**
@@ -57,7 +58,10 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
                 ZhihuData news = Json.parseZhihuNews(response);
                 date = news.getDate();
                 addFooter(news);
-                DB.saveOrUpdate(news);
+                DB.realm.beginTransaction();
+                DB.realm.copyToRealmOrUpdate(news);
+                DB.realm.allObjectsSorted(ZhihuData.class, "date", Sort.DESCENDING);
+                DB.realm.commitTransaction();
                 Shared.save(Constants.DATE, date);
                 listener.onDataSuccess(news);
             }

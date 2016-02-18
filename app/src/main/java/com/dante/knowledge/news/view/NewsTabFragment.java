@@ -36,6 +36,7 @@ public class NewsTabFragment extends BaseFragment {
 
     public static final String MENU_NEWS = "news";
     public static final String MENU_PIC = "pic";
+    public static final String MENU_SECRET = "secret";
 
     private List<RecyclerFragment> fragments = new ArrayList<>();
     private List<String> titles;
@@ -86,9 +87,17 @@ public class NewsTabFragment extends BaseFragment {
         menuType = getArguments().getString(Constants.TYPE);
 
         if (MENU_PIC.equals(menuType)) {
-            String[] titles = new String[]{getString(R.string.gank), getString(R.string.db_breast), getString(R.string.db_butt), getString(R.string.db_silk), getString(R.string.db_leg)};
+            String[] titles = new String[]{getString(R.string.gank), getString(R.string.db_breast), getString(R.string.db_butt), getString(R.string.db_silk), getString(R.string.db_leg), getString(R.string.db_rank)};
             this.titles = Arrays.asList(titles);
             for (int i = 0; i < titles.length; i++) {
+                //ensure the types are from 0 to length before using 'for' loop
+                fragments.add(PictureFragment.newInstance(i));
+            }
+
+        } else if (MENU_SECRET.equals(menuType)) {
+            String[] titles = new String[]{getString(R.string.h_asia), getString(R.string.h_selfie), getString(R.string.h_street), getString(R.string.h_silk)};
+            this.titles = Arrays.asList(titles);
+            for (int i = PictureFragment.TYPE_H_ASIA; i < 1+PictureFragment.TYPE_H_STREET; i++) {
                 //ensure the types are from 0 to length before using 'for' loop
                 fragments.add(PictureFragment.newInstance(i));
             }

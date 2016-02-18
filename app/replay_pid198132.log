@@ -30,8 +30,8 @@ ciMethod com/android/dx/util/ByteArray checkOffsets (II)V 4097 1 6741 0 -1
 ciMethod com/android/dx/util/ByteArray getByte0 (I)I 4097 1 3318 0 -1
 ciMethod com/android/dx/util/ByteArray getUnsignedByte0 (I)I 3953 1 53239 0 -1
 ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitInvalid (III)V 0 0 1 0 -1
-ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitNoArgs (IIILcom/android/dx/rop/type/Type;)V 0 0 1 0 -1
-ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitLocal (IIIILcom/android/dx/rop/type/Type;I)V 0 0 1 0 -1
+ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitNoArgs (IIILcom/android/dx/rop/picType/Type;)V 0 0 1 0 -1
+ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitLocal (IIIILcom/android/dx/rop/picType/Type;I)V 0 0 1 0 -1
 ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitConstant (IIILcom/android/dx/rop/cst/Constant;I)V 0 0 1 0 -1
 ciMethod com/android/dx/cf/code/BytecodeArray$Visitor visitBranch (IIII)V 0 0 1 0 -1
 ciMethod com/android/dx/rop/cst/CstInteger make (I)Lcom/android/dx/rop/cst/CstInteger; 1873 1 1792 0 -1
@@ -198,14 +198,14 @@ instanceKlass com/android/dx/cf/iface/Method
 instanceKlass com/android/dx/cf/iface/Field
 instanceKlass com/android/dx/cf/iface/Member
 instanceKlass com/android/dx/cf/direct/MemberListParser
-instanceKlass com/android/dx/rop/type/Prototype
-instanceKlass com/android/dx/rop/type/Type
+instanceKlass com/android/dx/rop/picType/Prototype
+instanceKlass com/android/dx/rop/picType/Type
 instanceKlass com/android/dx/util/MutabilityControl
 instanceKlass com/android/dx/cf/cst/ConstantPoolParser
 instanceKlass com/android/dx/cf/code/BytecodeArray$Visitor
 instanceKlass com/android/dx/cf/iface/Attribute
 instanceKlass com/android/dx/util/ByteArray
-instanceKlass com/android/dx/rop/type/TypeList
+instanceKlass com/android/dx/rop/picType/TypeList
 instanceKlass com/android/dx/cf/iface/MethodList
 instanceKlass com/android/dx/cf/iface/FieldList
 instanceKlass com/android/dx/rop/cst/ConstantPool
@@ -240,7 +240,7 @@ instanceKlass sun/security/action/GetBooleanAction
 instanceKlass java/util/Arrays$LegacyMergeSort
 instanceKlass com/android/dx/dex/file/MixedItemSection$1
 instanceKlass com/android/dx/dex/file/Item
-instanceKlass com/android/dx/rop/type/TypeBearer
+instanceKlass com/android/dx/rop/picType/TypeBearer
 instanceKlass com/android/dx/rop/cst/Constant
 instanceKlass com/android/dx/util/ToHuman
 instanceKlass com/android/dx/dex/file/Section
@@ -794,44 +794,44 @@ ciInstanceKlass com/android/dx/rop/cst/CstFloat 0 0 93 100 10 10 10 100 10 8 10 
 ciInstanceKlass com/android/dx/rop/cst/CstLong 0 0 80 100 10 10 10 100 10 8 10 10 8 10 10 10 9 8 10 10 9 9 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 1 12 100 12 1 12 12 12 100 12 1 100 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1
 ciInstanceKlass com/android/dx/rop/cst/CstDouble 0 0 88 100 10 10 10 100 10 8 10 10 8 10 10 10 10 9 8 10 10 9 9 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 12 1 12 100 12 1 100 12 12 12 12 100 12 1 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 ciInstanceKlass com/android/dx/rop/cst/StdConstantPool 1 1 100 10 100 8 10 7 9 100 10 10 10 10 8 8 100 100 10 8 10 10 10 10 7 7 100 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 100 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 12 1 1 12 1 12 1 12 12 12 12 1 1 1 1 12 1 12 100 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-ciInstanceKlass com/android/dx/rop/type/Type 1 1 451 9 10 7 10 100 100 8 10 100 8 10 10 10 10 10 7 10 8 10 10 10 10 8 10 9 8 8 10 10 10 8 8 9 9 9 9 9 9 10 10 10 8 8 8 8 8 8 8 8 8 10 10 10 8 10 8 8 10 9 9 10 8 10 9 10 8 8 8 8 10 8 10 10 10 10 10 7 10 8 9 8 9 8 9 8 9 8 9 8 8 9 8 9 8 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 9 9 9 9 9 9 9 9 9 7 100 100 1 1 1 1 1 1 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 7 12 1 1 1 12 1 1 12 12 12 12 1 12 1 12 12 12 12 1 12 12 1 1 12 12 1 1 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 12 12 12 1 12 1 1 12 12 12 12 1 12 12 1 1 1 1 12 1 7 12 12 12 12 12 1 12 1 12 1 12 12 1 12 1 12 1 12 1 12 1 1 12 1 12 1 12 1 12 12 1 12 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-staticfield com/android/dx/rop/type/Type internTable Ljava/util/HashMap; java/util/HashMap
-staticfield com/android/dx/rop/type/Type BOOLEAN Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type BYTE Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type CHAR Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type DOUBLE Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type FLOAT Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type INT Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type LONG Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type SHORT Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type VOID Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type KNOWN_NULL Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type RETURN_ADDRESS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type ANNOTATION Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type CLONEABLE Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type OBJECT Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type SERIALIZABLE Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type STRING Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type THROWABLE Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type BOOLEAN_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type BYTE_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type CHARACTER_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type DOUBLE_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type FLOAT_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type INTEGER_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type LONG_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type SHORT_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type VOID_CLASS Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type BOOLEAN_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type BYTE_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type CHAR_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type DOUBLE_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type FLOAT_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type INT_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type LONG_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type OBJECT_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
-staticfield com/android/dx/rop/type/Type SHORT_ARRAY Lcom/android/dx/rop/type/Type; com/android/dx/rop/type/Type
+ciInstanceKlass com/android/dx/rop/picType/Type 1 1 451 9 10 7 10 100 100 8 10 100 8 10 10 10 10 10 7 10 8 10 10 10 10 8 10 9 8 8 10 10 10 8 8 9 9 9 9 9 9 10 10 10 8 8 8 8 8 8 8 8 8 10 10 10 8 10 8 8 10 9 9 10 8 10 9 10 8 8 8 8 10 8 10 10 10 10 10 7 10 8 9 8 9 8 9 8 9 8 9 8 8 9 8 9 8 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 8 9 9 9 9 9 9 9 9 9 9 7 100 100 1 1 1 1 1 1 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 1 7 12 1 1 1 12 1 1 12 12 12 12 1 12 1 12 12 12 12 1 12 12 1 1 12 12 1 1 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 12 12 12 1 12 1 1 12 12 12 12 1 12 12 1 1 1 1 12 1 7 12 12 12 12 12 1 12 1 12 1 12 12 1 12 1 12 1 12 1 12 1 1 12 1 12 1 12 1 12 12 1 12 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 1 12 12 12 12 12 12 12 12 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+staticfield com/android/dx/rop/picType/Type internTable Ljava/util/HashMap; java/util/HashMap
+staticfield com/android/dx/rop/picType/Type BOOLEAN Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type BYTE Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type CHAR Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type DOUBLE Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type FLOAT Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type INT Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type LONG Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type SHORT Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type VOID Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type KNOWN_NULL Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type RETURN_ADDRESS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type ANNOTATION Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type CLONEABLE Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type OBJECT Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type SERIALIZABLE Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type STRING Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type THROWABLE Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type BOOLEAN_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type BYTE_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type CHARACTER_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type DOUBLE_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type FLOAT_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type INTEGER_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type LONG_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type SHORT_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type VOID_CLASS Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type BOOLEAN_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type BYTE_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type CHAR_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type DOUBLE_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type FLOAT_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type INT_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type LONG_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type OBJECT_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
+staticfield com/android/dx/rop/picType/Type SHORT_ARRAY Lcom/android/dx/rop/picType/Type; com/android/dx/rop/picType/Type
 ciInstanceKlass com/android/dx/cf/code/BytecodeArray 1 1 423 10 100 8 10 8 9 9 10 10 10 10 8 10 10 11 9 10 10 9 11 9 11 9 9 9 9 9 9 9 9 9 9 9 9 9 9 10 10 10 11 7 10 10 9 11 9 9 9 9 9 9 9 11 9 10 10 100 8 10 10 10 10 11 100 100 10 8 10 10 10 10 100 10 8 10 100 10 10 10 10 10 11 9 9 9 9 9 9 9 9 8 10 11 7 10 9 9 9 7 10 7 10 11 7 10 7 7 1 1 1 7 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 100 1 1 1 1 1 1 1 1 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 100 100 100 1 1 1 1 1 12 1 1 12 1 12 12 7 12 12 7 12 12 1 12 12 12 12 12 7 12 7 12 12 100 12 12 12 12 12 12 12 12 12 100 12 12 100 12 12 12 100 12 12 12 12 12 7 12 1 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 1 1 12 12 12 12 12 1 1 1 12 100 12 12 12 1 12 1 1 12 12 12 12 12 12 7 12 12 12 12 12 12 12 12 1 12 12 1 12 12 12 12 1 1 12 12 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 staticfield com/android/dx/cf/code/BytecodeArray EMPTY_VISITOR Lcom/android/dx/cf/code/BytecodeArray$Visitor; com/android/dx/cf/code/BytecodeArray$BaseVisitor
 ciInstanceKlass com/android/dx/cf/code/SimException 0 0 26 10 10 10 100 100 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 12 12 12 1 1

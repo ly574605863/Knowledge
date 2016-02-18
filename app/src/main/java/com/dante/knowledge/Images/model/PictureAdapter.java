@@ -1,4 +1,4 @@
-package com.dante.knowledge.news.view;
+package com.dante.knowledge.Images.model;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.dante.knowledge.Images.model.Image;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.ArrayRecyclerAdapter;
 import com.dante.knowledge.libraries.RatioImageView;

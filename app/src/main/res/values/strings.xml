@@ -6,7 +6,7 @@
 
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
-    <string name="load_fail">加载失败，请检查网络 :P</string>
+    <string name="load_fail">网络被外星人切断，稍后再试吧</string>
     <string name="activity_news_detail">知乎日报详情</string>
     <string name="share_title" translatable="false">shared_title</string>
     <string name="shared_img" translatable="false">shared_img</string>
@@ -54,5 +54,14 @@
     <string name="db_butt">悬崖翘臂</string>
     <string name="db_silk">黑丝控</string>
     <string name="db_leg">美腿</string>
+    <string name="db_rank">热门</string>
+    <string name="nav_secret_mode">XXOO</string>
+    <string name="secret_mode_opened">隐藏模式已打开，我们一起嘿嘿嘿~</string>
+    <string name="secret_mode_closed">隐藏模式已关闭。</string>
+    <string name="close_app">关闭应用</string>
+    <string name="h_asia">亚洲</string>
+    <string name="h_selfie">自拍</string>
+    <string name="h_street">街拍</string>
+    <string name="h_silk">黑丝</string>
 
 </resources>

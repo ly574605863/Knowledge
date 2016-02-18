@@ -19,6 +19,11 @@ public class Shared {
         editor.putString(key, value);
         editor.apply();
     }
+    public static void save(String key, boolean value) {
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putBoolean(key, value);
+        editor.apply();
+    }
     public static void save(String key, int value) {
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt(key, value);

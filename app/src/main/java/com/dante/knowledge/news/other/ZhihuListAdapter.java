@@ -45,7 +45,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private ZhihuData news;
     private List<ZhihuItem> zhihuItems;
-    private List<ZhihuTop> tops ;
+    private List<ZhihuTop> tops;
 
     private OnListFragmentInteract mListener;
     private boolean hasFooter;
@@ -158,7 +158,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return new NetworkImageHolderView();
                 }
             }, tops);
-            mListener.onTopLoad();
         }
 
     }
