@@ -1,7 +1,7 @@
 package com.dante.knowledge.net;
 
-import com.dante.knowledge.Images.model.Image;
-import com.dante.knowledge.news.view.PictureFragment;
+import com.dante.knowledge.mvp.model.Image;
+import com.dante.knowledge.mvp.view.PictureFragment;
 
 import java.util.List;
 

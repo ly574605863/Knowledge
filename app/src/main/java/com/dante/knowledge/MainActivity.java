@@ -9,7 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.dante.knowledge.news.view.NewsTabFragment;
+import com.dante.knowledge.mvp.view.MenuTabFragment;
 import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity
         super.initViews();
         setupDrawer();
         initNavigationView();
-        replace(NewsTabFragment.MENU_NEWS);
+        replace(MenuTabFragment.MENU_NEWS);
         TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
     }
 
@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity
     private void replace(String type) {
         if (!type.equals(currentType)) {
             currentType = type;
-            replaceFragment(NewsTabFragment.newInstance(type), type);
+            replaceFragment(MenuTabFragment.newInstance(type), type);
         }
 
     }
@@ -109,12 +109,12 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            replace(NewsTabFragment.MENU_NEWS);
+            replace(MenuTabFragment.MENU_NEWS);
         } else if (id == R.id.nav_beauty) {
-            replace(NewsTabFragment.MENU_PIC);
+            replace(MenuTabFragment.MENU_PIC);
 
         } else if (id == R.id.nav_secret_mode) {
-            replace(NewsTabFragment.MENU_SECRET);
+            replace(MenuTabFragment.MENU_SECRET);
 
         } else if (id == R.id.nav_share) {
             startActivity(

@@ -1,10 +1,10 @@
 package com.dante.knowledge.net;
 
-import com.dante.knowledge.news.model.FreshData;
-import com.dante.knowledge.news.model.FreshDetail;
-import com.dante.knowledge.news.model.RealmString;
-import com.dante.knowledge.news.model.ZhihuData;
-import com.dante.knowledge.news.model.ZhihuDetail;
+import com.dante.knowledge.mvp.model.FreshData;
+import com.dante.knowledge.mvp.model.FreshDetail;
+import com.dante.knowledge.mvp.model.RealmString;
+import com.dante.knowledge.mvp.model.ZhihuData;
+import com.dante.knowledge.mvp.model.ZhihuDetail;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
