@@ -9,6 +9,7 @@ Knowledge（趣知）是我的MD风格和MVP框架的练习项目。你可以方
 ![ScreenShots](screenshots/main.jpg)
 ![ScreenShots](screenshots/menu.jpg)
 ![ScreenShots](screenshots/detail.jpg)
+![ScreenShots](screenshots/pic.jpg)
 可以学到的知识：
 ===
 - Android Design库的使用
