@@ -30,7 +30,7 @@ import okhttp3.Call;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DURATION = 0;
+    private static final int SPLASH_DURATION = 3000;
     private static final String SPLASH = "splash";
     private ImageView splash;
     private String today;
@@ -57,17 +57,14 @@ public class SplashActivity extends AppCompatActivity {
 
     private void initSplash() {
         today = StringUtil.parseStandardDate(new Date());
-        if (today.equals(Shared.get(Constants.DATE, ""))) {
-            loadImageFile();
-        } else {
-            //if today is not latest getBoolean splash date, getSplash.
+        loadImageFile();
+        if (!today.equals(Shared.get(Constants.DATE, ""))) {
             getSplash();
         }
     }
 
 
     private void getSplash() {
-        loadImageFile();
         if (!Net.isOnline(this)) {
             return;
         }
@@ -97,7 +94,6 @@ public class SplashActivity extends AppCompatActivity {
         String url = Shared.get(SPLASH, "");
         if ("".equals(url)) {
             Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
-            getSplash();
         } else {
             ImageUtil.load(url, R.anim.scale_anim, splash);
         }
