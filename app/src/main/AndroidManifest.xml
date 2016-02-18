@@ -47,10 +47,9 @@
             android:parentActivityName=".MainActivity">
         </activity>
         <activity
-            android:name=".mvp.view.FreshDetailActivity"
+            android:name=".mvp.view.DetailActivity"
             android:label="@string/activity_fresh_detail"
-            android:process=":remote"
-            android:theme="@style/AppTheme.NoActionBar.Default">
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
             android:name=".ui.AboutActivity"

@@ -120,13 +120,15 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void startViewerActivity(View view, int position) {
-        Intent intent = new Intent(context, FreshDetailActivity.class);
+        Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra(Constants.MENU_TYPE, MenuTabFragment.MENU_PIC);
+        intent.putExtra(Constants.TYPE,type);
         intent.putExtra(Constants.POSITION, position);
 
         ActivityOptionsCompat options = ActivityOptionsCompat
-                .makeSceneTransitionAnimation(context, view, getString(R.string.shared_img));
+                .makeSceneTransitionAnimation(context, view, adapter.get(position).getUrl());
         ActivityCompat.startActivity(context, intent, options.toBundle());
+
 
     }
 

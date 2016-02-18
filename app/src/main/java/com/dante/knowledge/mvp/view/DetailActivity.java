@@ -1,5 +1,6 @@
 package com.dante.knowledge.mvp.view;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,26 +19,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
+import ooo.oxo.library.widget.PullBackLayout;
 
-public class FreshDetailActivity extends BaseActivity {
+public class DetailActivity extends BaseActivity implements PullBackLayout.Callback {
 
     @Bind(R.id.pager)
     ViewPager pager;
     public List<FreshItem> freshItems;
+    @Bind(R.id.container)
+    PullBackLayout container;
     private int position;
     private DetailPagerAdapter adapter;
     private List<Image> images;
+    private String menuType;
+    private boolean isPicture;
 
     @Override
     protected void initLayoutId() {
-        layoutId = R.layout.activity_fresh_detail;
+        menuType = getIntent().getStringExtra(Constants.MENU_TYPE);
+        layoutId = R.layout.activity_detail;
+        if (MenuTabFragment.MENU_PIC.equals(menuType)) {
+            isPicture = true;
+            layoutId = R.layout.activity_detail_pulldown;
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     protected void initViews() {
+        supportPostponeEnterTransition();
         super.initViews();
-        String menuType = getIntent().getStringExtra(Constants.MENU_TYPE);
         position = getIntent().getIntExtra(Constants.POSITION, 0);
 
         List<Fragment> fragments = new ArrayList<>();
@@ -49,9 +61,9 @@ public class FreshDetailActivity extends BaseActivity {
             for (int i = 0; i < freshItems.size(); i++) {
                 fragments.add(FreshDetailFragment.newInstance(freshItems.get(i)));
             }
-        } else if (MenuTabFragment.MENU_PIC.equals(menuType)) {
+        } else if (isPicture) {
+            container.setCallback(this);
             int type = getIntent().getIntExtra(Constants.TYPE, 0);
-
             images = DB.getImages(type);
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
@@ -63,6 +75,27 @@ public class FreshDetailActivity extends BaseActivity {
         pager.setOffscreenPageLimit(2);
         pager.setCurrentItem(position);
     }
+
+    @Override
+    public void onPullStart() {
+
+    }
+
+    @Override
+    public void onPull(float v) {
+
+    }
+
+    @Override
+    public void onPullCancel() {
+
+    }
+
+    @Override
+    public void onPullComplete() {
+        supportFinishAfterTransition();
+    }
+
 
     private class DetailPagerAdapter<T extends Data> extends FragmentPagerAdapter {
 
@@ -90,10 +123,13 @@ public class FreshDetailActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(this);
-        System.exit(0);
+//        System.exit(0);
     }
+
+
 }

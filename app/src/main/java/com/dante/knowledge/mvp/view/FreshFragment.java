@@ -110,7 +110,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
         if (viewHolder instanceof NewsListAdapter.ViewHolder) {
             NewsListAdapter.ViewHolder holder = (NewsListAdapter.ViewHolder) viewHolder;
             holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
-            Intent intent = new Intent(getActivity(), FreshDetailActivity.class);
+            Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra(Constants.MENU_TYPE, MenuTabFragment.MENU_NEWS);
             intent.putExtra(Constants.POSITION, holder.getAdapterPosition());
             startActivity(intent);

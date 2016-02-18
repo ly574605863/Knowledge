@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/head"
-        android:id="@+id/imageView" />
+        android:id="@+id/image" />
 
 </RelativeLayout>

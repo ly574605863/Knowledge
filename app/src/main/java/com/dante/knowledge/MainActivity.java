@@ -130,4 +130,10 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+//        supportPostponeEnterTransition();
+
+    }
 }

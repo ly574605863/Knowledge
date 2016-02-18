@@ -4,22 +4,28 @@ import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.ui.BaseFragment;
-import com.dante.knowledge.utils.ImageUtil;
 
 import butterknife.Bind;
+import ooo.oxo.library.widget.TouchImageView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by yons on 16/2/18.
  */
-public class ViewerFragment extends BaseFragment {
+public class ViewerFragment extends BaseFragment implements RequestListener<String, GlideDrawable> {
 
-    @Bind(R.id.imageView)
-    ImageView imageView;
+    @Bind(R.id.image)
+    TouchImageView imageView;
     private String url;
+    private PhotoViewAttacher attacher;
 
     public static ViewerFragment newInstance(String url) {
         ViewerFragment fragment = new ViewerFragment();
@@ -28,7 +34,15 @@ public class ViewerFragment extends BaseFragment {
         fragment.setArguments(args);
         return fragment;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Glide.with(this)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .listener(this)
+                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+    }
     @Override
     protected void initLayoutId() {
         layoutId = R.layout.fragment_viewer;
@@ -37,14 +51,28 @@ public class ViewerFragment extends BaseFragment {
     @Override
     protected void initViews() {
         url=getArguments().getString(Constants.URL);
-        PhotoViewAttacher attacher = new PhotoViewAttacher(imageView);
-        ImageUtil.load(getContext(), url, imageView);
+        imageView.setTransitionName(url);
+
     }
 
     @Override
     protected void initData() {
-        ViewCompat.setTransitionName(imageView, getString(R.string.shared_img));
+
     }
 
 
+    @Override
+    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+        getActivity().supportStartPostponedEnterTransition();
+        return true;
+    }
+
+    @Override
+    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+        imageView.setImageDrawable(resource);
+//        attacher = new PhotoViewAttacher(imageView);
+//        attacher.setScaleLevels(1f, 1.5f, 2.0f);
+        getActivity().supportStartPostponedEnterTransition();
+        return true;
+    }
 }
