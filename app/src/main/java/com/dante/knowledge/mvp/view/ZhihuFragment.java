@@ -18,8 +18,8 @@ import com.dante.knowledge.mvp.model.ZhihuData;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.Constants;
-import com.dante.knowledge.utils.UiUtils;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 
@@ -111,7 +111,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     public void loadFailed(String msg) {
 
         if (isLive()) {
-            UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+            UI.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }
 

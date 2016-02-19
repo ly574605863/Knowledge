@@ -13,8 +13,8 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.ZhihuTop;
-import com.dante.knowledge.net.Constants;
-import com.dante.knowledge.utils.ImageUtil;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.Image;
 
 /**
  * deals with displaying the top banner
@@ -32,7 +32,7 @@ public class NetworkImageHolderView implements Holder<ZhihuTop> {
     public void UpdateUI(final Context context, int position, final ZhihuTop entity) {
         final ImageView imageView = (ImageView) view.findViewById(R.id.story_img);
         TextView textView = (TextView) view.findViewById(R.id.story_title);
-        ImageUtil.load(context, entity.getImage(), imageView);
+        Image.load(context, entity.getImage(), imageView);
         textView.setText(entity.getTitle());
         view.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -24,7 +24,7 @@
     <string name="about_me_description">I\'m android developer who loves Google. If you got any idea or advice, don\'t hesitate to contact me :)</string>
     <string name="app">APP</string>
     <string name="share_to">Share to</string>
-    <string name="version">Version 1.0</string>
+    <string name="version">Version </string>
     <string name="column_not_available">Not available now, please update or contact with me :D</string>
     <string name="menu_share">Share</string>
     <string name="license">lisence</string>
@@ -38,4 +38,20 @@
     <string name="tips">Tips</string>
     <string name="tips_content">When browsing down deep in the app, press the title to return top quickly</string>
     <string name="hottest">Today Hotest</string>
+    <string name="close_app">close app</string>
+    <string name="db">DB beauty</string>
+    <string name="db_leg">DB leg</string>
+    <string name="db_breast">DB breast</string>
+    <string name="db_butt">DB butt</string>
+    <string name="db_rank">DB rank</string>
+    <string name="db_silk">DB silk</string>
+    <string name="h_asia">Asia</string>
+    <string name="h_silk">Silk</string>
+    <string name="h_selfie">Selfie</string>
+    <string name="h_street">Street</string>
+    <string name="secret_mode_closed">Secret mode closed.</string>
+    <string name="secret_mode_opened">Secret mode is open, let\'s rock~</string>
+    <string name="can_not_find_version_name">Unable to get version</string>
+    <string name="try_again">You must kidding</string>
+    <string name="load_no_result">Oooops, girls are too shy to show.</string>
 </resources>

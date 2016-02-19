@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
@@ -23,11 +24,11 @@ import com.dante.knowledge.mvp.other.PictureAdapter;
 import com.dante.knowledge.mvp.presenter.PictureFetchService;
 import com.dante.knowledge.mvp.presenter.PictureParser;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.Constants;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.utils.Shared;
-import com.dante.knowledge.utils.UiUtils;
+import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -77,8 +78,8 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             parser.cancelTask();
         }
         localBroadcastManager.unregisterReceiver(updateReceiver);
-        Shared.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[0]);
-        Shared.save(Constants.PAGE, page);
+        SP.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[0]);
+        SP.save(Constants.PAGE + type, page);
         super.onDestroyView();
     }
 
@@ -117,7 +118,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    page = Shared.getInt(Constants.PAGE);
                     onListScrolled();
                 }
             }
@@ -131,7 +131,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         setExitSharedElementCallback(new SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                int i = Shared.getInt("shared_index");
+                int i = SP.getInt("shared_index");
                 Log.i("test", i + " position");
                 sharedElements.clear();
                 sharedElements.put(adapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
@@ -160,24 +160,30 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
         if (isFirst) {
             if (lastPosition > images.size() / 3) {
+                page = SP.getInt(type + Constants.PAGE);
                 fetch(false);
-                isFirst = false;
             }
 
         } else if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
+
             Log.i("test", layoutManager.getItemCount() + ">>>> last:" + lastPosition);
 
             PRELOAD_COUNT++;
             fetch(false);
         }
-
-
     }
 
     private void fetch(boolean fresh) {
         changeProgress(true);
         initUrl(fresh);
         getData();
+        //hide the circle after 10 secs whatsover
+        swipeRefresh.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefresh.setRefreshing(false);
+            }
+        }, 10*1000);
     }
 
     private void getData() {
@@ -205,6 +211,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private void initUrl(boolean fresh) {
         if (fresh) {
             page = 1;
+            isFirst = true;
         }
         switch (type) {
             case TYPE_DB_BREAST:
@@ -226,6 +233,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                 if (!isFirst) {
                     //if not first load, we load more (coz user has images to see)
                     LOAD_COUNT = LOAD_COUNT_LARGE;
+                    isFirst = false;
                 }
                 url = API.GANK + LOAD_COUNT + "/" + page;
                 break;
@@ -246,7 +254,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             fetch(true);
             return;
         }
-        recyclerView.scrollToPosition(Shared.getInt(Constants.POSITION + type));
+        recyclerView.scrollToPosition(SP.getInt(type + Constants.POSITION));
         adapter.addAll(images);
         adapter.notifyDataSetChanged();
     }
@@ -269,7 +277,14 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         changeProgress(false);
         adapter.replaceWith(images);
         if (isLive()) {
-            UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+            Snackbar.make(rootView, getString(R.string.load_no_result), Snackbar.LENGTH_LONG)
+                    .setAction(R.string.try_again, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            changeProgress(true);
+                            fetch(false);
+                        }
+                    }).show();
         }
     }
 
@@ -280,6 +295,8 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra(PictureFetchService.EXTRA_FETCHED_RESULT, false)) {
                 onDataSuccess(null);
+            }else {
+                onFailure("load no results", null);
             }
         }
     }

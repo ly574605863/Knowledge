@@ -25,8 +25,8 @@ import com.dante.knowledge.mvp.model.FreshDetail;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.mvp.presenter.FreshDetailPresenter;
 import com.dante.knowledge.ui.BaseFragment;
-import com.dante.knowledge.utils.ShareUtil;
-import com.dante.knowledge.utils.UiUtils;
+import com.dante.knowledge.utils.Share;
+import com.dante.knowledge.utils.UI;
 
 import butterknife.Bind;
 
@@ -147,7 +147,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void showLoadFailed(String msg) {
-        UiUtils.showSnackLong(rootView, R.string.load_fail);
+        UI.showSnackLong(rootView, R.string.load_fail);
 
     }
 
@@ -167,7 +167,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     private void setShareIntent() {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(
-                    ShareUtil.getShareIntent(freshItem.getUrl()));
+                    Share.getShareIntent(freshItem.getUrl()));
         }
     }
 

@@ -12,7 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.net.Constants;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.ui.BaseFragment;
 
 import java.util.ArrayList;
@@ -87,11 +87,22 @@ public class MenuTabFragment extends BaseFragment {
         menuType = getArguments().getString(Constants.TYPE);
 
         if (MENU_PIC.equals(menuType)) {
-            String[] titles = new String[]{getString(R.string.gank), getString(R.string.db_breast), getString(R.string.db_butt), getString(R.string.db_silk), getString(R.string.db_leg), getString(R.string.db_rank)};
+            String[] titles = new String[]{
+                    getString(R.string.gank),
+                    getString(R.string.db_rank),
+                    getString(R.string.db_leg),
+                    getString(R.string.db_silk),
+                    getString(R.string.db_breast),
+                    getString(R.string.db_butt)};
             this.titles = Arrays.asList(titles);
-            for (int i = 0; i < titles.length; i++) {
-                //ensure the types are from 0 to length before using 'for' loop
-                fragments.add(PictureFragment.newInstance(i));
+            fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_GANK));
+            fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_RANK));
+            fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_LEG));
+            fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_SILK));
+            fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_BREAST));
+            fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_BUTT));
+            if (fragments.size()!=titles.length){
+                throw new IllegalArgumentException("You need add all fragments in MenuTabFragment");
             }
 
         } else if (MENU_SECRET.equals(menuType)) {

@@ -14,7 +14,7 @@ import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
 import com.dante.knowledge.mvp.model.FreshData;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.net.DB;
-import com.dante.knowledge.utils.ImageUtil;
+import com.dante.knowledge.utils.Image;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         viewHolder.mTitle.setText(viewHolder.freshItem.getTitle());
         viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
-        ImageUtil.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
+        Image.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

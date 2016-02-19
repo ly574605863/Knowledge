@@ -13,10 +13,10 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.mvp.other.Data;
-import com.dante.knowledge.net.Constants;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.Shared;
+import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -108,7 +108,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 Log.i("test", "pager position " + position);
-                Shared.save("shared_index", position);
+                SP.save("shared_index", position);
                 names.clear();
                 names.add(images.get(position).getUrl());
                 super.onMapSharedElements(names, sharedElements);
@@ -138,6 +138,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void supportFinishAfterTransition() {
+//        getWindow().setExitTransition(null);
         super.supportFinishAfterTransition();
     }
 
