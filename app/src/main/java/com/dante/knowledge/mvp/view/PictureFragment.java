@@ -110,19 +110,19 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                if (newState == RecyclerView.SCROLL_STATE_IDLE){
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    page = Shared.getInt(Constants.PAGE);
                     onListScrolled();
                 }
             }
         });
         type = getArguments().getInt(Constants.TYPE);
-        page = Shared.getInt(Constants.PAGE);
     }
 
     private void startViewerActivity(View view, int position) {
         Intent intent = new Intent(context, DetailActivity.class);
         intent.putExtra(Constants.MENU_TYPE, MenuTabFragment.MENU_PIC);
-        intent.putExtra(Constants.TYPE,type);
+        intent.putExtra(Constants.TYPE, type);
         intent.putExtra(Constants.POSITION, position);
 
         ActivityOptionsCompat options = ActivityOptionsCompat
@@ -138,7 +138,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
         if (isFirst) {
             if (lastPosition > images.size() / 3) {
-                fetch();
+                fetch(false);
                 isFirst = false;
             }
 
@@ -146,15 +146,15 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             Log.i("test", layoutManager.getItemCount() + ">>>> last:" + lastPosition);
 
             PRELOAD_COUNT++;
-            fetch();
+            fetch(false);
         }
 
 
     }
 
-    private void fetch() {
+    private void fetch(boolean fresh) {
         changeProgress(true);
-        initUrl();
+        initUrl(fresh);
         getData();
     }
 
@@ -180,7 +180,10 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         Net.get(url, callback, API.TAG_PICTURE);
     }
 
-    private void initUrl() {
+    private void initUrl(boolean fresh) {
+        if (fresh) {
+            page = 1;
+        }
         switch (type) {
             case TYPE_DB_BREAST:
                 url = API.DB_BREAST + page;
@@ -217,7 +220,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                     changeProgress(true);
                 }
             });
-            fetch();
+            fetch(true);
             return;
         }
         recyclerView.scrollToPosition(Shared.getInt(Constants.POSITION + type));
@@ -228,7 +231,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     public void onRefresh() {
-        fetch();
+        fetch(true);
     }
 
     @Override

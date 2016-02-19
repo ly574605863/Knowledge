@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ooo.oxo.library.widget.PullBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<ooo.oxo.library.widget.PullBackLayout android:id="@+id/container"
+                                       xmlns:android="http://schemas.android.com/apk/res/android"
+                                       android:fitsSystemWindows="true"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:orientation="vertical">
+
     <android.support.v4.view.ViewPager
+        android:fitsSystemWindows="true"
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
 </ooo.oxo.library.widget.PullBackLayout>

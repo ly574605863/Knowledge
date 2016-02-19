@@ -1,10 +1,10 @@
 package com.dante.knowledge.mvp.view;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.FrameLayout;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.FreshItem;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import ooo.oxo.library.widget.PullBackLayout;
 
 public class DetailActivity extends BaseActivity implements PullBackLayout.Callback {
@@ -28,7 +27,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     ViewPager pager;
     public List<FreshItem> freshItems;
     @Bind(R.id.container)
-    PullBackLayout container;
+    FrameLayout container;
     private int position;
     private DetailPagerAdapter adapter;
     private List<Image> images;
@@ -42,6 +41,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         if (MenuTabFragment.MENU_PIC.equals(menuType)) {
             isPicture = true;
             layoutId = R.layout.activity_detail_pulldown;
+            setTheme(android.R.style.Theme_Translucent);
         }
     }
 
@@ -62,7 +62,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
                 fragments.add(FreshDetailFragment.newInstance(freshItems.get(i)));
             }
         } else if (isPicture) {
-            container.setCallback(this);
+            ((PullBackLayout)container).setCallback(this);
             int type = getIntent().getIntExtra(Constants.TYPE, 0);
             images = DB.getImages(type);
             for (int i = 0; i < images.size(); i++) {
