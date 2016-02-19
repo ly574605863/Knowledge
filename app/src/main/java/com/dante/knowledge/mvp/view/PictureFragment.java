@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -29,6 +30,9 @@ import com.dante.knowledge.utils.Shared;
 import com.dante.knowledge.utils.UiUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.List;
+import java.util.Map;
 
 import io.realm.RealmResults;
 import okhttp3.Call;
@@ -64,6 +68,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private UpdateReceiver updateReceiver;
     private LocalBroadcastManager localBroadcastManager;
     private FragmentActivity context;
+    private Bundle reenterState;
 
     @Override
     public void onDestroyView() {
@@ -93,6 +98,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initViews() {
+
         super.initViews();
         updateReceiver = new UpdateReceiver();
         context = getActivity();
@@ -117,7 +123,23 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             }
         });
         type = getArguments().getInt(Constants.TYPE);
+
     }
+
+
+    private void setUpShareElement() {
+        setExitSharedElementCallback(new SharedElementCallback() {
+            @Override
+            public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+                int i = Shared.getInt("shared_index");
+                Log.i("test", i + " position");
+                sharedElements.clear();
+                sharedElements.put(adapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
+
+            }
+        });
+    }
+
 
     private void startViewerActivity(View view, int position) {
         Intent intent = new Intent(context, DetailActivity.class);
@@ -212,6 +234,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initData() {
+
         images = DB.getImages(type);
         if (images.isEmpty()) {
             swipeRefresh.post(new Runnable() {
@@ -249,6 +272,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             UiUtils.showSnackLong(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }
+
 
     private class UpdateReceiver extends BroadcastReceiver {
 

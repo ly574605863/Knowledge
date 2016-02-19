@@ -66,9 +66,9 @@ public class MainActivity extends BaseActivity
 
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(this);
-        if (Shared.getBoolean(SettingFragment.SECRET_MODE)){
+        if (Shared.getBoolean(SettingFragment.SECRET_MODE)) {
             navView.inflateMenu(R.menu.main_menu_all);
-        }else {
+        } else {
             navView.inflateMenu(R.menu.main_drawer);
         }
     }
@@ -102,7 +102,12 @@ public class MainActivity extends BaseActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    @Override
+    public void onActivityReenter(int resultCode, Intent data) {
+        super.onActivityReenter(resultCode, data);
+        Shared.getInt("shared_index");// TODO: 16/2/19 notify pictureFragment to scroll to index
+        supportPostponeEnterTransition();
+    }
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -130,10 +135,5 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        super.onActivityReenter(resultCode, data);
-//        supportPostponeEnterTransition();
 
-    }
 }
