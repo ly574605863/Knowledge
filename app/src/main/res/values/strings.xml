@@ -65,6 +65,7 @@
     <string name="load_no_result">啊哦，妹子太害羞，不好意思出來了</string>
     <string name="try_again">淫家才不信咧</string>
     <string name="save_img_failed">Unable to save image.</string>
-    <string name="save_img_success">妹子已保存，嘿嘿嘿</string>
+    <string name="save_img_success">妹子已保存在：</string>
+    <string name="view_img_hint">向下拉图片退出浏览；长按图片可以保存到手机~</string>
 
 </resources>

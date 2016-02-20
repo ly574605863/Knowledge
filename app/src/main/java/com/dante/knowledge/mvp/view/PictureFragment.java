@@ -70,6 +70,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private LocalBroadcastManager localBroadcastManager;
     private FragmentActivity context;
     private Bundle reenterState;
+    private int lastPosition;
 
     @Override
     public void onDestroyView() {
@@ -78,8 +79,8 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             parser.cancelTask();
         }
         localBroadcastManager.unregisterReceiver(updateReceiver);
-        SP.save(Constants.POSITION + type, layoutManager.findFirstCompletelyVisibleItemPositions(new int[layoutManager.getSpanCount()])[0]);
-        SP.save(Constants.PAGE + type, page);
+        SP.save( type +Constants.POSITION , lastPosition);
+        SP.save(type + Constants.PAGE, page);
         super.onDestroyView();
     }
 
@@ -155,7 +156,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void onListScrolled() {
-        int lastPosition = layoutManager.findLastVisibleItemPositions(
+        lastPosition = layoutManager.findLastVisibleItemPositions(
                 new int[layoutManager.getSpanCount()])[1];
 
         if (isFirst) {
@@ -212,7 +213,10 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         if (fresh) {
             page = 1;
             isFirst = true;
+        }else {
+            isFirst = false;
         }
+
         switch (type) {
             case TYPE_DB_BREAST:
                 url = API.DB_BREAST + page;
@@ -233,7 +237,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                 if (!isFirst) {
                     //if not first load, we load more (coz user has images to see)
                     LOAD_COUNT = LOAD_COUNT_LARGE;
-                    isFirst = false;
                 }
                 url = API.GANK + LOAD_COUNT + "/" + page;
                 break;
@@ -242,7 +245,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initData() {
-
         images = DB.getImages(type);
         if (images.isEmpty()) {
             swipeRefresh.post(new Runnable() {
@@ -259,6 +261,11 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        recyclerView.scrollToPosition(SP.getInt(type + Constants.POSITION));
+    }
 
     @Override
     public void onRefresh() {

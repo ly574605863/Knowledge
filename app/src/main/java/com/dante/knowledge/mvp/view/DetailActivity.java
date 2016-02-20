@@ -38,6 +38,9 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     private List<Image> images;
     private String menuType;
     private boolean isPicture;
+    private int currentPosition;
+    private int type;
+
 
     @Override
     protected void initLayoutId() {
@@ -68,7 +71,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             }
         } else if (isPicture) {
             ((PullBackLayout) container).setCallback(this);
-            int type = getIntent().getIntExtra(Constants.TYPE, 0);
+            type = getIntent().getIntExtra(Constants.TYPE, 0);
             images = DB.getImages(type);
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
@@ -87,6 +90,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onPageSelected(int position) {
+                currentPosition=position;
                 setEnterSharedElement(position);
             }
 
@@ -175,8 +179,9 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        SP.save(type + Constants.POSITION, currentPosition);
         OkHttpUtils.getInstance().cancelTag(this);
+        super.onDestroy();
 //        System.exit(0);
     }
 

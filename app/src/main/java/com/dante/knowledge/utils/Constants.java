@@ -14,4 +14,5 @@ public class Constants {
     public static final String DATA = "data";
     public static final String MENU_TYPE = "menu_type";
     public static final String SAVE_NUM="save_num";
+    public static final String HAS_HINT = "first_hint";
 }
