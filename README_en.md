@@ -1,18 +1,19 @@
 [中文版点我](README.md)
 --
 
-Introduction
-===
+##Introduction
 Knowledge is an app you can read Zhihu daily and JianDan science articles with. (and browse cute girls pictures :D)
 It conforms to Material Design.
-ScreenShots
----
+
+##ScreenShots
+
 ![ScreenShots](screenshots/girl.jpg)
 ![ScreenShots](screenshots/main.jpg)
 ![ScreenShots](screenshots/menu.jpg)
 ![ScreenShots](screenshots/detail.jpg)
-You can learn
-==
+
+##You can learn
+
 - Use Android Desgn library
 - Write your BaseActivity and BaseFragment
 - Apply MVP pattern
@@ -25,8 +26,7 @@ You can learn
 - Add a Setting Activity
 - Add Activity transition animation
 
-Repositories
-===
+##Repositories
 
     dependencies {
         debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' //help you to find memory leak
@@ -42,3 +42,6 @@ Repositories
         compile 'com.github.orhanobut:logger:1.12'//a beautiful log util
     }
 
+## Support Me
+If you like it, get me a drink and I'll do my best to make it better. (Use your Wechat to scan)
+![](get_me_a_drink.jpg)
