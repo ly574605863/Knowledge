@@ -6,10 +6,10 @@
 Knowledge（趣知）是我的MD风格和MVP框架的练习项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，后续还会增加浏览妹子图的功能，嘿嘿嘿~
 截图
 ---
-![ScreenShots](screenshots/main.jpg)
-![ScreenShots](screenshots/menu.jpg)
-![ScreenShots](screenshots/detail.jpg)
-![ScreenShots](screenshots/pic.png)
+![ScreenShots](screenshots/girl.png)
+![ScreenShots](screenshots/main.png)
+![ScreenShots](screenshots/detail.png)
+![ScreenShots](screenshots/menu.png)
 可以学到的知识：
 ===
 - Android Design库的使用
