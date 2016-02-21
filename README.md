@@ -1,17 +1,22 @@
 [Check out English version](README_en.md)
 --
 
-介绍
-===
-Knowledge（趣知）是我的MD风格和MVP框架的练习项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，后续还会增加浏览妹子图的功能，嘿嘿嘿~
+#妹知
+是妹知不是妹汁！既有妹纸又有知识~
+---
+
+##简介
+
+Knowledge是我的MD风格和MVP框架的练习项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，后续还会增加浏览妹子图的功能，嘿嘿嘿~
 截图
 ---
 ![ScreenShots](screenshots/girl.jpg)
 ![ScreenShots](screenshots/main.jpg)
 ![ScreenShots](screenshots/detail.jpg)
 ![ScreenShots](screenshots/menu.jpg)
-可以学到的知识：
-===
+
+##可以学到：
+
 - Android Design库的使用
 - 自定义你的基类Activity
 - 应用MVP模式到项目中
@@ -24,8 +29,7 @@ Knowledge（趣知）是我的MD风格和MVP框架的练习项目。你可以方
 - 设置页的写法
 - 添加Activity的转换特效（对，duang的那种）
 
-使用到的库
-===
+## 使用到的库
 
     dependencies {
         debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1' //检测内存泄露
@@ -40,3 +44,10 @@ Knowledge（趣知）是我的MD风格和MVP框架的练习项目。你可以方
         compile 'io.realm:realm-android:0.87.4'//快速、简洁的跨平台数据库
         compile 'com.github.orhanobut:logger:1.12'//漂亮的log工具
     }
+
+## TODO
+
+- [ ] 代码重构
+- [ ] 项目包结构整理
+- [ ] 隐藏模式
+- [ ] 更换主题
