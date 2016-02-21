@@ -27,6 +27,8 @@ import butterknife.Bind;
 public class MenuTabFragment extends BaseFragment {
 
     private static final int SMOOTHSCROLL_TOP_POSITION = 50;
+    public static final int TYPE_ZHIHU = 1024;
+    public static final int TYPE_FRESH = 1025;
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.tabs)

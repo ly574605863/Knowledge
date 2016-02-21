@@ -1,6 +1,7 @@
 package com.dante.knowledge.mvp.view;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -65,19 +66,27 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     protected void initViews() {
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
+        loadPicture();
+    }
+
+    private void loadPicture() {
         Glide.with(this)
                 .load(url)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .into(new SimpleTarget<GlideDrawable>() {
+
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        super.onLoadFailed(e, errorDrawable);
+                        loadPicture();
+                    }
+
                     @Override
                     public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                         imageView.setImageDrawable(resource);
-                        imageView.setDrawingCacheEnabled(true);
                         getActivity().supportStartPostponedEnterTransition();
-
                     }
-                });
+                } );
     }
 
     @Override

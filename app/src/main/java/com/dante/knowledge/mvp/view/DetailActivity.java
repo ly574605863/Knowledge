@@ -92,6 +92,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             public void onPageSelected(int position) {
                 currentPosition=position;
                 setEnterSharedElement(position);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -176,10 +177,14 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SP.save(type + Constants.POSITION, currentPosition);
+    }
 
     @Override
     protected void onDestroy() {
-        SP.save(type + Constants.POSITION, currentPosition);
         OkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
 //        System.exit(0);

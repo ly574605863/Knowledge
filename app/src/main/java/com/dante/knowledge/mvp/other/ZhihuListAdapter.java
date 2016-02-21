@@ -23,6 +23,8 @@ import com.dante.knowledge.utils.Dater;
 
 import java.util.List;
 
+import io.realm.RealmList;
+
 /**
  * Zhihu news' recyclerView adapter
  */
@@ -46,6 +48,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ZhihuData news;
     private List<ZhihuItem> zhihuItems;
     private List<ZhihuTop> tops;
+    private List<ZhihuData> dataList;
 
     private OnListFragmentInteract mListener;
     private boolean hasFooter;
@@ -69,6 +72,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.context = context;
         mListener = listener;
         zhihuItems = DB.findAll(ZhihuItem.class);
+        dataList = DB.findAll(ZhihuData.class);
         tops = DB.findAll(ZhihuTop.class);
     }
 

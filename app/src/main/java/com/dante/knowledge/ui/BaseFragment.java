@@ -18,7 +18,6 @@ import io.realm.Realm;
 public abstract class BaseFragment extends Fragment {
     protected View rootView;
     protected int layoutId;
-    protected Realm realm;
 
     @Nullable
     @Override
@@ -34,15 +33,26 @@ public abstract class BaseFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        realm = Realm.getDefaultInstance();
-    }
-
-    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initData();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        KnowledgeApp.getWatcher(getActivity()).watch(this);
     }
 
     protected abstract void initLayoutId();
@@ -55,19 +65,6 @@ public abstract class BaseFragment extends Fragment {
 
     protected abstract void initData();
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        KnowledgeApp.getWatcher(getActivity()).watch(this);
-        realm.close();
-    }
 
     public boolean isLive() {
         return getActivity() != null && !getActivity().isDestroyed();

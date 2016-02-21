@@ -58,10 +58,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
                 ZhihuData news = Json.parseZhihuNews(response);
                 date = news.getDate();
                 addFooter(news);
-                DB.realm.beginTransaction();
-                DB.realm.copyToRealmOrUpdate(news);
-                DB.realm.allObjectsSorted(ZhihuData.class, "date", Sort.DESCENDING);
-                DB.realm.commitTransaction();
+                DB.saveOrUpdate(news);
                 SP.save(Constants.DATE, date);
                 listener.onDataSuccess(news);
             }

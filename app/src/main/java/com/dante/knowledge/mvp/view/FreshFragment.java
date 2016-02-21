@@ -19,6 +19,7 @@ import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.FreshDataPresenter;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -28,6 +29,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
  */
 public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshData>, OnListFragmentInteract {
 
+    private static final int PRELOAD_COUNT = 1;
     private NewsPresenter presenter;
     private NewsListAdapter adapter;
     private LinearLayoutManager layoutManager;
@@ -39,6 +41,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);
+        SP.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
     }
 
@@ -59,16 +62,23 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem + 1 == adapter.getItemCount()) {
 
-                    presenter.loadBefore();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE ) {
+                    onListScrolled();
                 }
             }
         });
 
+    }
+
+    private void onListScrolled() {
+        firstPosition = layoutManager.findFirstVisibleItemPosition();
+        lastPosition = layoutManager.findLastVisibleItemPosition();
+
+        if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()){
+            presenter.loadBefore();
+        }
     }
 
     @Override
