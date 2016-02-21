@@ -47,6 +47,6 @@ Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/
 - [ ] 隐藏模式
 - [ ] 更换主题
 
-## 支持
+## 支持我
 如果你喜欢这个repository，请我喝杯咖啡，我会更用心让它更完美~
-![](get_me_a_drink.jpg)
+![打开你的微信](get_me_a_drink.jpg)
