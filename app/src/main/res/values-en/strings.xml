@@ -54,4 +54,7 @@
     <string name="can_not_find_version_name">Unable to get version</string>
     <string name="try_again">You must kidding</string>
     <string name="load_no_result">Oooops, girls are too shy to show.</string>
+    <string name="save_img_failed">Unable to save image.</string>
+    <string name="save_img_success">Girl is saved at</string>
+    <string name="view_img_hint">Pull down to exit; Long press the girl to save to local.</string>
 </resources>

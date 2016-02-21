@@ -7,7 +7,7 @@ import io.realm.RealmObject;
 /**
  * Zhihu news item in top banner
  */
-public class ZhihuTop extends RealmObject implements Serializable{
+public class ZhihuTop extends RealmObject{
     private String image;
     private int id;
     private String title;

@@ -11,7 +11,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * zhihu news item in list
  */
-public class ZhihuItem extends RealmObject implements Serializable, NewsItem {
+public class ZhihuItem extends RealmObject implements NewsItem {
 
     /**
      * images : ["http://pic1.zhimg.com/aef18b16a9a6dcb445d5c235784c25a8.jpg"]

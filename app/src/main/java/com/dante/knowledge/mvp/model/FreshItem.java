@@ -12,7 +12,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * fresh things item in list
  */
-public class FreshItem extends RealmObject implements NewsItem, Serializable {
+public class FreshItem extends RealmObject implements NewsItem{
     private int id;
     private String url;
     private String title;

@@ -24,9 +24,13 @@ import com.dante.knowledge.mvp.interf.NewsDetailView;
 import com.dante.knowledge.mvp.model.FreshDetail;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.mvp.presenter.FreshDetailPresenter;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
+
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -46,20 +50,22 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     FrameLayout webContainer;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+    public List<FreshItem> freshItems;
 
     private WebView webView;
 
     private FreshItem freshItem;
     private NewsDetailPresenter<FreshItem> presenter;
     private ShareActionProvider mShareActionProvider;
+    private int position;
 
     public FreshDetailFragment() {
     }
 
-    public static FreshDetailFragment newInstance(FreshItem freshItem) {
+    public static FreshDetailFragment newInstance(int position) {
         FreshDetailFragment fragment = new FreshDetailFragment();
         Bundle args = new Bundle();
-        args.putSerializable(FRESH_ITEM, freshItem);
+        args.putInt(Constants.POSITION, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +74,10 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            freshItem = (FreshItem) getArguments().getSerializable(FRESH_ITEM);
+            freshItems = DB.findAllDateSorted(FreshItem.class);
+            position = getArguments().getInt(Constants.POSITION);
+            freshItem = freshItems.get(position);
+
         }
         setHasOptionsMenu(true);
     }
