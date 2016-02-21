@@ -7,6 +7,7 @@ Knowledge is an app you can read Zhihu daily and JianDan science articles with. 
 It conforms to Material Design.
 ScreenShots
 ---
+![ScreenShots](screenshots/girl.jpg)
 ![ScreenShots](screenshots/main.jpg)
 ![ScreenShots](screenshots/menu.jpg)
 ![ScreenShots](screenshots/detail.jpg)
