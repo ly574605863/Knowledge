@@ -24,9 +24,10 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import io.realm.RealmChangeListener;
 import ooo.oxo.library.widget.PullBackLayout;
 
-public class DetailActivity extends BaseActivity implements PullBackLayout.Callback {
+public class DetailActivity extends BaseActivity implements PullBackLayout.Callback, RealmChangeListener {
 
     @Bind(R.id.pager)
     ViewPager pager;
@@ -145,6 +146,14 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     public void supportFinishAfterTransition() {
 //        getWindow().setExitTransition(null);
         super.supportFinishAfterTransition();
+    }
+
+    @Override
+    public void onChange() {
+        //fix one PagerAdapter bug as following:
+        //      ---The application's PagerAdapter changed the adapter's contents
+        //      ---without calling PagerAdapter#notifyDataSetChanged!]
+        adapter.notifyDataSetChanged();
     }
 
     private class DetailPagerAdapter<T extends Data> extends FragmentPagerAdapter {

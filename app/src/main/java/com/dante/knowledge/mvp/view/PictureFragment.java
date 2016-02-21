@@ -153,7 +153,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             }
 
         } else if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
-
             PRELOAD_COUNT++;
             fetch(false);
         }
@@ -233,6 +232,15 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     protected void AlwaysInit() {
         super.AlwaysInit();
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
+            PRELOAD_COUNT++;
+            fetch(false);
+        }
     }
 
     @Override
