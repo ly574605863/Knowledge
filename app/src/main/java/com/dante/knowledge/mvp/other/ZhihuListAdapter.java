@@ -18,8 +18,8 @@ import com.dante.knowledge.mvp.model.ZhihuItem;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.NetworkImageHolderView;
 import com.dante.knowledge.net.DB;
-import com.dante.knowledge.utils.ImageUtil;
-import com.dante.knowledge.utils.StringUtil;
+import com.dante.knowledge.utils.Dater;
+import com.dante.knowledge.utils.Image;
 
 import java.util.List;
 
@@ -46,6 +46,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private ZhihuData news;
     private List<ZhihuItem> zhihuItems;
     private List<ZhihuTop> tops;
+    private List<ZhihuData> dataList;
 
     private OnListFragmentInteract mListener;
     private boolean hasFooter;
@@ -69,6 +70,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         this.context = context;
         mListener = listener;
         zhihuItems = DB.findAll(ZhihuItem.class);
+        dataList = DB.findAll(ZhihuData.class);
         tops = DB.findAll(ZhihuTop.class);
     }
 
@@ -125,7 +127,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 //id == 1 means this item is added by me, so it's a header to show date.
 
                 if (viewHolder.zhihuItem.getType() == 1) {
-                    String date = StringUtil.getDisplayDate(viewHolder.zhihuItem.getId() + "");
+                    String date = Dater.getDisplayDate(viewHolder.zhihuItem.getId() + "");
                     viewHolder.header.setText(date);
                     viewHolder.header.setVisibility(View.VISIBLE);
                     viewHolder.mItem.setVisibility(View.GONE);
@@ -137,7 +139,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
 
             showHeader = true;//first header just shows stationary text (today), others use date.
-            ImageUtil.load(context, viewHolder.zhihuItem.getImages().get(0).getVal(), viewHolder.mImage);
+            Image.load(context, viewHolder.zhihuItem.getImages().get(0).getVal(), viewHolder.mImage);
             viewHolder.mTitle.setText(viewHolder.zhihuItem.getTitle());
             viewHolder.mTitle.setTextColor(textDark);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -18,12 +18,12 @@ import com.dante.knowledge.mvp.model.ZhihuDetail;
 import com.dante.knowledge.mvp.model.ZhihuItem;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.presenter.ZhihuDetailPresenter;
-import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.ImageUtil;
-import com.dante.knowledge.utils.ShareUtil;
-import com.dante.knowledge.utils.UiUtils;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.Image;
+import com.dante.knowledge.utils.Share;
+import com.dante.knowledge.utils.UI;
 
 import butterknife.Bind;
 
@@ -71,7 +71,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShareUtil.shareText(ZhihuDetailActivity.this, zhihuDetail.getShare_url());
+                Share.shareText(ZhihuDetailActivity.this, zhihuDetail.getShare_url());
             }
         });
     }
@@ -138,7 +138,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     public void showDetail(ZhihuDetail detailNews) {
         zhihuDetail = detailNews;
-        ImageUtil.load(this, detailNews.getImage(), detailImg);
+        Image.load(this, detailNews.getImage(), detailImg);
         //add css style to webView
         String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">";
         String html = "<html><head>" + css + "</head><body>" + detailNews.getBody() + "</body></html>";
@@ -153,7 +153,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
 
     @Override
     public void showLoadFailed(String msg) {
-        UiUtils.showSnackLong(webContainer, R.string.load_fail);
+        UI.showSnackLong(webContainer, R.string.load_fail);
 
     }
 

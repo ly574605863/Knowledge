@@ -12,7 +12,6 @@ import java.io.File;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**

@@ -7,15 +7,14 @@ import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.utils.Shared;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import io.realm.Realm;
-import io.realm.Sort;
 import okhttp3.Call;
 
 /**
@@ -58,11 +57,8 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
                 ZhihuData news = Json.parseZhihuNews(response);
                 date = news.getDate();
                 addFooter(news);
-                DB.realm.beginTransaction();
-                DB.realm.copyToRealmOrUpdate(news);
-                DB.realm.allObjectsSorted(ZhihuData.class, "date", Sort.DESCENDING);
-                DB.realm.commitTransaction();
-                Shared.save(Constants.DATE, date);
+                DB.saveOrUpdate(news);
+                SP.save(Constants.DATE, date);
                 listener.onDataSuccess(news);
             }
         };

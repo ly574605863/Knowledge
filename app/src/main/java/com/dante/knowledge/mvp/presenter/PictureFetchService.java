@@ -7,7 +7,7 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.mvp.view.PictureFragment;
-import com.dante.knowledge.net.Constants;
+import com.dante.knowledge.utils.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;

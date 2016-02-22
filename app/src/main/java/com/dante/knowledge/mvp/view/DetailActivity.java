@@ -12,11 +12,10 @@ import android.widget.FrameLayout;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.mvp.model.Image;
-import com.dante.knowledge.mvp.other.Data;
-import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.Shared;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -24,13 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
+import io.realm.RealmChangeListener;
 import ooo.oxo.library.widget.PullBackLayout;
 
-public class DetailActivity extends BaseActivity implements PullBackLayout.Callback {
+public class DetailActivity extends BaseActivity implements PullBackLayout.Callback, RealmChangeListener {
 
     @Bind(R.id.pager)
     ViewPager pager;
-    public List<FreshItem> freshItems;
     @Bind(R.id.container)
     FrameLayout container;
     private int position;
@@ -38,6 +37,9 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     private List<Image> images;
     private String menuType;
     private boolean isPicture;
+    private int currentPosition;
+    private int type;
+
 
     @Override
     protected void initLayoutId() {
@@ -60,20 +62,18 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         List<Fragment> fragments = new ArrayList<>();
 
         if (MenuTabFragment.MENU_NEWS.equals(menuType)) {
-            freshItems = DB.findAllDateSorted(FreshItem.class);
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, freshItems);
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.findAll(FreshItem.class).size());
 
-            for (int i = 0; i < freshItems.size(); i++) {
-                fragments.add(FreshDetailFragment.newInstance(freshItems.get(i)));
+            for (int i = 0; i < DB.findAll(FreshItem.class).size(); i++) {
+                fragments.add(FreshDetailFragment.newInstance(i));
             }
         } else if (isPicture) {
             ((PullBackLayout) container).setCallback(this);
-            int type = getIntent().getIntExtra(Constants.TYPE, 0);
-            images = DB.getImages(type);
+            type = getIntent().getIntExtra(Constants.TYPE, 0);
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
             }
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, images);
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.getImages(type).size());
 
         }
         pager.setAdapter(adapter);
@@ -87,7 +87,9 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onPageSelected(int position) {
+                currentPosition=position;
                 setEnterSharedElement(position);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -108,7 +110,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 Log.i("test", "pager position " + position);
-                Shared.save("shared_index", position);
+                SP.save("shared_index", position);
                 names.clear();
                 names.add(images.get(position).getUrl());
                 super.onMapSharedElements(names, sharedElements);
@@ -138,18 +140,27 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void supportFinishAfterTransition() {
+//        getWindow().setExitTransition(null);
         super.supportFinishAfterTransition();
     }
 
-    private class DetailPagerAdapter<T extends Data> extends FragmentPagerAdapter {
+    @Override
+    public void onChange() {
+        //fix one PagerAdapter bug as following:
+        //      ---The application's PagerAdapter changed the adapter's contents
+        //      ---without calling PagerAdapter#notifyDataSetChanged!]
+        adapter.notifyDataSetChanged();
+    }
+
+    private class DetailPagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> fragments;
-        private List<T> items;
+        private int size;
 
-        public DetailPagerAdapter(FragmentManager fm, List<Fragment> fragments, List<T> items) {
+        public DetailPagerAdapter(FragmentManager fm, List<Fragment> fragments, int dataSize) {
             super(fm);
             this.fragments = fragments;
-            this.items = items;
+            this.size = dataSize;
         }
 
         public void addFragment(Fragment fragment) {
@@ -163,7 +174,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
         @Override
         public int getCount() {
-            return items.size();
+            return size;
         }
 
         public ViewerFragment getCurrent(int position) {
@@ -171,11 +182,16 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SP.save(type + Constants.POSITION, currentPosition);
+    }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(this);
+        super.onDestroy();
 //        System.exit(0);
     }
 

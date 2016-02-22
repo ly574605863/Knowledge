@@ -13,11 +13,11 @@ import com.bumptech.glide.Glide;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.Constants;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.utils.ImageUtil;
-import com.dante.knowledge.utils.Shared;
-import com.dante.knowledge.utils.StringUtil;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.Dater;
+import com.dante.knowledge.utils.Image;
+import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
         splash = (ImageView) findViewById(R.id.splash);
-        if (Shared.getBoolean(SettingFragment.ORIGINAL_SPLASH)) {
+        if (SP.getBoolean(SettingFragment.ORIGINAL_SPLASH)) {
             Glide.with(this).load(R.drawable.splash).crossFade(1500).into(splash);
             startAppDelay();
             return;
@@ -56,9 +56,9 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void initSplash() {
-        today = StringUtil.parseStandardDate(new Date());
+        today = Dater.parseStandardDate(new Date());
         loadImageFile();
-        if (!today.equals(Shared.get(Constants.DATE, ""))) {
+        if (!today.equals(SP.get(Constants.DATE, ""))) {
             getSplash();
         }
     }
@@ -80,8 +80,8 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String url = jsonObject.getString("img");
-                    Shared.save(SPLASH, url);
-                    Shared.save(Constants.DATE, today);
+                    SP.save(SPLASH, url);
+                    SP.save(Constants.DATE, today);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -91,11 +91,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void loadImageFile() {
-        String url = Shared.get(SPLASH, "");
+        String url = SP.get(SPLASH, "");
         if ("".equals(url)) {
             Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
         } else {
-            ImageUtil.load(url, R.anim.scale_anim, splash);
+            Image.load(url, R.anim.scale_anim, splash);
         }
         startAppDelay();
     }

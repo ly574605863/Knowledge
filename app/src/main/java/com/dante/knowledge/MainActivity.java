@@ -14,8 +14,8 @@ import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
-import com.dante.knowledge.utils.ShareUtil;
-import com.dante.knowledge.utils.Shared;
+import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.Share;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity
 
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(this);
-        if (Shared.getBoolean(SettingFragment.SECRET_MODE)) {
+        if (SP.getBoolean(SettingFragment.SECRET_MODE)) {
             navView.inflateMenu(R.menu.main_menu_all);
         } else {
             navView.inflateMenu(R.menu.main_drawer);
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
-        Shared.getInt("shared_index");// TODO: 16/2/19 notify pictureFragment to scroll to index
+        SP.getInt("shared_index");// TODO: 16/2/19 notify pictureFragment to scroll to index
         supportPostponeEnterTransition();
     }
     @Override
@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_share) {
             startActivity(
                     Intent.createChooser(
-                            ShareUtil.getShareIntent(getString(R.string.share_app_description)),
+                            Share.getShareIntent(getString(R.string.share_app_description)),
                             getString(R.string.share_app)));
 
         } else if (id == R.id.nav_setting) {

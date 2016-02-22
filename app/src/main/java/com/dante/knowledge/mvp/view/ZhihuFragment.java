@@ -18,13 +18,14 @@ import com.dante.knowledge.mvp.model.ZhihuData;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.net.Constants;
-import com.dante.knowledge.utils.UiUtils;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 
 public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuData>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
 
+    private static final int PRELOAD_COUNT = 1;
     private NewsPresenter presenter;
     private ZhihuListAdapter adapter;
     private ConvenientBanner banner;
@@ -48,6 +49,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     @Override
     protected void initViews() {
         super.initViews();
+        type = MenuTabFragment.TYPE_ZHIHU;
         Context context = getActivity();
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
@@ -58,15 +60,21 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
-
-                if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem + 1 == adapter.getItemCount()
-                        && adapter.isHasFooter()) {
-                    presenter.loadBefore();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    onListScrolled();
                 }
             }
         });
+
+    }
+
+    private void onListScrolled() {
+        initBanner();
+        firstPosition = layoutManager.findFirstVisibleItemPosition();
+        lastPosition = layoutManager.findLastVisibleItemPosition();
+        if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()){
+            presenter.loadBefore();
+        }
 
     }
 
@@ -79,16 +87,11 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
 
     private void initBanner() {
         if (null == banner) {
-            recyclerView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (recyclerView.getChildCount() != 0) {
-                        banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
-                        banner.setScrollDuration(1000);
-                        banner.startTurning(5000);
-                    }
-                }
-            });
+            if (recyclerView.getChildCount() != 0&&layoutManager.findFirstVisibleItemPosition()==0) {
+                banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
+                banner.setScrollDuration(1000);
+                banner.startTurning(5000);
+            }
         }
     }
 
@@ -109,9 +112,8 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
 
     @Override
     public void loadFailed(String msg) {
-
         if (isLive()) {
-            UiUtils.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
+            UI.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }
 

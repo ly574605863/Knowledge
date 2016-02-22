@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.utils.Shared;
+import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.Tool;
-import com.dante.knowledge.utils.UiUtils;
+import com.dante.knowledge.utils.UI;
 
 import java.io.File;
 
@@ -61,12 +61,12 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
                     secretIndex++;
                 }
                 if (secretIndex == 5) {
-                    if (Shared.getBoolean(SECRET_MODE)) {
-                        Shared.save(SECRET_MODE, false);
-                        UiUtils.showSnack(rootView, R.string.secret_mode_closed);
+                    if (SP.getBoolean(SECRET_MODE)) {
+                        SP.save(SECRET_MODE, false);
+                        UI.showSnack(rootView, R.string.secret_mode_closed);
                     } else {
-                        Shared.save(SECRET_MODE, true);
-                        UiUtils.showSnackLong(rootView, R.string.secret_mode_opened);
+                        SP.save(SECRET_MODE, true);
+                        UI.showSnackLong(rootView, R.string.secret_mode_opened);
                     }
                     secretIndex++;
                 }
