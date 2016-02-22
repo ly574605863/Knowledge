@@ -50,7 +50,6 @@
         <activity
             android:name=".mvp.view.DetailActivity"
             android:label="@string/activity_fresh_detail"
-            android:windowSoftInputMode="adjustResize"
             android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
         <activity
