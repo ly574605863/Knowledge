@@ -6,10 +6,10 @@ import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.callback.StringCallback;
 

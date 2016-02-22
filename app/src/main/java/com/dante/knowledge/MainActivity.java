@@ -14,8 +14,8 @@ import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
-import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.Share;
+import com.dante.knowledge.utils.SP;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;

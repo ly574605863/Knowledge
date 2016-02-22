@@ -9,7 +9,7 @@ import com.dante.knowledge.KnowledgeApp;
 /**
  * Util to show hint such as snackBar or dialog.
  */
-public class UiUtils {
+public class UI {
 
     private static Context context =KnowledgeApp.context;
 

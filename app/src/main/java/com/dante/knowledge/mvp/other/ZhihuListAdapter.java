@@ -18,10 +18,12 @@ import com.dante.knowledge.mvp.model.ZhihuItem;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.NetworkImageHolderView;
 import com.dante.knowledge.net.DB;
-import com.dante.knowledge.utils.Dater;
 import com.dante.knowledge.utils.Image;
+import com.dante.knowledge.utils.Dater;
 
 import java.util.List;
+
+import io.realm.RealmList;
 
 /**
  * Zhihu news' recyclerView adapter

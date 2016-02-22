@@ -8,7 +8,7 @@ import com.dante.knowledge.R;
 /**
  * Util to share data, make share intent, etc.
  */
-public class ShareUtil {
+public class Share {
 
     public static Intent getShareIntent(String shareText) {
         Intent textIntent = new Intent();

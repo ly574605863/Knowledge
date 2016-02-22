@@ -11,13 +11,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
-import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.UI;
 

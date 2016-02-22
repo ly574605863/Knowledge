@@ -19,6 +19,7 @@ import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 

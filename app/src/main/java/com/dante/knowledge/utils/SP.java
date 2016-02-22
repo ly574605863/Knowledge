@@ -9,7 +9,7 @@ import com.dante.knowledge.KnowledgeApp;
 /**
  * Created by yons on 16/2/16.
  */
-public class Shared {
+public class SP {
 
     private static Context context = KnowledgeApp.context;
     private static SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -31,6 +31,9 @@ public class Shared {
     }
     public static String get(String key, String defaultValue) {
         return sp.getString(key, defaultValue);
+    }
+    public static String getString(String key) {
+        return sp.getString(key, "");
     }
     public static int getInt(String key) {
         return sp.getInt(key, 0);

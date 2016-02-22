@@ -12,8 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.ui.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -12,9 +12,10 @@ import android.widget.FrameLayout;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.mvp.model.Image;
+import com.dante.knowledge.mvp.other.Data;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -70,10 +71,11 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         } else if (isPicture) {
             ((PullBackLayout) container).setCallback(this);
             type = getIntent().getIntExtra(Constants.TYPE, 0);
+            images = DB.getImages(type);
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
             }
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.getImages(type).size());
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments,images.size());
 
         }
         pager.setAdapter(adapter);
