@@ -71,10 +71,11 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         } else if (isPicture) {
             ((PullBackLayout) container).setCallback(this);
             type = getIntent().getIntExtra(Constants.TYPE, 0);
+            images = DB.getImages(type);
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
             }
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.getImages(type).size());
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments,images.size());
 
         }
         pager.setAdapter(adapter);
