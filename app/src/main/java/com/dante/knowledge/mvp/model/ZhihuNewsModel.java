@@ -7,15 +7,14 @@ import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import io.realm.Realm;
-import io.realm.Sort;
 import okhttp3.Call;
 
 /**
@@ -89,18 +88,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
 
     @Override
     public void getNewsDetail(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
-        if (getDetailFromDB(newsItem, listener)) return;
-
         requestData(newsItem, listener);
-    }
-
-    private boolean getDetailFromDB(ZhihuItem newsItem, OnLoadDetailListener<ZhihuDetail> listener) {
-        ZhihuDetail detailNews = DB.getById(newsItem.getId(), ZhihuDetail.class);
-        if (null != detailNews) {
-            listener.onDetailSuccess(detailNews);
-            return true;
-        }
-        return false;
     }
 
     private void requestData(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
@@ -112,8 +100,6 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     Net.get(API.BASE_URL + newsItem.getId(), this, API.TAG_ZHIHU);
                     return;
-                } else {
-                    if (getDetailFromDB(newsItem, listener)) return;
                 }
                 listener.onFailure("load zhihu detail failed", e);
             }

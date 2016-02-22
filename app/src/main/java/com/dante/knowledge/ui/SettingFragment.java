@@ -49,7 +49,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         about = findPreference(FEED_BACK);
         version = findPreference(APP_VERSION);
         splash = findPreference(ORIGINAL_SPLASH);
-        clearCache.setSummary(clearCache.getSummary() + fileDirSize());
+        clearCache.setSummary(clearCache.getSummary() + getCacheSize());
         splash.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -97,11 +97,6 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         about.setOnPreferenceClickListener(this);
     }
 
-    private String fileDirSize() {
-        File file = getActivity().getApplicationContext().getFilesDir();
-        return Tool.getFileSize(file);
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -112,29 +107,43 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
     }
 
+    private String getCacheSize() {
+        File file = getActivity().getApplicationContext().getCacheDir();
+        return Tool.getFileSize(file);
+    }
+
     @Override
     public boolean onPreferenceClick(Preference preference) {
         String key = preference.getKey();
-        File dir = getActivity().getApplicationContext().getFilesDir();
-
-        if (key.equals(CLEAR_CACHE)) {
-
-            for (File file : dir.listFiles()) {
-                if (!file.delete()) {
+        switch (key) {
+            case CLEAR_CACHE:
+                if (clearCache()) {
+                    Snackbar.make(rootView, R.string.clear_cache_success, Snackbar.LENGTH_SHORT).show();
+                    clearCache.setSummary(getString(R.string.set_current_cache) + getCacheSize());
+                } else {
+                    //clear failed
                     Snackbar.make(rootView, R.string.clear_cache_failed, Snackbar.LENGTH_SHORT).show();
-                    return true;
                 }
-            }
-            Snackbar.make(rootView, R.string.clear_cache_success, Snackbar.LENGTH_SHORT).show();
-            clearCache.setSummary(getString(R.string.set_current_cache) + fileDirSize());
 
-        } else if (key.equals(FEED_BACK)) {
-            sendEmail();
+                break;
+            case FEED_BACK:
+                sendEmailFeedback();
+                break;
         }
         return true;
     }
 
-    private void sendEmail() {
+    private boolean clearCache() {
+        File cacheDir = getActivity().getApplicationContext().getCacheDir();
+        for (File file : cacheDir.listFiles()) {
+            if (!file.delete()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void sendEmailFeedback() {
         Intent email = new Intent(Intent.ACTION_SENDTO);
         email.setData(Uri.parse("mailto:danteandroi@gmail.com"));
         email.putExtra(Intent.EXTRA_SUBJECT, "Knowledge Feedback");

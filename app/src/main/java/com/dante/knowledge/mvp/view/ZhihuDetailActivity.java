@@ -18,9 +18,9 @@ import com.dante.knowledge.mvp.model.ZhihuDetail;
 import com.dante.knowledge.mvp.model.ZhihuItem;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.presenter.ZhihuDetailPresenter;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.Image;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
@@ -63,7 +63,11 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         }
         presenter = new ZhihuDetailPresenter(this, this);
         initWebView();
-        presenter.loadNewsDetail(story);
+        if (zhihuDetail == null) {
+            presenter.loadNewsDetail(story);
+        } else {
+            showDetail(zhihuDetail);
+        }
         initFAB();
     }
 
@@ -105,14 +109,15 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
 
     @Override
     public void onBackPressed() {
+        webView.setTransitionGroup(true);// TODO: 16/2/22
         super.onBackPressed();
-        webView.setVisibility(View.INVISIBLE);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         webView.onPause();
+
     }
 
     @Override
@@ -124,11 +129,9 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        webContainer.removeView(webView);
-//        webView.removeAllViews();
-//        webView.destroy();
         System.exit(0);
     }
+
 
     @Override
     public void showProgress() {

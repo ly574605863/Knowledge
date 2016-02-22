@@ -3,7 +3,7 @@ package com.dante.knowledge.mvp.model;
 import io.realm.RealmObject;
 
 /**
- * Created by yons on 16/2/15.
+ * To make realmObject 'support' List<String>
  */
 public class RealmString extends RealmObject{
 
