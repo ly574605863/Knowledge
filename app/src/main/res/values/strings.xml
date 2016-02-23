@@ -17,7 +17,7 @@
     <string name="app">应用</string>
     <string name="nav_share">分享</string>
     <string name="nav_setting">设置</string>
-    <string name="activity_fresh_detail">新鲜事详情</string>
+    <string name="activity_detail">详情页</string>
     <string name="fresh_news">新鲜事</string>
     <string name="zhihu_news">知乎日報</string>
     <string name="loading">努力加载中…</string>

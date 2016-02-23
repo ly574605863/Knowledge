@@ -49,7 +49,7 @@
         </activity>
         <activity
             android:name=".mvp.view.DetailActivity"
-            android:label="@string/activity_fresh_detail"
+            android:label="@string/activity_detail"
             android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
         <activity

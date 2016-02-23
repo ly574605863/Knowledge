@@ -23,9 +23,9 @@ import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.mvp.other.PictureAdapter;
 import com.dante.knowledge.mvp.presenter.PictureFetchService;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -65,6 +65,15 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private UpdateReceiver updateReceiver;
     private LocalBroadcastManager localBroadcastManager;
     private FragmentActivity context;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
+            PRELOAD_COUNT++;
+            fetch(false);
+        }
+    }
 
     @Override
     public void onDestroyView() {
@@ -142,7 +151,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void onListScrolled() {
-        firstPosition=layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
+        firstPosition = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
         lastPosition = layoutManager.findLastVisibleItemPositions(
                 new int[layoutManager.getSpanCount()])[1];
 
@@ -153,7 +162,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             }
 
         } else if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
-            PRELOAD_COUNT++;
             fetch(false);
         }
     }
@@ -198,7 +206,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         if (fresh) {
             page = 1;
             isFirst = true;
-        }else {
+        } else {
             isFirst = false;
         }
 
@@ -219,11 +227,12 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                 url = API.DB_RANK + page;
                 break;
             default://type = 0, 代表GANK
-                if (!isFirst) {
-                    //if not first load, we load more (coz user has images to see)
+                url = API.GANK + LOAD_COUNT + "/" + page;
+                if (isFirst) {
+                    //if first load, we make load count larger next time
+                    // (coz user has images to see)
                     LOAD_COUNT = LOAD_COUNT_LARGE;
                 }
-                url = API.GANK + LOAD_COUNT + "/" + page;
                 break;
         }
     }
@@ -232,15 +241,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     protected void AlwaysInit() {
         super.AlwaysInit();
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
-            PRELOAD_COUNT++;
-            fetch(false);
-        }
     }
 
     @Override
@@ -295,7 +295,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra(PictureFetchService.EXTRA_FETCHED_RESULT, false)) {
                 onDataSuccess(null);
-            }else {
+            } else {
                 onFailure("load no results", null);
             }
         }

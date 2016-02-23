@@ -103,6 +103,7 @@ public class PictureFetchService extends IntentService {
 
         } else if (PictureFragment.TYPE_DB_RANK < type
                 && type < PictureFragment.TYPE_H_STREET) {
+
             parseH(response);
         }
     }

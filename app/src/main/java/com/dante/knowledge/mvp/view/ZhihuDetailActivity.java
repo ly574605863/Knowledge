@@ -109,7 +109,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
 
     @Override
     public void onBackPressed() {
-        webView.setTransitionGroup(true);// TODO: 16/2/22
+        webView.setVisibility(View.INVISIBLE);
         super.onBackPressed();
     }
 

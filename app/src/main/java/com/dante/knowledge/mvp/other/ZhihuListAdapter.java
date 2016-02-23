@@ -18,12 +18,10 @@ import com.dante.knowledge.mvp.model.ZhihuItem;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.NetworkImageHolderView;
 import com.dante.knowledge.net.DB;
-import com.dante.knowledge.utils.Image;
 import com.dante.knowledge.utils.Dater;
+import com.dante.knowledge.utils.Image;
 
 import java.util.List;
-
-import io.realm.RealmList;
 
 /**
  * Zhihu news' recyclerView adapter
@@ -126,12 +124,12 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 return;
             } else {
                 viewHolder.zhihuItem = zhihuItems.get(position - 2);//position=0, 1 are occupied with banner, header
-                //id == 1 means this item is added by me, so it's a header to show date.
-
+                //type == 1 means this item is added by me, so it's a header to show date.
                 if (viewHolder.zhihuItem.getType() == 1) {
                     String date = Dater.getDisplayDate(viewHolder.zhihuItem.getId() + "");
                     viewHolder.header.setText(date);
                     viewHolder.header.setVisibility(View.VISIBLE);
+                    viewHolder.header.setClickable(false);
                     viewHolder.mItem.setVisibility(View.GONE);
                     return;
                 } else {

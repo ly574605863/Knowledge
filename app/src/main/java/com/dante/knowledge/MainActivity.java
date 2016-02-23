@@ -14,8 +14,8 @@ import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
-import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.Share;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
@@ -71,6 +71,8 @@ public class MainActivity extends BaseActivity
         } else {
             navView.inflateMenu(R.menu.main_drawer);
         }
+        //select the first menu at startup
+        navView.getMenu().getItem(0).setChecked(true);
     }
 
 
@@ -102,12 +104,13 @@ public class MainActivity extends BaseActivity
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public void onActivityReenter(int resultCode, Intent data) {
         super.onActivityReenter(resultCode, data);
-        SP.getInt("shared_index");// TODO: 16/2/19 notify pictureFragment to scroll to index
         supportPostponeEnterTransition();
     }
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.

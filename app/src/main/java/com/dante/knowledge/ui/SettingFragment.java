@@ -6,13 +6,13 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.utils.App;
 import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.Tool;
 import com.dante.knowledge.utils.UI;
@@ -117,14 +117,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         String key = preference.getKey();
         switch (key) {
             case CLEAR_CACHE:
-                if (clearCache()) {
-                    Snackbar.make(rootView, R.string.clear_cache_success, Snackbar.LENGTH_SHORT).show();
-                    clearCache.setSummary(getString(R.string.set_current_cache) + getCacheSize());
-                } else {
-                    //clear failed
-                    Snackbar.make(rootView, R.string.clear_cache_failed, Snackbar.LENGTH_SHORT).show();
-                }
-
+                App.openAppInfo(getActivity());
                 break;
             case FEED_BACK:
                 sendEmailFeedback();
@@ -133,15 +126,6 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         return true;
     }
 
-    private boolean clearCache() {
-        File cacheDir = getActivity().getApplicationContext().getCacheDir();
-        for (File file : cacheDir.listFiles()) {
-            if (!file.delete()) {
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void sendEmailFeedback() {
         Intent email = new Intent(Intent.ACTION_SENDTO);

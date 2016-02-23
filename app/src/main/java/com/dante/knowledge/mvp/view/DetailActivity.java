@@ -12,10 +12,9 @@ import android.widget.FrameLayout;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.FreshItem;
 import com.dante.knowledge.mvp.model.Image;
-import com.dante.knowledge.mvp.other.Data;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SP;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -49,7 +48,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         if (MenuTabFragment.MENU_PIC.equals(menuType)) {
             isPicture = true;
             layoutId = R.layout.activity_detail_pulldown;
-            setTheme(R.style.AppTheme_NoActionBar_TransNav);
+            setTheme(R.style.ViewerTheme_TransNav);
         }
     }
 
@@ -91,7 +90,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             public void onPageSelected(int position) {
                 currentPosition=position;
                 setEnterSharedElement(position);
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -127,6 +125,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void onPull(float v) {
+        getWindow().getDecorView().getBackground().setAlpha(0xff - (int) Math.floor(0xff * v));
 
     }
 
@@ -142,13 +141,12 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void supportFinishAfterTransition() {
-//        getWindow().setExitTransition(null);
         super.supportFinishAfterTransition();
     }
 
     @Override
     public void onChange() {
-        //fix one PagerAdapter bug as following:
+        //May fix one PagerAdapter bug as following:
         //      ---The application's PagerAdapter changed the adapter's contents
         //      ---without calling PagerAdapter#notifyDataSetChanged!]
         adapter.notifyDataSetChanged();
