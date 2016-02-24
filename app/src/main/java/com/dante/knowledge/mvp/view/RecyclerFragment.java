@@ -38,6 +38,7 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
     @Override
     public void onDestroyView() {
         SP.save(type + Constants.POSITION, firstPosition);
+//        DB.realm.close();
         super.onDestroyView();
     }
 
@@ -53,7 +54,8 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
             swipeRefresh.post(new Runnable() {
                 @Override
                 public void run() {
-                    swipeRefresh.setRefreshing(refreshState);
+                    if (swipeRefresh!=null)
+                        swipeRefresh.setRefreshing(refreshState);
                 }
             });
         }}

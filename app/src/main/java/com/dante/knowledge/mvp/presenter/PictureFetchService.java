@@ -25,7 +25,7 @@ import io.realm.Realm;
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p>
+ * <p/>
  * helper methods.
  */
 public class PictureFetchService extends IntentService {
@@ -54,6 +54,9 @@ public class PictureFetchService extends IntentService {
      */
 
     public static void startActionFetch(Context context, int type, String response) {
+        if (context==null){
+            return;
+        }
         Intent intent = new Intent(context, PictureFetchService.class);
         intent.setAction(ACTION_FETCH);
         intent.putExtra(Constants.TYPE, type);
@@ -161,9 +164,7 @@ public class PictureFetchService extends IntentService {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(images);
         realm.commitTransaction();
-        realm.close();
-
-        sendResult(true);
+        sendResult(images.size() != 0);
     }
 
     private void sendResult(boolean isSuccess) {

@@ -32,6 +32,7 @@ public class SP {
     public static String get(String key, String defaultValue) {
         return sp.getString(key, defaultValue);
     }
+
     public static String getString(String key) {
         return sp.getString(key, "");
     }

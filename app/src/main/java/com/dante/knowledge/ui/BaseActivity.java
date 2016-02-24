@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.dante.knowledge.R;
-import com.orhanobut.logger.Logger;
+import com.dante.knowledge.net.DB;
 
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -19,7 +19,6 @@ import io.realm.Realm;
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
-    protected Realm realm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,8 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         ButterKnife.bind(this);
         initAppBar();
-        Logger.init();
-        realm = Realm.getDefaultInstance();
+        DB.realm = Realm.getDefaultInstance();
     }
 
     private void initAppBar() {
@@ -56,11 +54,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (null != realm) {
-            realm.close();
-        }
+        DB.realm.close();
     }
 }

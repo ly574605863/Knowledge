@@ -13,11 +13,11 @@ import com.bumptech.glide.Glide;
 import com.dante.knowledge.MainActivity;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.Dater;
 import com.dante.knowledge.utils.Image;
 import com.dante.knowledge.utils.SP;
-import com.dante.knowledge.utils.Dater;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
     private void initSplash() {
         today = Dater.parseStandardDate(new Date());
         loadImageFile();
-        if (!today.equals(SP.get(Constants.DATE, ""))) {
+        if (!today.equals(SP.getString(Constants.DATE))) {
             getSplash();
         }
     }

@@ -55,6 +55,7 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
             @Override
             public void onResponse(String response) {
                 ZhihuData news = Json.parseZhihuNews(response);
+                DB.findAllDateSorted(ZhihuData.class);
                 date = news.getDate();
                 addFooter(news);
                 DB.saveOrUpdate(news);

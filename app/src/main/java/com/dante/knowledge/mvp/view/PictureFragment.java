@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -151,9 +150,11 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     private void onListScrolled() {
-        firstPosition = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
-        lastPosition = layoutManager.findLastVisibleItemPositions(
-                new int[layoutManager.getSpanCount()])[1];
+        int itemCount = layoutManager.getItemCount();
+        int[] spans = new int[layoutManager.getSpanCount()];
+
+        firstPosition = layoutManager.findFirstVisibleItemPositions(spans)[0];
+        lastPosition = layoutManager.findLastVisibleItemPositions(spans)[1];
 
         if (isFirst) {
             if (lastPosition > images.size() / 3) {
@@ -161,23 +162,19 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                 fetch(false);
             }
 
-        } else if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
+        } else if (lastPosition > itemCount - PRELOAD_COUNT) {
             fetch(false);
+        }
+        //split show progress code with fetch code
+        //so user may not see the annoying circle here and there
+        if (lastPosition > itemCount - PRELOAD_COUNT/2) {
+            changeProgress(true);
         }
     }
 
     private void fetch(boolean fresh) {
-        changeProgress(true);
         initUrl(fresh);
         getData();
-        //hide the circle after 10 secs whatsover
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                changeProgress(false);
-            }
-        }, 5 * 1000);
     }
 
     private void getData() {
@@ -194,7 +191,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
             @Override
             public void onResponse(String response) {
-                PictureFetchService.startActionFetch(getActivity(), type, response);
+                    PictureFetchService.startActionFetch(getActivity(), type, response);
 
             }
         };
@@ -281,8 +278,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                     .setAction(R.string.try_again, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            changeProgress(true);
-                            fetch(false);
+                            changeProgress(false);
                         }
                     }).show();
         }
@@ -296,6 +292,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             if (intent.getBooleanExtra(PictureFetchService.EXTRA_FETCHED_RESULT, false)) {
                 onDataSuccess(null);
             } else {
+                fetch(false);
                 onFailure("load no results", null);
             }
         }

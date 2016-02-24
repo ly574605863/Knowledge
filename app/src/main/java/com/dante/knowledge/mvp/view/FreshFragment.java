@@ -54,6 +54,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     protected void initViews() {
         super.initViews();
         Context context = getActivity();
+        type = MenuTabFragment.TYPE_FRESH;
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new NewsListAdapter(context, this);

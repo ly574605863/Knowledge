@@ -41,8 +41,14 @@ public class MainActivity extends BaseActivity
         setupDrawer();
         initNavigationView();
         replace(MenuTabFragment.MENU_NEWS);
-        TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
+        initSDK();
     }
+
+    private void initSDK() {
+        TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
+//        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
+    }
+
 
     public DrawerLayout getDrawerLayout() {
         return drawerLayout;
@@ -137,6 +143,5 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }

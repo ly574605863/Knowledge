@@ -19,6 +19,7 @@ import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SP;
 import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -34,6 +35,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU);
+        SP.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
     }
 
@@ -49,7 +51,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     @Override
     protected void initViews() {
         super.initViews();
-//        type = MenuTabFragment.TYPE_ZHIHU;
+        type = MenuTabFragment.TYPE_ZHIHU;
         Context context = getActivity();
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
@@ -72,7 +74,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
         initBanner();
         firstPosition = layoutManager.findFirstVisibleItemPosition();
         lastPosition = layoutManager.findLastVisibleItemPosition();
-        if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()){
+        if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()) {
             presenter.loadBefore();
         }
 
@@ -87,7 +89,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
 
     private void initBanner() {
         if (null == banner) {
-            if (recyclerView.getChildCount() != 0&&layoutManager.findFirstVisibleItemPosition()==0) {
+            if (recyclerView.getChildCount() != 0 && layoutManager.findFirstVisibleItemPosition() == 0) {
                 banner = (ConvenientBanner) layoutManager.findViewByPosition(0);
                 banner.setScrollDuration(1000);
                 banner.startTurning(5000);

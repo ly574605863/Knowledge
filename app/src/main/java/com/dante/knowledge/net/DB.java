@@ -1,7 +1,6 @@
 package com.dante.knowledge.net;
 
 import com.dante.knowledge.mvp.model.Image;
-import com.dante.knowledge.mvp.view.PictureFragment;
 import com.dante.knowledge.utils.Constants;
 
 import java.util.List;
@@ -12,11 +11,11 @@ import io.realm.RealmResults;
 import io.realm.Sort;
 
 /**
- * Created by yons on 16/2/15.
+ * Deals with cache, data
  */
 public class DB {
 
-    public static Realm realm = Realm.getDefaultInstance();
+    public static Realm realm;
 
     public static void saveOrUpdate(RealmObject realmObject) {
         realm.beginTransaction();
@@ -58,9 +57,7 @@ public class DB {
 
     public static RealmResults<Image> getImages(int type) {
         RealmResults<Image> results = realm.where(Image.class).equalTo("type", type).findAll();
-        if (type == PictureFragment.TYPE_GANK) {
-            results.sort("publishedAt", Sort.DESCENDING);
-        }
+        results.sort("publishedAt", Sort.DESCENDING);
         return results;
     }
 }

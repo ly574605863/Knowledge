@@ -67,5 +67,6 @@
     <string name="save_img_failed">无法保存图片</string>
     <string name="save_img_success">妹子已保存在：</string>
     <string name="view_img_hint">向下拉图片退出浏览；长按图片可以保存到手机~</string>
+    <string name="title_activity_test" translatable="false">TestActivity</string>
 
 </resources>

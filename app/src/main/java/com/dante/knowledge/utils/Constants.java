@@ -1,7 +1,7 @@
 package com.dante.knowledge.utils;
 
 /**
- * Created by yons on 16/2/16.
+ * Common constants for activities and fragments.
  */
 public class Constants {
 
@@ -15,4 +15,5 @@ public class Constants {
     public static final String MENU_TYPE = "menu_type";
     public static final String SAVE_NUM="save_num";
     public static final String HAS_HINT = "first_hint";
+    public static final String CHECK_DATE = "check_date";
 }

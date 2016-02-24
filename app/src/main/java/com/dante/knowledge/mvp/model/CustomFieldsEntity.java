@@ -6,8 +6,9 @@ import io.realm.RealmObject;
 /**
  * Created by yons on 16/2/16.
  */
-public  class CustomFieldsEntity  extends RealmObject{
+public class CustomFieldsEntity extends RealmObject {
     private RealmList<RealmString> thumb_c;
+
     public RealmList<RealmString> getThumb_c() {
         return thumb_c;
     }

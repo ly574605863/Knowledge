@@ -12,11 +12,11 @@
         android:name=".KnowledgeApp"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:windowSoftInputMode="adjustResize"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustResize">
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen">
@@ -62,6 +62,13 @@
             android:name=".mvp.presenter.PictureFetchService"
             android:exported="false">
         </service>
+
+        <activity
+            android:name=".TestActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

@@ -19,16 +19,17 @@ import com.dante.knowledge.utils.UI;
 
 import java.io.File;
 
+
 /**
  * the view in setting activity.
  */
 public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
     public static final String CLEAR_CACHE = "clear_cache";
     public static final String FEED_BACK = "feedback";
-    public static final String APP_VERSION = "version";
+    public static final String APP_VERSION = "check_version";
     public static final String ORIGINAL_SPLASH = "original_splash";
     public static final String SECRET_MODE = "secret_mode";
-    private static final long DURATION = 500;
+    private static final long DURATION = 300;
 
     private Preference clearCache;
     private Preference about;
@@ -53,48 +54,58 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         splash.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
-                if (System.currentTimeMillis() - startTime < DURATION * 3) {
-                    if (secretIndex < 2) {
-                        return true;
-                    }
-                    Log.i("test", "splash " + secretIndex);
-                    secretIndex++;
-                }
-                if (secretIndex == 5) {
-                    if (SP.getBoolean(SECRET_MODE)) {
-                        SP.save(SECRET_MODE, false);
-                        UI.showSnack(rootView, R.string.secret_mode_closed);
-                    } else {
-                        SP.save(SECRET_MODE, true);
-                        UI.showSnackLong(rootView, R.string.secret_mode_opened);
-                    }
-                    secretIndex++;
-                }
+                secretStepOne();
                 return true;
             }
         });
         version.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (first) {
-                    startTime = System.currentTimeMillis();
-                    first = false;
-                    Log.i("test", "first " + secretIndex);
+                Log.i("test", secretIndex + ">>>>");
+                if ((Boolean) newValue && secretIndex < 3) {
+//                    BmobUpdateAgent.forceUpdate(getActivity());
                 }
-                if (System.currentTimeMillis() - startTime < DURATION) {
-                    if (secretIndex > 2) {
-                        return true;
-                    }
-                    Log.i("test", "version " + secretIndex);
-                    secretIndex++;
-                }
-
+                secretStepTwo();
                 return true;
             }
         });
 
         clearCache.setOnPreferenceClickListener(this);
         about.setOnPreferenceClickListener(this);
+    }
+
+    private void secretStepTwo() {
+        if (System.currentTimeMillis() - startTime < DURATION * (secretIndex+1) ){
+            if (secretIndex > 2) {
+                Log.i("test", "splash " + secretIndex);
+                secretIndex++;
+            }
+        }
+        if (secretIndex == 6) {
+            if (SP.getBoolean(SECRET_MODE)) {
+                SP.save(SECRET_MODE, false);
+                secretIndex = 0;
+                UI.showSnack(rootView, R.string.secret_mode_closed);
+            } else {
+                SP.save(SECRET_MODE, true);
+                secretIndex = 0;
+                UI.showSnackLong(rootView, R.string.secret_mode_opened);
+            }
+            secretIndex++;
+        }
+    }
+
+    private void secretStepOne() {
+        if (first) {
+            startTime = System.currentTimeMillis();
+            first = false;
+        }
+        if (System.currentTimeMillis() - startTime < DURATION * (secretIndex+1) ){
+            if (secretIndex < 3) {
+                secretIndex++;
+            }
+
+        }
     }
 
     @Override

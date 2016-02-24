@@ -14,7 +14,8 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/action_about">
         <SwitchPreference
-            android:key="version"
+            android:key="check_version"
+            android:defaultValue="true"
             android:title="@string/set_check_version"/>
         <Preference
             android:key="feedback"

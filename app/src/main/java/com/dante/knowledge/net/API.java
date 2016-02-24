@@ -26,6 +26,8 @@ public class API {
     //Fresh things API
     public static final String FRESH_NEWS = "http://jandan.net/?oxwlxojflwblxbsapi=get_recent_posts&include=url,date,tags,author,title,comment_count,custom_fields&custom_fields=thumb_c,views&dev=1&page=";
     public static final String FRESH_NEWS_DETAIL = "http://i.jandan.net/?oxwlxojflwblxbsapi=get_post&include=content&id=";
+    public static final String FRESH_NEWS_COMMENTS = "http://jandan.duoshuo.com/api/threads/listPosts.json?thread_key=";
+
 
     //Pictures of beauties API
     public static String GANK = "http://gank.avosapps.com/api/data/%E7%A6%8F%E5%88%A9/";
