@@ -12,8 +12,17 @@ android {
         versionName "1.11"
     }
     buildTypes {
-        release {
+
+        debug{
+            applicationIdSuffix '.debug'
+            versionNameSuffix '-DEBUG'
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -30,7 +39,7 @@ android {
         abi {
             enable true
             reset()
-            include 'armeabi', 'armeabi-v7a',  'mips', 'x86'
+            include 'armeabi', 'armeabi-v7a',  'x86'
         }
     }
 }
