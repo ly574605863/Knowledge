@@ -74,7 +74,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
             }
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments,images.size());
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, images.size());
 
         }
         pager.setAdapter(adapter);
@@ -88,7 +88,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onPageSelected(int position) {
-                currentPosition=position;
+                currentPosition = position;
                 setEnterSharedElement(position);
             }
 

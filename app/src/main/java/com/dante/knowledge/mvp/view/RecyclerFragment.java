@@ -30,15 +30,20 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
         super.onResume();
         //restoring position when reentering fragment.
         lastPosition = SPUtil.getInt(type + Constants.POSITION);
-        if (lastPosition!=0){
+        if (lastPosition > 0) {
             recyclerView.scrollToPosition(lastPosition);
         }
     }
 
     @Override
     public void onDestroyView() {
-        SPUtil.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SPUtil.save(type + Constants.POSITION, firstPosition);
     }
 
     @Override
@@ -48,16 +53,18 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
                 R.color.colorPrimaryDark, R.color.colorAccent);
         swipeRefresh.setOnRefreshListener(this);
     }
+
     public void changeProgress(final boolean refreshState) {
         if (null != swipeRefresh) {
             swipeRefresh.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (swipeRefresh!=null)
+                    if (swipeRefresh != null)
                         swipeRefresh.setRefreshing(refreshState);
                 }
             });
-        }}
+        }
+    }
 
     public RecyclerView getRecyclerView() {
         return recyclerView;

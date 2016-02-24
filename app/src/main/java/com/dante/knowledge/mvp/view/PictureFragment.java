@@ -66,6 +66,12 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private FragmentActivity context;
 
     @Override
+    public void onPause() {
+        firstPosition = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
+        super.onPause();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
