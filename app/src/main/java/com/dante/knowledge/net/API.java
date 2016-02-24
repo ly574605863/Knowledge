@@ -10,14 +10,9 @@ public class API {
 
     //request tag, added to cancel that request conveniently (to avoid bugs).
     public static final Object TAG_ZHIHU = "zhihu";
-    public static final String TAG_ZHIHU_LATEST = "zhihu_latest";
-    public static final String TAG_ZHIHU_BEFORE = "zhihu_before";
-    public static final String TAG_ZHIHU_DETAIL = "zhihu_detail";
     public static final String TAG_SPLASH = "splash";
     public static final String TAG_FRESH = "fresh";
     public static final String TAG_PICTURE = "picture";
-    public static final String TAG_FRESH_LATEST = "fresh_latest";
-    public static final String TAG_FRESH_DETAIL = "fresh_before";
     //Zhihu API
     public static final String BASE_URL = "http://news-at.zhihu.com/api/4/news/";
     public static final String NEWS_LATEST = "http://news-at.zhihu.com/api/4/news/latest";
@@ -31,7 +26,6 @@ public class API {
 
     //Pictures of beauties API
     public static String GANK = "http://gank.avosapps.com/api/data/%E7%A6%8F%E5%88%A9/";
-    public static String DB_ALL = "http://www.dbmeinv.com/dbgroup/show.htm?pager_offset=";
     public static String DB_BREAST = "http://www.dbmeinv.com/dbgroup/show.htm?cid=2&pager_offset=";
     public static String DB_BUTT = "http://www.dbmeinv.com/dbgroup/show.htm?cid=6&pager_offset=";
     public static String DB_SILK = "http://www.dbmeinv.com/dbgroup/show.htm?cid=7&pager_offset=";

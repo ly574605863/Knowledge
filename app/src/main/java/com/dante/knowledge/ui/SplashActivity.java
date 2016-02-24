@@ -16,8 +16,8 @@ import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.Dater;
-import com.dante.knowledge.utils.Image;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.Imager;
+import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -46,7 +46,7 @@ public class SplashActivity extends AppCompatActivity {
                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
         decorView.setSystemUiVisibility(uiOptions);
         splash = (ImageView) findViewById(R.id.splash);
-        if (SP.getBoolean(SettingFragment.ORIGINAL_SPLASH)) {
+        if (SPUtil.getBoolean(SettingFragment.ORIGINAL_SPLASH)) {
             Glide.with(this).load(R.drawable.splash).crossFade(1500).into(splash);
             startAppDelay();
             return;
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
     private void initSplash() {
         today = Dater.parseStandardDate(new Date());
         loadImageFile();
-        if (!today.equals(SP.getString(Constants.DATE))) {
+        if (!today.equals(SPUtil.getString(Constants.DATE))) {
             getSplash();
         }
     }
@@ -80,8 +80,8 @@ public class SplashActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     String url = jsonObject.getString("img");
-                    SP.save(SPLASH, url);
-                    SP.save(Constants.DATE, today);
+                    SPUtil.save(SPLASH, url);
+                    SPUtil.save(Constants.DATE, today);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -91,11 +91,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void loadImageFile() {
-        String url = SP.get(SPLASH, "");
+        String url = SPUtil.get(SPLASH, "");
         if ("".equals(url)) {
             Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
         } else {
-            Image.load(url, R.anim.scale_anim, splash);
+            Imager.load(url, R.anim.scale_anim, splash);
         }
         startAppDelay();
     }

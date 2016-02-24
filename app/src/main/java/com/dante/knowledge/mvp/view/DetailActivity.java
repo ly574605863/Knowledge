@@ -10,12 +10,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.mvp.model.FreshItem;
+import com.dante.knowledge.mvp.model.FreshPost;
 import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void initLayoutId() {
         menuType = getIntent().getStringExtra(Constants.MENU_TYPE);
         layoutId = R.layout.activity_detail;
-        if (MenuTabFragment.MENU_PIC.equals(menuType)) {
+        if (TabsFragment.MENU_PIC.equals(menuType)) {
             isPicture = true;
             layoutId = R.layout.activity_detail_pulldown;
             setTheme(R.style.ViewerTheme_TransNav);
@@ -61,10 +61,10 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
         List<Fragment> fragments = new ArrayList<>();
 
-        if (MenuTabFragment.MENU_NEWS.equals(menuType)) {
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.findAll(FreshItem.class).size());
+        if (TabsFragment.MENU_NEWS.equals(menuType)) {
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.findAll(FreshPost.class).size());
 
-            for (int i = 0; i < DB.findAll(FreshItem.class).size(); i++) {
+            for (int i = 0; i < DB.findAll(FreshPost.class).size(); i++) {
                 fragments.add(FreshDetailFragment.newInstance(i));
             }
         } else if (isPicture) {
@@ -103,14 +103,13 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         setEnterSharedElementCallback(new SharedElementCallback() {
             @Override
             public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
-                Log.i("test", "end");
                 super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
             }
 
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
                 Log.i("test", "pager position " + position);
-                SP.save("shared_index", position);
+                SPUtil.save("shared_index", position);
                 names.clear();
                 names.add(images.get(position).getUrl());
                 super.onMapSharedElements(names, sharedElements);
@@ -185,7 +184,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     @Override
     protected void onPause() {
         super.onPause();
-        SP.save(type + Constants.POSITION, currentPosition);
+        SPUtil.save(type + Constants.POSITION, currentPosition);
     }
 
     @Override

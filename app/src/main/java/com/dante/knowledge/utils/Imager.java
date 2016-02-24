@@ -10,7 +10,7 @@ import com.dante.knowledge.KnowledgeApp;
 /**
  * loading img encapsulation.
  */
-public class Image {
+public class Imager {
 
     public static void load(Context context, String url, ImageView view) {
         Glide.with(context.getApplicationContext())

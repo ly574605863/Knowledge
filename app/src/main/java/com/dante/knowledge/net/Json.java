@@ -1,10 +1,10 @@
 package com.dante.knowledge.net;
 
-import com.dante.knowledge.mvp.model.FreshData;
-import com.dante.knowledge.mvp.model.FreshDetail;
+import com.dante.knowledge.mvp.model.FreshDetailJson;
+import com.dante.knowledge.mvp.model.FreshJson;
 import com.dante.knowledge.mvp.model.RealmString;
-import com.dante.knowledge.mvp.model.ZhihuData;
 import com.dante.knowledge.mvp.model.ZhihuDetail;
+import com.dante.knowledge.mvp.model.ZhihuJson;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -61,20 +61,20 @@ public class Json {
                 }
             }).create();
 
-    public static ZhihuData parseZhihuNews(String latest) {
-        return mGson.fromJson(latest, ZhihuData.class);
+    public static ZhihuJson parseZhihuNews(String latest) {
+        return mGson.fromJson(latest, ZhihuJson.class);
     }
 
     public static ZhihuDetail parseZhihuDetail(String detail) {
         return mGson.fromJson(detail, ZhihuDetail.class);
     }
 
-    public static FreshData parseFreshNews(String fresh) {
-        return mGson.fromJson(fresh, FreshData.class);
+    public static FreshJson parseFreshNews(String fresh) {
+        return mGson.fromJson(fresh, FreshJson.class);
     }
 
-    public static FreshDetail parseFreshDetail(String detail) {
-        return mGson.fromJson(detail, FreshDetail.class);
+    public static FreshDetailJson parseFreshDetail(String detail) {
+        return mGson.fromJson(detail, FreshDetailJson.class);
     }
 
     public static <Data> Data parseNews(String response, Class<Data> clz) {

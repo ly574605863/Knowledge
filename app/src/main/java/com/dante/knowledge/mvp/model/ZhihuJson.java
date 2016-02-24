@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Zhihu news class which contains date, stories and tops.
  */
-public class ZhihuData extends RealmObject implements Data {
+public class ZhihuJson extends RealmObject implements Data {
 
     /**
      * date : 20160129
@@ -26,7 +26,7 @@ public class ZhihuData extends RealmObject implements Data {
      * title : 运气好的话，说不定 3 万年就把木星挪过来
      */
 
-    private RealmList<ZhihuItem> stories;
+    private RealmList<ZhihuStory> stories;
     /**
      * image : http://pic2.zhimg.com/9c8804770cef7efe1b464eb394f73a19.jpg
      * type : 0
@@ -37,11 +37,11 @@ public class ZhihuData extends RealmObject implements Data {
 
     private RealmList<ZhihuTop> top_stories;
 
-    public RealmList<ZhihuItem> getStories() {
+    public RealmList<ZhihuStory> getStories() {
         return stories;
     }
 
-    public void setStories(RealmList<ZhihuItem> stories) {
+    public void setStories(RealmList<ZhihuStory> stories) {
         this.stories = stories;
     }
 

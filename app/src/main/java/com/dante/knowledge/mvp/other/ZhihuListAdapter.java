@@ -13,13 +13,13 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
-import com.dante.knowledge.mvp.model.ZhihuData;
-import com.dante.knowledge.mvp.model.ZhihuItem;
+import com.dante.knowledge.mvp.model.ZhihuJson;
+import com.dante.knowledge.mvp.model.ZhihuStory;
 import com.dante.knowledge.mvp.model.ZhihuTop;
-import com.dante.knowledge.mvp.view.NetworkImageHolderView;
+import com.dante.knowledge.mvp.view.BannerView;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.utils.Dater;
-import com.dante.knowledge.utils.Image;
+import com.dante.knowledge.utils.Imager;
 
 import java.util.List;
 
@@ -38,48 +38,27 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
      * footer is to show load more hint
      */
     private static final int TYPE_FOOTER = 3;
-    public static final String ZHIHU_ITEM = "zhihu_item";
     public static int textGrey;
     public static int textDark;
-    private final Context context;
 
-    private ZhihuData news;
-    private List<ZhihuItem> zhihuItems;
+    private List<ZhihuStory> zhihuStories;
     private List<ZhihuTop> tops;
 
     private OnListFragmentInteract mListener;
-    private boolean hasFooter;
-    private boolean showHeader;
-    private List<ZhihuItem> newItems;
 
-    public void setShowHeader(boolean showHeader) {
-        this.showHeader = showHeader;
-    }
 
-    public boolean isHasFooter() {
-        return hasFooter;
-    }
-
-    public void setHasFooter(boolean hasFooter) {
-        this.hasFooter = hasFooter;
-        notifyDataSetChanged();
-    }
-
-    public ZhihuListAdapter(Context context, OnListFragmentInteract listener) {
-        this.context = context;
+    public ZhihuListAdapter(OnListFragmentInteract listener) {
         mListener = listener;
-        zhihuItems = DB.findAll(ZhihuItem.class);
+        zhihuStories = DB.findAll(ZhihuStory.class);
         tops = DB.findAll(ZhihuTop.class);
     }
 
-    public void addNews(ZhihuData news) {
-        this.news = news;
-        setHasFooter(news.getStories().size() != 0);
+    public void addNews(ZhihuJson news) {
         notifyDataSetChanged();
     }
 
     public void clear() {
-        showHeader = false;
+
     }
 
     @Override
@@ -121,10 +100,10 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                 return;
             } else {
-                viewHolder.zhihuItem = zhihuItems.get(position - 2);//position=0, 1 are occupied with banner, header
+                viewHolder.zhihuStory = zhihuStories.get(position - 2);//position=0, 1 are occupied with banner, header
                 //type == 1 means this item is added by me, so it's a header to show date.
-                if (viewHolder.zhihuItem.getType() == 1) {
-                    String date = Dater.getDisplayDate(viewHolder.zhihuItem.getId() + "");
+                if (viewHolder.zhihuStory.getType() == 1) {
+                    String date = Dater.getDisplayDate(viewHolder.zhihuStory.getId() + "");
                     viewHolder.header.setText(date);
                     viewHolder.header.setVisibility(View.VISIBLE);
                     viewHolder.header.setClickable(false);
@@ -136,9 +115,8 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             }
 
-            showHeader = true;//first header just shows stationary text (today), others use date.
-            Image.load(context, viewHolder.zhihuItem.getImages().get(0).getVal(), viewHolder.mImage);
-            viewHolder.mTitle.setText(viewHolder.zhihuItem.getTitle());
+            Imager.load(context, viewHolder.zhihuStory.getImages().get(0).getVal(), viewHolder.mImage);
+            viewHolder.mTitle.setText(viewHolder.zhihuStory.getTitle());
             viewHolder.mTitle.setTextColor(textDark);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -152,10 +130,10 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         } else if (holder instanceof BannerViewHolder) {
             final BannerViewHolder itemHolder = (BannerViewHolder) holder;
-            itemHolder.banner.setPages(new CBViewHolderCreator<NetworkImageHolderView>() {
+            itemHolder.banner.setPages(new CBViewHolderCreator<BannerView>() {
                 @Override
-                public NetworkImageHolderView createHolder() {
-                    return new NetworkImageHolderView();
+                public BannerView createHolder() {
+                    return new BannerView();
                 }
             }, tops);
         }
@@ -166,7 +144,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemViewType(int position) {
         if (position == 0) {
             return TYPE_BANNER;
-        } else if (hasFooter && position == zhihuItems.size() + 1) {
+        } else if (position == zhihuStories.size() + 1) {
             // position 0 is banner so
             // the footer appears the size+1 position
             return TYPE_FOOTER;
@@ -177,10 +155,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         //items + banner + footer
-        if (hasFooter) {
-            return zhihuItems.size() + 2;
-        }
-        return zhihuItems.size() + 1;
+        return zhihuStories.size() + 2;
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -212,7 +187,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public final ImageView mImage;
         public final TextView mTitle;
         public final View mItem;
-        public ZhihuItem zhihuItem;
+        public ZhihuStory zhihuStory;
 
         public ViewHolder(View view) {
             super(view);

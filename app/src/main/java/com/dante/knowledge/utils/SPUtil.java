@@ -7,9 +7,9 @@ import android.preference.PreferenceManager;
 import com.dante.knowledge.KnowledgeApp;
 
 /**
- * Created by yons on 16/2/16.
+ * Helps with shared preference.
  */
-public class SP {
+public class SPUtil {
 
     private static Context context = KnowledgeApp.context;
     private static SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

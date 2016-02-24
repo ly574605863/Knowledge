@@ -1,8 +1,6 @@
 package com.dante.knowledge.mvp.model;
 
 
-import android.content.Context;
-
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
@@ -11,7 +9,7 @@ import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import io.realm.Realm;
@@ -20,25 +18,15 @@ import okhttp3.Call;
 /**
  * deals with the zhihu news' data work
  */
-public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDetail> {
+public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail> {
 
     private String date;
     private long lastGetTime;
-    private Context context;
     public static final int GET_DURATION = 2000;
     private int type;
-    private boolean isBefore;
-
-    public ZhihuNewsModel(Context context) {
-        this.context = context;
-    }
-
-    public void init() {
-        isBefore = false;
-    }
 
     @Override
-    public void getNews(final int type, final OnLoadDataListener<ZhihuData> listener) {
+    public void getNews(final int type, final OnLoadDataListener<ZhihuJson> listener) {
         this.type = type;
 
         lastGetTime = System.currentTimeMillis();
@@ -54,24 +42,24 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
 
             @Override
             public void onResponse(String response) {
-                ZhihuData news = Json.parseZhihuNews(response);
-                DB.findAllDateSorted(ZhihuData.class);
+                ZhihuJson news = Json.parseZhihuNews(response);
+                DB.findAllDateSorted(ZhihuJson.class);
                 date = news.getDate();
                 addFooter(news);
                 DB.saveOrUpdate(news);
-                SP.save(Constants.DATE, date);
-                listener.onDataSuccess(news);
+                SPUtil.save(Constants.DATE, date);
+                listener.onSuccess(news);
             }
         };
 
         getData(callback);
     }
 
-    private void addFooter(ZhihuData zhihuNews) {
+    private void addFooter(ZhihuJson zhihuNews) {
         if (type == API.TYPE_BEFORE) {
             Realm realm = Realm.getDefaultInstance();
             realm.beginTransaction();
-            realm.copyToRealmOrUpdate(new ZhihuItem(Integer.valueOf(zhihuNews.getDate()), 1));
+            realm.copyToRealmOrUpdate(new ZhihuStory(Integer.valueOf(zhihuNews.getDate()), 1));
             realm.commitTransaction();
         }
 
@@ -88,11 +76,11 @@ public class ZhihuNewsModel implements NewsModel<ZhihuItem, ZhihuData, ZhihuDeta
 
 
     @Override
-    public void getNewsDetail(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
+    public void getNewsDetail(final ZhihuStory newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
         requestData(newsItem, listener);
     }
 
-    private void requestData(final ZhihuItem newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
+    private void requestData(final ZhihuStory newsItem, final OnLoadDetailListener<ZhihuDetail> listener) {
         lastGetTime = System.currentTimeMillis();
 
         StringCallback callback = new StringCallback() {

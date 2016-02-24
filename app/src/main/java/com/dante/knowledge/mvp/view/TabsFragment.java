@@ -12,8 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ import butterknife.Bind;
 /**
  * A tab fragment {@link Fragment} contains different news fragment.
  */
-public class MenuTabFragment extends BaseFragment {
+public class TabsFragment extends BaseFragment {
 
     private static final int SMOOTHSCROLL_TOP_POSITION = 50;
     public static final int TYPE_ZHIHU = 1024;
@@ -45,10 +45,10 @@ public class MenuTabFragment extends BaseFragment {
     private NewsTabPagerAdapter adapter;
     private String menuType;
 
-    public static MenuTabFragment newInstance(String type) {
+    public static TabsFragment newInstance(String type) {
         Bundle args = new Bundle();
         args.putString(Constants.TYPE, type);
-        MenuTabFragment fragment = new MenuTabFragment();
+        TabsFragment fragment = new TabsFragment();
         fragment.setArguments(args);
         return fragment;
     }

@@ -15,13 +15,13 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.NewsDetailPresenter;
 import com.dante.knowledge.mvp.interf.NewsDetailView;
 import com.dante.knowledge.mvp.model.ZhihuDetail;
-import com.dante.knowledge.mvp.model.ZhihuItem;
+import com.dante.knowledge.mvp.model.ZhihuStory;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.presenter.ZhihuDetailPresenter;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.Image;
+import com.dante.knowledge.utils.Imager;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
 
@@ -40,9 +40,9 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     FrameLayout webContainer;
     private WebView webView;
     private int id;
-    private ZhihuItem story;
+    private ZhihuStory story;
     private ZhihuDetail zhihuDetail;
-    private NewsDetailPresenter<ZhihuItem> presenter;
+    private NewsDetailPresenter<ZhihuStory> presenter;
 
     @Override
     protected void initLayoutId() {
@@ -53,7 +53,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     protected void initViews() {
         super.initViews();
         id = getIntent().getIntExtra(Constants.ID, 0);
-        story = DB.getById(id, ZhihuItem.class);
+        story = DB.getById(id, ZhihuStory.class);
         zhihuDetail = DB.getById(id, ZhihuDetail.class);
         if (story == null) {
             //can't find zhihuItem, so this id is passed by Zhihutop
@@ -61,7 +61,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         } else {
             toolbarLayout.setTitle(story.getTitle());
         }
-        presenter = new ZhihuDetailPresenter(this, this);
+        presenter = new ZhihuDetailPresenter(this);
         initWebView();
         if (zhihuDetail == null) {
             presenter.loadNewsDetail(story);
@@ -141,7 +141,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     public void showDetail(ZhihuDetail detailNews) {
         zhihuDetail = detailNews;
-        Image.load(this, detailNews.getImage(), detailImg);
+        Imager.load(this, detailNews.getImage(), detailImg);
         //add css style to webView
         String css = "<link rel=\"stylesheet\" href=\"file:///android_asset/css/news.css\" type=\"text/css\">";
         String html = "<html><head>" + css + "</head><body>" + detailNews.getBody() + "</body></html>";

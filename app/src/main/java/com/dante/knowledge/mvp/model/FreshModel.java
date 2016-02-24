@@ -1,16 +1,14 @@
 package com.dante.knowledge.mvp.model;
 
-import android.content.Context;
-
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.net.API;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import okhttp3.Call;
@@ -18,7 +16,7 @@ import okhttp3.Call;
 /**
  * deals with the fresh news' data work
  */
-public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDetail> {
+public class FreshModel implements NewsModel<FreshPost, FreshJson, FreshDetailJson> {
     /**
      * clear page record to zero and start new request
      */
@@ -27,18 +25,13 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
      * a continuous request with increasing one page each time
      */
     public static final int TYPE_CONTINUOUS = 1;
-    private Context context;
-
-    public FreshNewsModel(Context context) {
-        this.context = context;
-    }
 
     private int page;
     private long lastGetTime;
     public static final int GET_DURATION = 3000;
 
     @Override
-    public void getNews(int type, final OnLoadDataListener<FreshData> listener) {
+    public void getNews(int type, final OnLoadDataListener<FreshJson> listener) {
 
         lastGetTime = System.currentTimeMillis();
         if (type == TYPE_FRESH) {
@@ -47,7 +40,7 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
         getFreshNews(listener);
     }
 
-    private void getFreshNews(final OnLoadDataListener<FreshData> listener) {
+    private void getFreshNews(final OnLoadDataListener<FreshJson> listener) {
         StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -60,10 +53,10 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
 
             @Override
             public void onResponse(String response) {
-                FreshData news = Json.parseFreshNews(response);
+                FreshJson news = Json.parseFreshNews(response);
                 DB.saveList(news.getPosts());
-                SP.save(Constants.PAGE, page);
-                listener.onDataSuccess(news);
+                SPUtil.save(Constants.PAGE, page);
+                listener.onSuccess(news);
                 page++;
             }
         };
@@ -72,16 +65,16 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
     }
 
     @Override
-    public void getNewsDetail(final FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
-        if (getDetailFromDB(freshItem, listener)) return;
+    public void getNewsDetail(final FreshPost freshPost, final OnLoadDetailListener<FreshDetailJson> listener) {
+        if (getDetailFromDB(freshPost, listener)) return;
 
-        requestData(freshItem, listener);
+        requestData(freshPost, listener);
     }
 
-    private boolean getDetailFromDB(FreshItem freshItem, OnLoadDetailListener<FreshDetail> listener) {
-        PostEntity post = DB.getById(freshItem.getId(), PostEntity.class);
+    private boolean getDetailFromDB(FreshPost freshPost, OnLoadDetailListener<FreshDetailJson> listener) {
+        FreshDetail post = DB.getById(freshPost.getId(), FreshDetail.class);
         if (null != post) {
-            FreshDetail detailNews = new FreshDetail();
+            FreshDetailJson detailNews = new FreshDetailJson();
             detailNews.setPost(post);
             listener.onDetailSuccess(detailNews);
             return true;
@@ -89,18 +82,13 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
         return false;
     }
 
-    @Override
-    public void init() {
-
-    }
-
-    private void requestData(final FreshItem freshItem, final OnLoadDetailListener<FreshDetail> listener) {
+    private void requestData(final FreshPost freshPost, final OnLoadDetailListener<FreshDetailJson> listener) {
         lastGetTime = System.currentTimeMillis();
         StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
-                    Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), this, API.TAG_FRESH);
+                    Net.get(API.FRESH_NEWS_DETAIL + freshPost.getId(), this, API.TAG_FRESH);
                     return;
                 }
                 listener.onFailure("load fresh detail failed", e);
@@ -109,11 +97,11 @@ public class FreshNewsModel implements NewsModel<FreshItem, FreshData, FreshDeta
 
             @Override
             public void onResponse(String response) {
-                FreshDetail detail = Json.parseFreshDetail(response);
+                FreshDetailJson detail = Json.parseFreshDetail(response);
                 DB.save(detail.getPost());
                 listener.onDetailSuccess(detail);
             }
         };
-        Net.get(API.FRESH_NEWS_DETAIL + freshItem.getId(), callback, API.TAG_FRESH);
+        Net.get(API.FRESH_NEWS_DETAIL + freshPost.getId(), callback, API.TAG_FRESH);
     }
 }

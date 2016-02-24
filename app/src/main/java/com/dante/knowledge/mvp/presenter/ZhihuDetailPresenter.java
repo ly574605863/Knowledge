@@ -1,33 +1,31 @@
 package com.dante.knowledge.mvp.presenter;
 
-import android.content.Context;
-
 import com.dante.knowledge.mvp.interf.NewsDetailPresenter;
 import com.dante.knowledge.mvp.interf.NewsDetailView;
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
-import com.dante.knowledge.mvp.model.ZhihuData;
 import com.dante.knowledge.mvp.model.ZhihuDetail;
-import com.dante.knowledge.mvp.model.ZhihuItem;
-import com.dante.knowledge.mvp.model.ZhihuNewsModel;
+import com.dante.knowledge.mvp.model.ZhihuJson;
+import com.dante.knowledge.mvp.model.ZhihuModel;
+import com.dante.knowledge.mvp.model.ZhihuStory;
 
 /**
  * helps to present zhihu news detail page
  */
-public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuItem>, OnLoadDetailListener<ZhihuDetail> {
+public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuStory>, OnLoadDetailListener<ZhihuDetail> {
 
-    private NewsModel<ZhihuItem, ZhihuData, ZhihuDetail> newsModel;
+    private NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail> newsModel;
     private NewsDetailView<ZhihuDetail> newsDetailView;
 
-    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView, Context context) {
-        this.newsModel = new ZhihuNewsModel(context);
+    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView) {
+        this.newsModel = new ZhihuModel();
         this.newsDetailView = newsDetailView;
     }
 
     @Override
-    public void loadNewsDetail(ZhihuItem zhihuItem) {
+    public void loadNewsDetail(ZhihuStory zhihuStory) {
         newsDetailView.showProgress();
-        newsModel.getNewsDetail(zhihuItem, this);
+        newsModel.getNewsDetail(zhihuStory, this);
     }
 
     @Override

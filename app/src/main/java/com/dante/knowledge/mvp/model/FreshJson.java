@@ -8,7 +8,7 @@ import io.realm.RealmObject;
 /**
  * Fresh things news class
  */
-public class FreshData extends RealmObject implements Data {
+public class FreshJson extends RealmObject implements Data {
 
     /**
      * status : ok
@@ -17,16 +17,16 @@ public class FreshData extends RealmObject implements Data {
      * pages : 2225
      * posts : [{"id":74787,"url":"http://jandan.net/2016/02/03/gun-free-signs.html","title":"美国新法规或叫停\u201c枪支自由\u201d？","date":"2016-02-03 12:30:45","tags":[{"id":489,"slug":"%e5%86%b7%e6%96%b0%e9%97%bb","title":"冷新闻","description":"","post_count":3769}],"author":{"id":593,"slug":"banana","name":"一只咸鱼","first_name":"","last_name":"","nickname":"一只咸鱼","url":"","description":""},"comment_count":17,"custom_fields":{"thumb_c":["http://tankr.net/s/custom/2CRS.jpg"]}},...]
      */
-    private RealmList<FreshItem> posts;
+    private RealmList<FreshPost> posts;
     private String status;
     private int count;
     private int count_total;
 
-    public RealmList<FreshItem> getPosts() {
+    public RealmList<FreshPost> getPosts() {
         return posts;
     }
 
-    public void setPosts(RealmList<FreshItem> posts) {
+    public void setPosts(RealmList<FreshPost> posts) {
         this.posts = posts;
     }
 

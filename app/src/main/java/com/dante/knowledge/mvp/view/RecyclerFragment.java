@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 
 import butterknife.Bind;
 
@@ -29,7 +29,7 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
     public void onResume() {
         super.onResume();
         //restoring position when reentering fragment.
-        lastPosition = SP.getInt(type + Constants.POSITION);
+        lastPosition = SPUtil.getInt(type + Constants.POSITION);
         if (lastPosition!=0){
             recyclerView.scrollToPosition(lastPosition);
         }
@@ -37,8 +37,7 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
 
     @Override
     public void onDestroyView() {
-        SP.save(type + Constants.POSITION, firstPosition);
-//        DB.realm.close();
+        SPUtil.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
     }
 

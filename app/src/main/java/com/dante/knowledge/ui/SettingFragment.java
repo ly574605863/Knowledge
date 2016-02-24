@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.utils.App;
-import com.dante.knowledge.utils.SP;
-import com.dante.knowledge.utils.Tool;
+import com.dante.knowledge.utils.FileUtil;
+import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
@@ -82,12 +82,12 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
             }
         }
         if (secretIndex == 6) {
-            if (SP.getBoolean(SECRET_MODE)) {
-                SP.save(SECRET_MODE, false);
+            if (SPUtil.getBoolean(SECRET_MODE)) {
+                SPUtil.save(SECRET_MODE, false);
                 secretIndex = 0;
                 UI.showSnack(rootView, R.string.secret_mode_closed);
             } else {
-                SP.save(SECRET_MODE, true);
+                SPUtil.save(SECRET_MODE, true);
                 secretIndex = 0;
                 UI.showSnackLong(rootView, R.string.secret_mode_opened);
             }
@@ -120,7 +120,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
     private String getCacheSize() {
         File file = getActivity().getApplicationContext().getCacheDir();
-        return Tool.getFileSize(file);
+        return FileUtil.getFileSize(file);
     }
 
     @Override

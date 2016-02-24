@@ -1,37 +1,35 @@
 package com.dante.knowledge.mvp.presenter;
 
-import android.content.Context;
-
 import com.dante.knowledge.mvp.interf.NewsDetailPresenter;
 import com.dante.knowledge.mvp.interf.NewsDetailView;
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
-import com.dante.knowledge.mvp.model.FreshData;
-import com.dante.knowledge.mvp.model.FreshDetail;
-import com.dante.knowledge.mvp.model.FreshItem;
-import com.dante.knowledge.mvp.model.FreshNewsModel;
+import com.dante.knowledge.mvp.model.FreshDetailJson;
+import com.dante.knowledge.mvp.model.FreshJson;
+import com.dante.knowledge.mvp.model.FreshModel;
+import com.dante.knowledge.mvp.model.FreshPost;
 
 /**
  * helps to present fresh news detail page
  */
-public class FreshDetailPresenter implements NewsDetailPresenter<FreshItem>, OnLoadDetailListener<FreshDetail>{
+public class FreshDetailPresenter implements NewsDetailPresenter<FreshPost>, OnLoadDetailListener<FreshDetailJson>{
 
-    private NewsModel<FreshItem, FreshData, FreshDetail> mNewsModel;
-    private NewsDetailView<FreshDetail> newsDetailView;
+    private NewsModel<FreshPost, FreshJson, FreshDetailJson> mNewsModel;
+    private NewsDetailView<FreshDetailJson> newsDetailView;
 
-    public FreshDetailPresenter(NewsDetailView<FreshDetail> newsDetailView, Context context) {
-        this.mNewsModel = new FreshNewsModel(context);
+    public FreshDetailPresenter(NewsDetailView<FreshDetailJson> newsDetailView) {
+        this.mNewsModel = new FreshModel();
         this.newsDetailView = newsDetailView;
     }
 
     @Override
-    public void loadNewsDetail(FreshItem freshItem) {
+    public void loadNewsDetail(FreshPost freshPost) {
         newsDetailView.showProgress();
-        mNewsModel.getNewsDetail(freshItem, this);
+        mNewsModel.getNewsDetail(freshPost, this);
     }
 
     @Override
-    public void onDetailSuccess(FreshDetail detailNews) {
+    public void onDetailSuccess(FreshDetailJson detailNews) {
         newsDetailView.showDetail(detailNews);
 
     }

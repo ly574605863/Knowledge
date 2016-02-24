@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.ArrayRecyclerAdapter;
 import com.dante.knowledge.libraries.RatioImageView;
-import com.dante.knowledge.utils.Image;
+import com.dante.knowledge.utils.Imager;
 
 /**
  * Adapt image data to pictures waterfall
@@ -34,7 +34,7 @@ public abstract class PictureAdapter extends ArrayRecyclerAdapter<com.dante.know
     public void onBindViewHolder(ViewHolder holder, int position) {
         com.dante.knowledge.mvp.model.Image image = get(position);
         holder.imageView.setOriginalSize(image.getWidth(), image.getHeight());
-        Image.load(holder.itemView.getContext(), image.getUrl(), holder.imageView);
+        Imager.load(holder.itemView.getContext(), image.getUrl(), holder.imageView);
         ViewCompat.setTransitionName(holder.imageView, context.getString(R.string.shared_img));
     }
 

@@ -66,6 +66,6 @@ public abstract class BaseFragment extends Fragment {
 
 
     public boolean isLive() {
-        return getActivity() != null && !getActivity().isDestroyed();
+        return getActivity() != null;
     }
 }

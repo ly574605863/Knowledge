@@ -6,6 +6,6 @@ import com.dante.knowledge.mvp.other.Data;
  * when news loaded, this interface is called
  */
 public interface OnLoadDataListener<T extends Data> {
-    void onDataSuccess(T news);
+    void onSuccess(T data);
     void onFailure(String msg, Exception e);
 }

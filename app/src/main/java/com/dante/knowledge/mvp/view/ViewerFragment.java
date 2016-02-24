@@ -18,7 +18,7 @@ import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
@@ -108,9 +108,9 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public void onClick(View v) {
-        if (! SP.getBoolean(Constants.HAS_HINT)){
+        if (! SPUtil.getBoolean(Constants.HAS_HINT)){
             Toast.makeText(getContext(), getString(R.string.view_img_hint) , Toast.LENGTH_LONG).show();
-            SP.save(Constants.HAS_HINT, true);
+            SPUtil.save(Constants.HAS_HINT, true);
         }
     }
 
@@ -121,12 +121,12 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             if (isCancelled()){
                 return null;
             }
-            int saveNum=SP.getInt(Constants.SAVE_NUM);
+            int saveNum= SPUtil.getInt(Constants.SAVE_NUM);
             File dir =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
             Bitmap bitmap = null;
             for (String param : params) {
-                File file = new File(dir, SP.getString(Constants.DATE) + "_" + (++saveNum) + ".jpg");
+                File file = new File(dir, SPUtil.getString(Constants.DATE) + "_" + (++saveNum) + ".jpg");
                 try {
                     bitmap = Glide.with(ViewerFragment.this).load(param)
                             .asBitmap()
@@ -134,7 +134,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
                             .get();
                     OutputStream os = new FileOutputStream(file);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-                    SP.save(Constants.SAVE_NUM, saveNum);
+                    SPUtil.save(Constants.SAVE_NUM, saveNum);
                     return file;
 
                 } catch (InterruptedException | FileNotFoundException e) {

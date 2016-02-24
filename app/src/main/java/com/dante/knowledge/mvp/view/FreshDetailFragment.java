@@ -21,8 +21,8 @@ import android.widget.ProgressBar;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.NewsDetailPresenter;
 import com.dante.knowledge.mvp.interf.NewsDetailView;
-import com.dante.knowledge.mvp.model.FreshDetail;
-import com.dante.knowledge.mvp.model.FreshItem;
+import com.dante.knowledge.mvp.model.FreshDetailJson;
+import com.dante.knowledge.mvp.model.FreshPost;
 import com.dante.knowledge.mvp.presenter.FreshDetailPresenter;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseFragment;
@@ -39,7 +39,7 @@ import butterknife.Bind;
  * Use the {@link FreshDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FreshDetailFragment extends BaseFragment implements NewsDetailView<FreshDetail> {
+public class FreshDetailFragment extends BaseFragment implements NewsDetailView<FreshDetailJson> {
 
     private static final String FRESH_ITEM = "fresh_news";
     private static final String FRESH_PREVIOUS_ITEM = "previous_news";
@@ -50,12 +50,12 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     FrameLayout webContainer;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    public List<FreshItem> freshItems;
+    public List<FreshPost> freshPosts;
 
     private WebView webView;
 
-    private FreshItem freshItem;
-    private NewsDetailPresenter<FreshItem> presenter;
+    private FreshPost freshPost;
+    private NewsDetailPresenter<FreshPost> presenter;
     private ShareActionProvider mShareActionProvider;
     private int position;
 
@@ -74,9 +74,9 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            freshItems = DB.findAllDateSorted(FreshItem.class);
+            freshPosts = DB.findAllDateSorted(FreshPost.class);
             position = getArguments().getInt(Constants.POSITION);
-            freshItem = freshItems.get(position);
+            freshPost = freshPosts.get(position);
 
         }
         setHasOptionsMenu(true);
@@ -89,13 +89,13 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     protected void initViews() {
-        presenter = new FreshDetailPresenter(this,getContext());
+        presenter = new FreshDetailPresenter(this);
     }
 
     @Override
     protected void initData() {
-        presenter.loadNewsDetail(freshItem);
-        toolbar.setTitle(freshItem.getTitle());
+        presenter.loadNewsDetail(freshPost);
+        toolbar.setTitle(freshPost.getTitle());
         final AppCompatActivity activity = (AppCompatActivity) getActivity();
         activity.setSupportActionBar(toolbar);
 
@@ -141,7 +141,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     }
 
     @Override
-    public void showDetail(FreshDetail detailNews) {
+    public void showDetail(FreshDetailJson detailNews) {
         setShareIntent();
         webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
     }
@@ -176,7 +176,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     private void setShareIntent() {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(
-                    Share.getShareIntent(freshItem.getUrl()));
+                    Share.getShareIntent(freshPost.getUrl()));
         }
     }
 

@@ -13,5 +13,4 @@ public interface NewsModel<I extends NewsItem, N extends Data, D extends NewsDet
 
     void getNewsDetail(I newsItem, OnLoadDetailListener<D> listener);
 
-    void init();
 }

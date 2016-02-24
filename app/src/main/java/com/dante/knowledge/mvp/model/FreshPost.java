@@ -12,7 +12,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * fresh things item in list
  */
-public class FreshItem extends RealmObject implements NewsItem{
+public class FreshPost extends RealmObject implements NewsItem{
     private int id;
     private String url;
     private String title;
@@ -31,7 +31,7 @@ public class FreshItem extends RealmObject implements NewsItem{
     @Ignore
     private AuthorEntity author;
     private int comment_count;
-    private CustomFieldsEntity custom_fields;
+    private FreshCustomFields custom_fields;
     /**
      * id : 489
      * slug : %e5%86%b7%e6%96%b0%e9%97%bb
@@ -66,7 +66,7 @@ public class FreshItem extends RealmObject implements NewsItem{
         this.comment_count = comment_count;
     }
 
-    public void setCustom_fields(CustomFieldsEntity custom_fields) {
+    public void setCustom_fields(FreshCustomFields custom_fields) {
         this.custom_fields = custom_fields;
     }
 
@@ -98,7 +98,7 @@ public class FreshItem extends RealmObject implements NewsItem{
         return comment_count;
     }
 
-    public CustomFieldsEntity getCustom_fields() {
+    public FreshCustomFields getCustom_fields() {
         return custom_fields;
     }
 

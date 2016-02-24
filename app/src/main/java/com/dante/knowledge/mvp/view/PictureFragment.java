@@ -25,7 +25,7 @@ import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -78,7 +78,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
         localBroadcastManager.unregisterReceiver(updateReceiver);
-        SP.save(type + Constants.PAGE, page);
+        SPUtil.save(type + Constants.PAGE, page);
         super.onDestroyView();
     }
 
@@ -128,7 +128,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         setExitSharedElementCallback(new SharedElementCallback() {
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                int i = SP.getInt("shared_index");
+                int i = SPUtil.getInt("shared_index");
                 Log.i("test", i + " position");
                 sharedElements.clear();
                 sharedElements.put(adapter.get(i).getUrl(), layoutManager.findViewByPosition(i));
@@ -140,7 +140,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     private void startViewer(View view, int position) {
         Intent intent = new Intent(context, DetailActivity.class);
-        intent.putExtra(Constants.MENU_TYPE, MenuTabFragment.MENU_PIC);
+        intent.putExtra(Constants.MENU_TYPE, TabsFragment.MENU_PIC);
         intent.putExtra(Constants.TYPE, type);
         intent.putExtra(Constants.POSITION, position);
 
@@ -158,7 +158,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
         if (isFirst) {
             if (lastPosition > images.size() / 3) {
-                page = SP.getInt(type + Constants.PAGE);
+                page = SPUtil.getInt(type + Constants.PAGE);
                 fetch(false);
             }
 
@@ -263,7 +263,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     @Override
-    public void onDataSuccess(Image data) {
+    public void onSuccess(Image data) {
         changeProgress(false);
         adapter.replaceWith(images);
         page++;
@@ -290,7 +290,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getBooleanExtra(PictureFetchService.EXTRA_FETCHED_RESULT, false)) {
-                onDataSuccess(null);
+                onSuccess(null);
             } else {
                 fetch(false);
                 onFailure("load no results", null);

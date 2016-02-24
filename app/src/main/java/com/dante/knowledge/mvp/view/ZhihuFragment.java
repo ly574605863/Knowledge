@@ -14,19 +14,22 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.NewsPresenter;
 import com.dante.knowledge.mvp.interf.NewsView;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
-import com.dante.knowledge.mvp.model.ZhihuData;
+import com.dante.knowledge.mvp.model.ZhihuJson;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import butterknife.ButterKnife;
 
-public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuData>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
+
+public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJson>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
 
     private static final int PRELOAD_COUNT = 1;
+
     private NewsPresenter presenter;
     private ZhihuListAdapter adapter;
     private ConvenientBanner banner;
@@ -35,7 +38,8 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU);
-        SP.save(type + Constants.POSITION, firstPosition);
+        SPUtil.save(type + Constants.POSITION, firstPosition);
+        ButterKnife.unbind(this);
         super.onDestroyView();
     }
 
@@ -51,12 +55,12 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     @Override
     protected void initViews() {
         super.initViews();
-        type = MenuTabFragment.TYPE_ZHIHU;
+        type = TabsFragment.TYPE_ZHIHU;
         Context context = getActivity();
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ZhihuListAdapter(getActivity(), this);
+        adapter = new ZhihuListAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -103,7 +107,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
     }
 
     @Override
-    public void addNews(ZhihuData news) {
+    public void addNews(ZhihuJson news) {
         adapter.addNews(news);
     }
 
@@ -119,10 +123,8 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
         }
     }
 
-
     @Override
     public void onRefresh() {
-        adapter.clear();
         presenter.loadNews();
     }
 
@@ -132,7 +134,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuDat
         if (viewHolder instanceof ZhihuListAdapter.ViewHolder) {
             ZhihuListAdapter.ViewHolder holder = (ZhihuListAdapter.ViewHolder) viewHolder;
             Intent intent = new Intent(getActivity(), ZhihuDetailActivity.class);
-            intent.putExtra(Constants.ID, holder.zhihuItem.getId());
+            intent.putExtra(Constants.ID, holder.zhihuStory.getId());
             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
                     holder.mImage, getString(R.string.shared_img));
             ActivityCompat.startActivity(getActivity(), intent, optionsCompat.toBundle());

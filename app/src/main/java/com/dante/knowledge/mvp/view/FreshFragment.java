@@ -13,13 +13,13 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.NewsPresenter;
 import com.dante.knowledge.mvp.interf.NewsView;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
-import com.dante.knowledge.mvp.model.FreshData;
+import com.dante.knowledge.mvp.model.FreshJson;
 import com.dante.knowledge.mvp.other.NewsListAdapter;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.FreshDataPresenter;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -27,7 +27,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshData>, OnListFragmentInteract {
+public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshJson>, OnListFragmentInteract {
 
     private static final int PRELOAD_COUNT = 1;
     private NewsPresenter presenter;
@@ -38,10 +38,11 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
         return recyclerView;
     }
 
+
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);
-        SP.save(type + Constants.POSITION, firstPosition);
+        SPUtil.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
     }
 
@@ -54,10 +55,10 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     protected void initViews() {
         super.initViews();
         Context context = getActivity();
-        type = MenuTabFragment.TYPE_FRESH;
+        type = TabsFragment.TYPE_FRESH;
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NewsListAdapter(context, this);
+        adapter = new NewsListAdapter( this);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -65,7 +66,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
                 super.onScrollStateChanged(recyclerView, newState);
 
 
-                if (newState == RecyclerView.SCROLL_STATE_IDLE ) {
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     onListScrolled();
                 }
             }
@@ -77,14 +78,14 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
         firstPosition = layoutManager.findFirstVisibleItemPosition();
         lastPosition = layoutManager.findLastVisibleItemPosition();
 
-        if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()){
+        if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()) {
             presenter.loadBefore();
         }
     }
 
     @Override
     protected void initData() {
-        presenter = new FreshDataPresenter(this, getContext());
+        presenter = new FreshDataPresenter(this);
         onRefresh();
     }
 
@@ -99,7 +100,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     }
 
     @Override
-    public void addNews(FreshData news) {
+    public void addNews(FreshJson news) {
         adapter.addNews(news);
     }
 
@@ -122,7 +123,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
             NewsListAdapter.ViewHolder holder = (NewsListAdapter.ViewHolder) viewHolder;
             holder.mTitle.setTextColor(ZhihuListAdapter.textGrey);
             Intent intent = new Intent(getActivity(), DetailActivity.class);
-            intent.putExtra(Constants.MENU_TYPE, MenuTabFragment.MENU_NEWS);
+            intent.putExtra(Constants.MENU_TYPE, TabsFragment.MENU_NEWS);
             intent.putExtra(Constants.POSITION, holder.getAdapterPosition());
             startActivity(intent);
         }

@@ -9,12 +9,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.dante.knowledge.mvp.view.MenuTabFragment;
+import com.dante.knowledge.mvp.view.TabsFragment;
 import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
-import com.dante.knowledge.utils.SP;
+import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
 import com.testin.agent.TestinAgent;
 
@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity
         super.initViews();
         setupDrawer();
         initNavigationView();
-        replace(MenuTabFragment.MENU_NEWS);
+        replace(TabsFragment.MENU_NEWS);
         initSDK();
     }
 
@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity
     private void replace(String type) {
         if (!type.equals(currentType)) {
             currentType = type;
-            replaceFragment(MenuTabFragment.newInstance(type), type);
+            replaceFragment(TabsFragment.newInstance(type), type);
         }
 
     }
@@ -72,7 +72,7 @@ public class MainActivity extends BaseActivity
 
     private void initNavigationView() {
         navView.setNavigationItemSelectedListener(this);
-        if (SP.getBoolean(SettingFragment.SECRET_MODE)) {
+        if (SPUtil.getBoolean(SettingFragment.SECRET_MODE)) {
             navView.inflateMenu(R.menu.main_menu_all);
         } else {
             navView.inflateMenu(R.menu.main_drawer);
@@ -94,7 +94,6 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -119,16 +118,15 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_knowledge) {
-            replace(MenuTabFragment.MENU_NEWS);
+            replace(TabsFragment.MENU_NEWS);
         } else if (id == R.id.nav_beauty) {
-            replace(MenuTabFragment.MENU_PIC);
+            replace(TabsFragment.MENU_PIC);
 
         } else if (id == R.id.nav_secret_mode) {
-            replace(MenuTabFragment.MENU_SECRET);
+            replace(TabsFragment.MENU_SECRET);
 
         } else if (id == R.id.nav_share) {
             startActivity(
