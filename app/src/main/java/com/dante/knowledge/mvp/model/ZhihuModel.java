@@ -12,7 +12,6 @@ import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import io.realm.Realm;
 import okhttp3.Call;
 
 /**
@@ -42,25 +41,27 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail>
 
             @Override
             public void onResponse(String response) {
-                ZhihuJson news = Json.parseZhihuNews(response);
+                ZhihuJson zhihuJson = Json.parseZhihuNews(response);
                 DB.findAllDateSorted(ZhihuJson.class);
-                date = news.getDate();
-                addFooter(news);
-                DB.saveOrUpdate(news);
+                saveZhihuData(zhihuJson);
+                date = zhihuJson.getDate();
                 SPUtil.save(Constants.DATE, date);
-                listener.onSuccess(news);
+                listener.onSuccess(zhihuJson);
             }
         };
 
         getData(callback);
     }
 
-    private void addFooter(ZhihuJson zhihuNews) {
-        if (type == API.TYPE_BEFORE) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            realm.copyToRealmOrUpdate(new ZhihuStory(Integer.valueOf(zhihuNews.getDate()), 1));
-            realm.commitTransaction();
+    private void saveZhihuData(ZhihuJson zhihuJson) {
+        if (null != zhihuJson){
+            DB.realm.beginTransaction();
+            DB.realm.where(ZhihuTop.class).findAll().clear();
+            DB.realm.copyToRealmOrUpdate(zhihuJson);
+            if (type == API.TYPE_BEFORE) {
+                DB.realm.copyToRealmOrUpdate(new ZhihuStory(Integer.valueOf(zhihuJson.getDate()), 1));
+            }
+            DB.realm.commitTransaction();
         }
 
     }
