@@ -12,6 +12,11 @@ import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 import okhttp3.Call;
 
 /**
@@ -43,7 +48,7 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail>
             public void onResponse(String response) {
                 ZhihuJson zhihuJson = Json.parseZhihuNews(response);
                 DB.findAllDateSorted(ZhihuJson.class);
-                saveZhihuData(zhihuJson);
+                update(zhihuJson);
                 date = zhihuJson.getDate();
                 SPUtil.save(Constants.DATE, date);
                 listener.onSuccess(zhihuJson);
@@ -53,18 +58,42 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail>
         getData(callback);
     }
 
-    private void saveZhihuData(ZhihuJson zhihuJson) {
+    private void update(final ZhihuJson zhihuJson) {
         if (null != zhihuJson) {
-            DB.realm.beginTransaction();
-            if (type == API.TYPE_BEFORE) {
-                DB.realm.copyToRealmOrUpdate(new ZhihuStory(Integer.valueOf(zhihuJson.getDate()), 1));
-            } else {
-                DB.realm.where(ZhihuTop.class).findAll().clear();
-            }
-            DB.realm.copyToRealmOrUpdate(zhihuJson);
-            DB.realm.commitTransaction();
+            DB.realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    if (type ==API.TYPE_LATEST){
+                        //We use latest top items, so just delete old ones.
+                        realm.where(ZhihuTop.class).findAll().clear();
+                    }
+                    realm.copyToRealmOrUpdate(zhihuJson);
+                    setupStories(realm);
+                }
+            });
         }
 
+    }
+
+    private void setupStories(Realm realm) {
+        RealmResults<ZhihuJson> list = realm.where(ZhihuJson.class).findAllSorted(Constants.DATE);
+        List<ZhihuStory> zhihuStories=new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            ZhihuJson zhihuJson = list.get(i);
+            if (i > 0) {
+                zhihuStories.add(new ZhihuStory(Integer.valueOf(zhihuJson.getDate()), 1));
+            }
+            zhihuStories.addAll(zhihuJson.getStories());
+        }
+        realm.copyToRealmOrUpdate(zhihuStories);
+
+//        if (type == API.TYPE_BEFORE) {
+//            //this item is to show date as header
+//            // so just new it with the date as id
+//            // and the type is 1 (default is 0)
+//            ZhihuStory dateHeader= new ZhihuStory(Integer.valueOf(zhihuJson.getDate()), 1);
+//            DB.realm.copyToRealmOrUpdate(dateHeader);
+//        }
     }
 
     private void getData(StringCallback callback) {
@@ -72,6 +101,7 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail>
             Net.get(API.NEWS_LATEST, callback, API.TAG_ZHIHU);
 
         } else if (type == API.TYPE_BEFORE) {
+            date= DB.findAll(ZhihuJson.class).last().getDate();
             Net.get(API.NEWS_BEFORE + date, callback, API.TAG_ZHIHU);
         }
     }

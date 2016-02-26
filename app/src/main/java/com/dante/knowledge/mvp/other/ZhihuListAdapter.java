@@ -46,7 +46,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private OnListFragmentInteract mListener;
 
-
     public ZhihuListAdapter(OnListFragmentInteract listener) {
         mListener = listener;
         zhihuStories = DB.findAll(ZhihuStory.class);
