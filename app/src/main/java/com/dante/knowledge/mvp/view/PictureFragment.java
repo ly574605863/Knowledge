@@ -198,7 +198,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             @Override
             public void onResponse(String response) {
                     PictureFetchService.startActionFetch(getActivity(), type, response);
-
             }
         };
 

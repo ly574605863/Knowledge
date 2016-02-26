@@ -31,7 +31,8 @@ public class Json {
     }.getType();
 
 
-    public static Gson mGson = new GsonBuilder().setExclusionStrategies(new ExclusionStrategy() {
+    public static Gson mGson = new GsonBuilder().
+            setExclusionStrategies(new ExclusionStrategy() {
         @Override
         public boolean shouldSkipField(FieldAttributes f) {
             return f.getDeclaringClass().equals(RealmObject.class);

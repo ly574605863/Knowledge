@@ -54,13 +54,14 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail>
     }
 
     private void saveZhihuData(ZhihuJson zhihuJson) {
-        if (null != zhihuJson){
+        if (null != zhihuJson) {
             DB.realm.beginTransaction();
-            DB.realm.where(ZhihuTop.class).findAll().clear();
-            DB.realm.copyToRealmOrUpdate(zhihuJson);
             if (type == API.TYPE_BEFORE) {
                 DB.realm.copyToRealmOrUpdate(new ZhihuStory(Integer.valueOf(zhihuJson.getDate()), 1));
+            } else {
+                DB.realm.where(ZhihuTop.class).findAll().clear();
             }
+            DB.realm.copyToRealmOrUpdate(zhihuJson);
             DB.realm.commitTransaction();
         }
 
