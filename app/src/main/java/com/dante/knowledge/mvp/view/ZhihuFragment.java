@@ -43,9 +43,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
         super.onDestroyView();
     }
 
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
+
 
     @Override
     protected void initLayoutId() {

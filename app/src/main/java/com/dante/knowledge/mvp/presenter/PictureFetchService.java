@@ -54,9 +54,6 @@ public class PictureFetchService extends IntentService {
      */
 
     public static void startActionFetch(Context context, int type, String response) {
-        if (context==null){
-            return;
-        }
         Intent intent = new Intent(context, PictureFetchService.class);
         intent.setAction(ACTION_FETCH);
         intent.putExtra(Constants.TYPE, type);

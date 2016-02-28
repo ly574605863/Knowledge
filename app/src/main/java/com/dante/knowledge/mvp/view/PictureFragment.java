@@ -74,6 +74,11 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     public void onResume() {
         super.onResume();
+        //restoring position when reentering fragment.
+        lastPosition = SPUtil.getInt(type + Constants.POSITION);
+        if (lastPosition > 0) {
+            recyclerView.scrollToPosition(lastPosition);
+        }
         if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
             PRELOAD_COUNT++;
             fetch(false);
@@ -173,7 +178,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         }
         //split show progress code with fetch code
         //so user may not see the annoying circle here and there
-        if (lastPosition > itemCount - PRELOAD_COUNT/2) {
+        if (lastPosition > itemCount - PRELOAD_COUNT / 2) {
             changeProgress(true);
         }
     }
@@ -197,7 +202,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
             @Override
             public void onResponse(String response) {
-                    PictureFetchService.startActionFetch(getActivity(), type, response);
+                PictureFetchService.startActionFetch(getActivity(), type, response);
             }
         };
 
