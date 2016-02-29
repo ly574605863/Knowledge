@@ -66,4 +66,5 @@
 
 
 -keep class com.dante.knowledge.mvp.model.** { *; }
+-keep class android.support.v7.widget.ShareActionProvider { *; }
 -dontwarn com.dante.knowledge.**

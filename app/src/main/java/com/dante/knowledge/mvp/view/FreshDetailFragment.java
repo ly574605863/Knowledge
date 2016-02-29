@@ -77,9 +77,8 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
             freshPosts = DB.findAllDateSorted(FreshPost.class);
             position = getArguments().getInt(Constants.POSITION);
             freshPost = freshPosts.get(position);
-
+            setHasOptionsMenu(true);
         }
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -142,7 +141,6 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void showDetail(FreshDetailJson detailNews) {
-        setShareIntent();
         webView.loadDataWithBaseURL("x-data://base", detailNews.getPost().getContent(), "text/html", "UTF-8", null);
     }
 
@@ -179,13 +177,12 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
                     Share.getShareIntent(freshPost.getUrl()));
         }
     }
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         getActivity().getMenuInflater().inflate(R.menu.share_menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        mShareActionProvider= (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        setShareIntent();
     }
-
 }
