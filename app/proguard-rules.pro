@@ -15,6 +15,7 @@
 #-keepclassmembers class fqcn.of.javascript.inter.for.webview {
 #   public *;
 #}
+##configuration for Butterknife
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewBinder { *; }
@@ -24,16 +25,20 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+-dontwarn butterknife.internal.**
+-dontwarn okio.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn com.fasterxml.jackson.databind.**
 
-##---------------Begin: proguard configuration for Gson  ----------
+##configuration for Gson
 # Gson uses generic type information stored in a class file when working with fields. Proguard
 # removes such information by default, so configure it to keep all of it.
 -keepattributes Signature
 -keepattributes *Annotation*
 -keep class sun.misc.Unsafe { *; }
 -keep class com.google.gson.examples.android.model.** { *; }
-##---------------End: proguard configuration for Gson  ----------
 
+##configuration for what I forget
 -keepattributes *Annotation*,EnclosingMethod,Signature
 -keepnames class com.fasterxml.jackson.** { *; }
 -keep class org.codehaus.** { *; }
@@ -44,6 +49,7 @@
   public *** get*();
 }
 
+##configuration for Realm
 -keep class io.realm.annotations.RealmModule
 -keep @io.realm.annotations.RealmModule class *
 -keep class io.realm.internal.Keep
@@ -51,11 +57,7 @@
 -dontwarn javax.**
 -dontwarn io.realm.**
 
--dontwarn butterknife.internal.**
--dontwarn okio.**
--dontwarn com.squareup.okhttp.**
--dontwarn com.fasterxml.jackson.databind.**
-
+##configuration for LeakCanary
 -keep class org.eclipse.mat.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
 -keep class com.squareup.haha.** { *; }
@@ -64,7 +66,10 @@
 -dontwarn com.squareup.haha.trove.**
 -dontwarn com.squareup.leakcanary.**
 
+##Solove ExceptionInInitializerError
+-keep class org.jsoup.**
 
+##Solove NullPointerException by Gson
 -keep class com.dante.knowledge.mvp.model.** { *; }
 -keep class android.support.v7.widget.ShareActionProvider { *; }
 -dontwarn com.dante.knowledge.**
