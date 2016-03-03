@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.model.FreshPost;
+import com.dante.knowledge.mvp.model.HDetail;
 import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
@@ -45,7 +46,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void initLayoutId() {
         menuType = getIntent().getStringExtra(Constants.MENU_TYPE);
         layoutId = R.layout.activity_detail;
-        if (TabsFragment.MENU_PIC.equals(menuType)) {
+        if (TabsFragment.MENU_PIC.equals(menuType) || TabsFragment.MENU_H.equals(menuType)) {
             isPicture = true;
             layoutId = R.layout.activity_detail_pulldown;
             setTheme(R.style.ViewerTheme_TransNav);
@@ -69,8 +70,15 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             }
         } else if (isPicture) {
             ((PullBackLayout) container).setCallback(this);
-            type = getIntent().getIntExtra(Constants.TYPE, 0);
-            images = DB.getImages(type);
+
+            if (TabsFragment.MENU_H.equals(menuType)) {
+                String url = getIntent().getStringExtra(Constants.URL);
+                images = DB.getByUrl(url, HDetail.class).getImages();
+            } else if (TabsFragment.MENU_PIC.equals(menuType)) {
+                type = getIntent().getIntExtra(Constants.TYPE, 0);
+                images = DB.getImages(type);
+            }
+
             for (int i = 0; i < images.size(); i++) {
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
             }
@@ -191,7 +199,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void onDestroy() {
         OkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
-//        System.exit(0);
+        System.exit(0);
     }
 
 

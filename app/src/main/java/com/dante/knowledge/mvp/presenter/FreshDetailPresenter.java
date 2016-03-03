@@ -5,7 +5,6 @@ import com.dante.knowledge.mvp.interf.NewsDetailView;
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.mvp.model.FreshDetailJson;
-import com.dante.knowledge.mvp.model.FreshJson;
 import com.dante.knowledge.mvp.model.FreshModel;
 import com.dante.knowledge.mvp.model.FreshPost;
 
@@ -14,7 +13,7 @@ import com.dante.knowledge.mvp.model.FreshPost;
  */
 public class FreshDetailPresenter implements NewsDetailPresenter<FreshPost>, OnLoadDetailListener<FreshDetailJson>{
 
-    private NewsModel<FreshPost, FreshJson, FreshDetailJson> mNewsModel;
+    private NewsModel<FreshPost, FreshDetailJson> mNewsModel;
     private NewsDetailView<FreshDetailJson> newsDetailView;
 
     public FreshDetailPresenter(NewsDetailView<FreshDetailJson> newsDetailView) {

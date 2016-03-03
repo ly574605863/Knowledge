@@ -1,4 +1,4 @@
-package com.dante.knowledge;
+package com.dante.knowledge.test;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.dante.knowledge.R;
 import com.dante.knowledge.net.Net;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -33,7 +34,7 @@ public class TestActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                start(post, 1);
+//                start(post, 1);
             }
         });
     }
@@ -47,9 +48,9 @@ public class TestActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                if (type==0){
+                if (type == 0) {
                     parsePosts(response);
-                }else if (type==1){
+                } else if (type == 1) {
                     parseImages(response);
                 }
             }
@@ -60,8 +61,8 @@ public class TestActivity extends AppCompatActivity {
         Document document = Jsoup.parse(response);
         Elements elements = document.select(".tpc_content > img[src]");
         for (int i = 0; i < elements.size(); i++) {
-            Element img=elements.get(i);
-            String src=img.attr("src");
+            Element img = elements.get(i);
+            String src = img.attr("src");
             Log.i("test", " src>>>" + src);
         }
     }

@@ -1,7 +1,5 @@
 package com.dante.knowledge.mvp.view;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -18,9 +16,10 @@ import android.view.View;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
+import com.dante.knowledge.mvp.interf.UpdateReceiver;
 import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.mvp.other.PictureAdapter;
-import com.dante.knowledge.mvp.presenter.PictureFetchService;
+import com.dante.knowledge.mvp.presenter.FetchService;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
@@ -38,7 +37,7 @@ import okhttp3.Call;
 /**
  * Gank and DB beauty fragment.
  */
-public class PictureFragment extends RecyclerFragment implements OnLoadDataListener<Image> {
+public class PictureFragment extends RecyclerFragment implements OnLoadDataListener {
     public static final int TYPE_GANK = 0;
     public static final int TYPE_DB_BREAST = 1;
     public static final int TYPE_DB_BUTT = 2;
@@ -46,13 +45,8 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public static final int TYPE_DB_LEG = 4;
     public static final int TYPE_DB_RANK = 5;
 
-    public static final int TYPE_H_ASIA = 10;
-    public static final int TYPE_H_SELFIE = 11;
-    public static final int TYPE_H_SILK = 12;
-    public static final int TYPE_H_STREET = 13;
-
     private static final int LOAD_COUNT_LARGE = 15;
-    private static int LOAD_COUNT = 10;
+    private static int LOAD_COUNT = 8;
     private static int PRELOAD_COUNT = 10;
 
     private String url;
@@ -66,23 +60,18 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private FragmentActivity context;
 
     @Override
-    public void onPause() {
-        firstPosition = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
-        super.onPause();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
-        //restoring position when reentering fragment.
-        lastPosition = SPUtil.getInt(type + Constants.POSITION);
-        if (lastPosition > 0) {
-            recyclerView.scrollToPosition(lastPosition);
-        }
         if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
             PRELOAD_COUNT++;
             fetch(false);
         }
+    }
+
+    @Override
+    public void onPause() {
+        firstPosition = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
+        super.onPause();
     }
 
     @Override
@@ -101,19 +90,13 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         return fragment;
     }
 
-
-    @Override
-    protected void initLayoutId() {
-        layoutId = R.layout.fragment_recycler;
-    }
-
     @Override
     protected void initViews() {
         super.initViews();
-        updateReceiver = new UpdateReceiver();
+        updateReceiver = new UpdateReceiver(this);
         context = getActivity();
         localBroadcastManager = LocalBroadcastManager.getInstance(context);
-        localBroadcastManager.registerReceiver(updateReceiver, new IntentFilter(PictureFetchService.ACTION_FETCH));
+        localBroadcastManager.registerReceiver(updateReceiver, new IntentFilter(FetchService.ACTION_FETCH));
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PictureAdapter(context) {
@@ -167,7 +150,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         firstPosition = layoutManager.findFirstVisibleItemPositions(spans)[0];
         lastPosition = layoutManager.findLastVisibleItemPositions(spans)[1];
 
-        if (isFirst) {
+        if (isFirst && page <= 1) {
             if (lastPosition > images.size() / 3) {
                 page = SPUtil.getInt(type + Constants.PAGE);
                 fetch(false);
@@ -178,7 +161,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         }
         //split show progress code with fetch code
         //so user may not see the annoying circle here and there
-        if (lastPosition > itemCount - PRELOAD_COUNT / 2) {
+        if (lastPosition > itemCount - PRELOAD_COUNT / 3) {
             changeProgress(true);
         }
     }
@@ -197,12 +180,12 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                     Net.get(url, this, API.TAG_PICTURE);
                     return;
                 }
-                onFailure("load failed", e);
+                onFailure("load failed");
             }
 
             @Override
             public void onResponse(String response) {
-                PictureFetchService.startActionFetch(getActivity(), type, response);
+                FetchService.startActionFetch(getActivity(), type, response);
             }
         };
 
@@ -273,14 +256,14 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     }
 
     @Override
-    public void onSuccess(Image data) {
+    public void onSuccess() {
         changeProgress(false);
         adapter.replaceWith(images);
         page++;
     }
 
     @Override
-    public void onFailure(String msg, Exception e) {
+    public void onFailure(String msg) {
         changeProgress(false);
         adapter.replaceWith(images);
         if (isLive()) {
@@ -288,24 +271,11 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                     .setAction(R.string.try_again, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            changeProgress(false);
+                            fetch(false);
                         }
                     }).show();
         }
     }
 
-
-    private class UpdateReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getBooleanExtra(PictureFetchService.EXTRA_FETCHED_RESULT, false)) {
-                onSuccess(null);
-            } else {
-                fetch(false);
-                onFailure("load no results", null);
-            }
-        }
-    }
 
 }

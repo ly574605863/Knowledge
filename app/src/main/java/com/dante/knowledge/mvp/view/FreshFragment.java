@@ -34,21 +34,11 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     private NewsListAdapter adapter;
     private LinearLayoutManager layoutManager;
 
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
-
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);
         SPUtil.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
-    }
-
-    @Override
-    protected void initLayoutId() {
-        layoutId = R.layout.fragment_recycler;
     }
 
     @Override
@@ -64,7 +54,6 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
 
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                     onListScrolled();
@@ -101,7 +90,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void addNews(FreshJson news) {
-        adapter.addNews(news);
+        adapter.addNews();
     }
 
     @Override

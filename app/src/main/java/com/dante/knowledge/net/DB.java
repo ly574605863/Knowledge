@@ -39,6 +39,15 @@ public class DB {
         return realm.where(realmObjectClass).equalTo("id", id).findFirst();
     }
 
+    public static <T extends RealmObject> T getByUrl(String url, Class<T> realmObjectClass) {
+        return realm.where(realmObjectClass).equalTo(Constants.URL, url).findFirst();
+    }
+
+    public static <T extends RealmObject> boolean isUrlExisted(String url, Class<T> realmObjectClass) {
+        return getByUrl(url, realmObjectClass) != null;
+    }
+
+
     public static <T extends RealmObject> RealmResults<T> findAll(Class<T> realmObjectClass) {
         return realm.where(realmObjectClass).findAll();
     }

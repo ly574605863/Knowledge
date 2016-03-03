@@ -45,10 +45,10 @@
     <string name="db_butt">DB butt</string>
     <string name="db_rank">DB rank</string>
     <string name="db_silk">DB silk</string>
-    <string name="h_asia">Asia</string>
-    <string name="h_silk">Silk</string>
+    <string name="h_beauty">Asia</string>
+    <string name="h_original">Silk</string>
     <string name="h_selfie">Selfie</string>
-    <string name="h_street">Street</string>
+    <string name="h_exposure">Street</string>
     <string name="secret_mode_closed">Secret mode closed.</string>
     <string name="secret_mode_opened">Secret mode is open, let\'s rock~</string>
     <string name="can_not_find_version_name">Unable to get version</string>

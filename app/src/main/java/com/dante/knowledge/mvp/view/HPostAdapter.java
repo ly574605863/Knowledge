@@ -1,32 +1,30 @@
-package com.dante.knowledge.mvp.other;
-
+package com.dante.knowledge.mvp.view;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
-import com.dante.knowledge.mvp.model.FreshPost;
+import com.dante.knowledge.mvp.model.HItem;
+import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.net.DB;
-import com.dante.knowledge.utils.Imager;
 
 import java.util.List;
 
 /**
- * Fresh news' recyclerView adapter
+ * Created by yons on 16/3/1.
  */
-public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class HPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<FreshPost> freshPosts;
+    private List<HItem> items;
     private OnListFragmentInteract mListener;
 
-    public NewsListAdapter(OnListFragmentInteract listener) {
+    public HPostAdapter(OnListFragmentInteract listener) {
         mListener = listener;
-        freshPosts = DB.findAllDateSorted(FreshPost.class);
+        items = DB.findAllDateSorted(HItem.class);
     }
 
     public void addNews() {
@@ -35,19 +33,17 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_fresh_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_h_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder viewHolder = (ViewHolder) holder;
-        viewHolder.freshPost = freshPosts.get(position);
-        String imgUrl = viewHolder.freshPost.getCustom_fields().getThumb_c().get(0).getVal();
+        viewHolder.hItem = items.get(position);
 
-        viewHolder.mTitle.setText(viewHolder.freshPost.getTitle());
+        viewHolder.mTitle.setText(viewHolder.hItem.getTitle());
         viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
-        Imager.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,18 +58,16 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        return freshPosts.size();
+        return items.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView mImage;
         public final TextView mTitle;
         public final View mItem;
-        public FreshPost freshPost;
+        public HItem hItem;
 
         public ViewHolder(View view) {
             super(view);
-            mImage = (ImageView) view.findViewById(R.id.story_img);
             mTitle = (TextView) view.findViewById(R.id.h_title);
             mItem = view.findViewById(R.id.h_item);
         }

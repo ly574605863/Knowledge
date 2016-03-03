@@ -5,7 +5,6 @@ import com.dante.knowledge.mvp.interf.NewsDetailView;
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.mvp.model.ZhihuDetail;
-import com.dante.knowledge.mvp.model.ZhihuJson;
 import com.dante.knowledge.mvp.model.ZhihuModel;
 import com.dante.knowledge.mvp.model.ZhihuStory;
 
@@ -14,7 +13,7 @@ import com.dante.knowledge.mvp.model.ZhihuStory;
  */
 public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuStory>, OnLoadDetailListener<ZhihuDetail> {
 
-    private NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail> newsModel;
+    private NewsModel<ZhihuStory, ZhihuDetail> newsModel;
     private NewsDetailView<ZhihuDetail> newsDetailView;
 
     public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView) {

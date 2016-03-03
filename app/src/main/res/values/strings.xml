@@ -57,10 +57,10 @@
     <string name="secret_mode_opened">隐藏模式已打开，我们一起嘿嘿嘿~</string>
     <string name="secret_mode_closed">隐藏模式已关闭。</string>
     <string name="close_app">关闭应用</string>
-    <string name="h_asia">亚洲</string>
+    <string name="h_beauty">唯美</string>
     <string name="h_selfie">自拍</string>
-    <string name="h_street">街拍</string>
-    <string name="h_silk">黑丝</string>
+    <string name="h_exposure">露出</string>
+    <string name="h_original">原创</string>
     <string name="can_not_find_version_name">无法识别版本号</string>
     <string name="load_no_result">啊哦，妹子太害羞，不好意思出來了</string>
     <string name="try_again">淫家才不信咧</string>

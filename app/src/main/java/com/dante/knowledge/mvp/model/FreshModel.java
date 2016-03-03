@@ -16,7 +16,7 @@ import okhttp3.Call;
 /**
  * deals with the fresh news' data work
  */
-public class FreshModel implements NewsModel<FreshPost, FreshJson, FreshDetailJson> {
+public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
     /**
      * clear page record to zero and start new request
      */
@@ -31,7 +31,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshJson, FreshDetailJs
     public static final int GET_DURATION = 3000;
 
     @Override
-    public void getNews(int type, final OnLoadDataListener<FreshJson> listener) {
+    public void getNews(int type, final OnLoadDataListener listener) {
 
         lastGetTime = System.currentTimeMillis();
         if (type == TYPE_FRESH) {
@@ -40,7 +40,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshJson, FreshDetailJs
         getFreshNews(listener);
     }
 
-    private void getFreshNews(final OnLoadDataListener<FreshJson> listener) {
+    private void getFreshNews(final OnLoadDataListener listener) {
         StringCallback callback = new StringCallback() {
             @Override
             public void onError(Call call, Exception e) {
@@ -48,7 +48,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshJson, FreshDetailJs
                     Net.get(API.FRESH_NEWS + page, this, API.TAG_FRESH);
                     return;
                 }
-                listener.onFailure("load fresh news failed", e);
+                listener.onFailure("load fresh news failed");
             }
 
             @Override
@@ -56,7 +56,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshJson, FreshDetailJs
                 FreshJson news = Json.parseFreshNews(response);
                 DB.saveList(news.getPosts());
                 SPUtil.save(Constants.PAGE, page);
-                listener.onSuccess(news);
+                listener.onSuccess();
                 page++;
             }
         };

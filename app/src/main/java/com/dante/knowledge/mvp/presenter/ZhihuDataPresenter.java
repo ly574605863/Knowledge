@@ -15,10 +15,10 @@ import com.dante.knowledge.net.API;
 /**
  * helps to present zhihu news list
  */
-public class ZhihuDataPresenter implements NewsPresenter, OnLoadDataListener<ZhihuJson> {
+public class ZhihuDataPresenter implements NewsPresenter, OnLoadDataListener {
 
     private NewsView<ZhihuJson> mNewsView;
-    private NewsModel<ZhihuStory, ZhihuJson, ZhihuDetail> mNewsModel;
+    private NewsModel<ZhihuStory, ZhihuDetail> mNewsModel;
 
     public ZhihuDataPresenter(NewsView<ZhihuJson> newsView, Context context) {
         this.mNewsView = newsView;
@@ -40,13 +40,13 @@ public class ZhihuDataPresenter implements NewsPresenter, OnLoadDataListener<Zhi
 
 
     @Override
-    public void onSuccess(ZhihuJson news) {
-        mNewsView.addNews(news);
+    public void onSuccess() {
+        mNewsView.addNews(null);
         mNewsView.hideProgress();
     }
 
     @Override
-    public void onFailure(String msg, Exception e) {
+    public void onFailure(String msg) {
         mNewsView.hideProgress();
         mNewsView.loadFailed(msg);
     }

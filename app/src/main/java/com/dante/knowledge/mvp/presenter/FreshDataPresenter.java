@@ -12,9 +12,9 @@ import com.dante.knowledge.mvp.model.FreshPost;
 /**
  * helps to present fresh news list
  */
-public class FreshDataPresenter implements NewsPresenter, OnLoadDataListener<FreshJson> {
+public class FreshDataPresenter implements NewsPresenter, OnLoadDataListener {
     private NewsView<FreshJson> mNewsView;
-    private NewsModel<FreshPost, FreshJson, FreshDetailJson> mNewsModel;
+    private NewsModel<FreshPost, FreshDetailJson> mNewsModel;
 
     public FreshDataPresenter(NewsView<FreshJson> newsView) {
         this.mNewsView = newsView;
@@ -35,13 +35,13 @@ public class FreshDataPresenter implements NewsPresenter, OnLoadDataListener<Fre
     }
 
     @Override
-    public void onSuccess(FreshJson news) {
-        mNewsView.addNews(news);
+    public void onSuccess() {
+        mNewsView.addNews(null);
         mNewsView.hideProgress();
     }
 
     @Override
-    public void onFailure(String msg, Exception e) {
+    public void onFailure(String msg) {
         mNewsView.hideProgress();
         mNewsView.loadFailed(msg);
     }

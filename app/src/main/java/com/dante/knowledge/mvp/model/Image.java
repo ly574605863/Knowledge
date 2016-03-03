@@ -18,7 +18,7 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Image extends RealmObject implements Data {
     private int id;
-    private int type;//Gank or DB
+    private int type;//Gank or DB or H
     private String publishedAt;
 
     public String getPublishedAt() {

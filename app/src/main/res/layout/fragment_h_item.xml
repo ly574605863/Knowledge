@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/h_item"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="56dp"
+             android:background="?android:attr/selectableItemBackground"
+             android:orientation="horizontal"
+             android:paddingLeft="12dp"
+             android:paddingRight="12dp">
+
+
+    <TextView
+        android:id="@+id/h_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:lineSpacingMultiplier="1.2"
+        android:text="如何看待当下这种越来越普遍的“沉默”人格？"
+        android:textColor="@color/cardview_dark_background"
+        android:textSize="16sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/lighter_gray"/>
+
+</FrameLayout>

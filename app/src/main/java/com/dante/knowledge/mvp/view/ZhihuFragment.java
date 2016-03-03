@@ -43,13 +43,6 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
         super.onDestroyView();
     }
 
-
-
-    @Override
-    protected void initLayoutId() {
-        layoutId = R.layout.fragment_recycler;
-    }
-
     @Override
     protected void initViews() {
         super.initViews();

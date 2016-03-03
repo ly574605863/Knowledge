@@ -42,7 +42,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (null!=task){
+        if (null != task) {
             task.cancel(true);
         }
     }
@@ -85,7 +85,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
                         imageView.setImageDrawable(resource);
                         getActivity().supportStartPostponedEnterTransition();
                     }
-                } );
+                });
     }
 
     @Override
@@ -101,30 +101,30 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View v) {
-        task=new SaveImageTask();
+        task = new SaveImageTask();
         task.execute(url);
         return true;
     }
 
     @Override
     public void onClick(View v) {
-        if (! SPUtil.getBoolean(Constants.HAS_HINT)){
-            Toast.makeText(getContext(), getString(R.string.view_img_hint) , Toast.LENGTH_LONG).show();
+        if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
+            Toast.makeText(getContext(), getString(R.string.view_img_hint), Toast.LENGTH_LONG).show();
             SPUtil.save(Constants.HAS_HINT, true);
         }
     }
 
-    private class SaveImageTask extends AsyncTask<String, Void, File>{
+    private class SaveImageTask extends AsyncTask<String, Void, File> {
 
         @Override
         protected File doInBackground(String... params) {
-            if (isCancelled()){
+            if (isCancelled()) {
                 return null;
             }
-            int saveNum= SPUtil.getInt(Constants.SAVE_NUM);
-            File dir =  Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            int saveNum = SPUtil.getInt(Constants.SAVE_NUM);
+            File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             for (String param : params) {
                 File file = new File(dir, SPUtil.getString(Constants.DATE) + "_" + (++saveNum) + ".jpg");
                 try {
@@ -139,6 +139,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
                 } catch (InterruptedException | FileNotFoundException e) {
                     e.printStackTrace();
+                    UI.showSnack(rootView, R.string.save_img_failed);
                 } catch (ExecutionException e) {
                     UI.showSnack(rootView, R.string.save_img_failed);
                     e.printStackTrace();
@@ -149,10 +150,10 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         protected void onPostExecute(File file) {
-            if (isCancelled()){
+            if (isCancelled()) {
                 return;
             }
-            Toast.makeText(getContext(), getString(R.string.save_img_success)+ file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), getString(R.string.save_img_success) + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         }
     }
 }

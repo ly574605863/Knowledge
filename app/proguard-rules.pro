@@ -73,3 +73,13 @@
 -keep class com.dante.knowledge.mvp.model.** { *; }
 -keep class android.support.v7.widget.ShareActionProvider { *; }
 -dontwarn com.dante.knowledge.**
+
+#configuration for Retrofit 2.X
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-keepclasseswithmembers class * {
+    @retrofit2.http.* <methods>;
+}

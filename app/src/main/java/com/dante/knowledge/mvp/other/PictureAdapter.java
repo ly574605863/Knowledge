@@ -1,7 +1,6 @@
 package com.dante.knowledge.mvp.other;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,6 @@ public abstract class PictureAdapter extends ArrayRecyclerAdapter<com.dante.know
         com.dante.knowledge.mvp.model.Image image = get(position);
         holder.imageView.setOriginalSize(image.getWidth(), image.getHeight());
         Imager.load(holder.itemView.getContext(), image.getUrl(), holder.imageView);
-        ViewCompat.setTransitionName(holder.imageView, context.getString(R.string.shared_img));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

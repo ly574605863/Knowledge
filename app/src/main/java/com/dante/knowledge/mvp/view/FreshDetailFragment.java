@@ -37,7 +37,7 @@ import butterknife.Bind;
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link FreshDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * createAPI an instance of this fragment.
  */
 public class FreshDetailFragment extends BaseFragment implements NewsDetailView<FreshDetailJson> {
 

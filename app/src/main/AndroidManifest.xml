@@ -50,6 +50,7 @@
         <activity
             android:name=".mvp.view.DetailActivity"
             android:label="@string/activity_detail"
+            android:process=":remote"
             android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
         <activity
@@ -59,12 +60,12 @@
         </activity>
 
         <service
-            android:name=".mvp.presenter.PictureFetchService"
+            android:name=".mvp.presenter.FetchService"
             android:exported="false">
         </service>
 
         <activity
-            android:name=".TestActivity"
+            android:name=".test.TestActivity"
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

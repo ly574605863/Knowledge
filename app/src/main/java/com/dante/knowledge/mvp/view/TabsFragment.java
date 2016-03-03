@@ -33,12 +33,10 @@ public class TabsFragment extends BaseFragment {
     ViewPager pager;
     @Bind(R.id.tabs)
     TabLayout tabs;
-    public static final int TAG_ZHIHU = 0;
-    public static final int TAG_FRESH = 1;
-
     public static final String MENU_NEWS = "news";
     public static final String MENU_PIC = "pic";
     public static final String MENU_SECRET = "secret";
+    public static final String MENU_H = "h";
 
     private List<RecyclerFragment> fragments = new ArrayList<>();
     private List<String> titles;
@@ -103,17 +101,17 @@ public class TabsFragment extends BaseFragment {
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_SILK));
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_BREAST));
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_BUTT));
-            if (fragments.size()!=titles.length){
+            if (fragments.size() != titles.length) {
                 throw new IllegalArgumentException("You need add all fragments in MenuTabFragment");
             }
 
         } else if (MENU_SECRET.equals(menuType)) {
-            String[] titles = new String[]{getString(R.string.h_asia), getString(R.string.h_selfie), getString(R.string.h_street), getString(R.string.h_silk)};
+            String[] titles = new String[]{getString(R.string.h_beauty), getString(R.string.h_selfie), getString(R.string.h_exposure), getString(R.string.h_original)};
             this.titles = Arrays.asList(titles);
-            for (int i = PictureFragment.TYPE_H_ASIA; i < 1+PictureFragment.TYPE_H_STREET; i++) {
-                //ensure the types are from 0 to length before using 'for' loop
-                fragments.add(PictureFragment.newInstance(i));
-            }
+            fragments.add(HFragment.newInstance(HFragment.TYPE_H_BEAUTY));
+            fragments.add(HFragment.newInstance(HFragment.TYPE_H_SELFIE));
+            fragments.add(HFragment.newInstance(HFragment.TYPE_H_EXPOSURE));
+            fragments.add(HFragment.newInstance(HFragment.TYPE_H_ORIGINAL));
 
         } else {
             titles = new ArrayList<>();
@@ -164,11 +162,6 @@ public class TabsFragment extends BaseFragment {
         public void setFragments(List<RecyclerFragment> fragments, List<String> titles) {
             this.fragments = fragments;
             this.titles = titles;
-        }
-
-        public void addFragment(RecyclerFragment fragment, String title) {
-            fragments.add(fragment);
-            titles.add(title);
         }
 
         @Override

@@ -192,8 +192,8 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(view);
             header = (TextView) view.findViewById(R.id.story_header);
             mImage = (ImageView) view.findViewById(R.id.story_img);
-            mTitle = (TextView) view.findViewById(R.id.story_title);
-            mItem = view.findViewById(R.id.story_item);
+            mTitle = (TextView) view.findViewById(R.id.h_title);
+            mItem = view.findViewById(R.id.h_item);
         }
 
         @Override
