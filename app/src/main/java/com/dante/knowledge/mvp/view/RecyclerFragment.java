@@ -64,13 +64,13 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
 
     public void changeProgress(final boolean refreshState) {
         if (null != swipeRefresh) {
-            swipeRefresh.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (swipeRefresh != null)
-                        swipeRefresh.setRefreshing(refreshState);
-                }
-            });
+            //this method had been fucking driving me crazy // TODO: 2016/3/4
+//            swipeRefresh.post(new Runnable() {
+//                @Override
+//                public void run() {
+            swipeRefresh.setRefreshing(refreshState);
+/*                }
+            });*/
         }
     }
 
