@@ -2,12 +2,10 @@
 <FrameLayout android:id="@+id/h_item"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="56dp"
-             android:background="?android:attr/selectableItemBackground"
-             android:orientation="horizontal"
-             android:paddingLeft="12dp"
-             android:paddingRight="12dp">
-
+             android:layout_height="52dp"
+             android:layout_marginLeft="@dimen/activity_horizontal_margin"
+             android:layout_marginRight="@dimen/activity_horizontal_margin"
+             android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/h_title"
@@ -16,7 +14,7 @@
         android:layout_gravity="center"
         android:lineSpacingMultiplier="1.2"
         android:text="如何看待当下这种越来越普遍的“沉默”人格？"
-        android:textColor="@color/cardview_dark_background"
+        android:textColor="@android:color/secondary_text_light"
         android:textSize="16sp"/>
 
     <View

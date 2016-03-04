@@ -10,7 +10,7 @@
     tools:openDrawer="start">
 
     <include
-        layout="@layout/main_content"
+        layout="@layout/md_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

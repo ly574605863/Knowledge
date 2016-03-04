@@ -16,7 +16,7 @@ import com.dante.knowledge.mvp.view.PictureFragment;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.callback.Callback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +26,12 @@ import java.util.List;
 
 import io.realm.Realm;
 import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p>
+ * <p/>
  * helper methods.
  */
 public class FetchService extends IntentService {
@@ -50,7 +51,6 @@ public class FetchService extends IntentService {
     public FetchService() {
         super("PictureFetchService");
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        realm = Realm.getDefaultInstance();
     }
 
 
@@ -71,6 +71,9 @@ public class FetchService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FETCH.equals(action)) {
@@ -79,8 +82,8 @@ public class FetchService extends IntentService {
                 parse(data);
             } else if (ACTION_FETCH_H_DETAIL.equals(action)) {
                 String url = intent.getStringExtra(Constants.URL);
-                fetchDetail(url);
                 stopFetchAll = true;
+                fetchDetail(url, true);
             }
         }
     }
@@ -100,8 +103,11 @@ public class FetchService extends IntentService {
 
         } else if (PictureFragment.TYPE_DB_RANK < type
                 && type < HFragment.TYPE_H_ORIGINAL) {
-            Log.i("test", "parse");
-            sendResult(HParser.parseHItem(response));
+
+            List<HItem> items = HParser.parseHItem(response);
+            realm.copyToRealmOrUpdate(items);
+            realm.commitTransaction();
+            sendResult(items.size() > 0);
             fetchAllDetail();
         }
     }
@@ -110,19 +116,38 @@ public class FetchService extends IntentService {
         List<HItem> items = realm.where(HItem.class).findAll();
         for (HItem item : items) {
             final String url = item.getUrl();
-            fetchDetail(url);
+            fetchDetail(url, false);
         }
     }
 
-    private void fetchDetail(final String url) {
-        boolean isExisted = realm.where(HDetail.class).equalTo(Constants.URL, url).findAll().isEmpty();
+    private void fetchDetail(final String url, final boolean normalFetch) {
+        Log.i("test", "stop sign>>>" + String.valueOf(normalFetch) + String.valueOf(stopFetchAll));
+
+        boolean isExisted = !realm.where(HDetail.class).equalTo(Constants.URL, url).findAll().isEmpty();
         if (isExisted) {
             return;
         }
 
         final long lastGetTime = System.currentTimeMillis();
 
-        Net.get(url, new StringCallback() {
+        Net.get(url, new Callback<HDetail>() {
+            @Override
+            public HDetail parseNetworkResponse(Response response) throws Exception {
+                if (!normalFetch && stopFetchAll) {
+                    Log.i("test", "stop ");
+                    return null;
+                }
+                HParser parser = new HParser(FetchService.this, type);
+                HDetail detail = parser.parseHDetail(response.body().string(), url);
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(detail);
+                realm.commitTransaction();
+                realm.close();
+                sendResult(detail.getImages().size() != 0);
+                return detail;
+            }
+
             @Override
             public void onError(Call call, Exception e) {
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
@@ -133,16 +158,12 @@ public class FetchService extends IntentService {
             }
 
             @Override
-            public void onResponse(String response) {
-                if (stopFetchAll) {
-                    return;
-                }
-                HParser parser = new HParser(FetchService.this, type);
-//                parser.parseHDetail(response, url);
+            public void onResponse(HDetail response) {
+
             }
+
         }, this);
     }
-
 
     private boolean parseGANK(String response) {
         try {
@@ -175,4 +196,12 @@ public class FetchService extends IntentService {
         // TODO: Handle action Baz
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        realm.close();
+        return super.onUnbind(intent);
+    }
+
+
 }

@@ -153,6 +153,7 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
             Intent intent = new Intent(getActivity(), HDetailActivity.class);
             intent.putExtra(Constants.MENU_TYPE, TabsFragment.MENU_H);
             intent.putExtra(Constants.URL, viewHolder.hItem.getUrl());
+            intent.putExtra(Constants.TEXT, viewHolder.hItem.getTitle());
             intent.putExtra(Constants.POSITION, holder.getAdapterPosition());
             startActivity(intent);
         }

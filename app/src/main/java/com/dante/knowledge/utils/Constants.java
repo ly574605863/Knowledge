@@ -16,4 +16,5 @@ public class Constants {
     public static final String SAVE_NUM="save_num";
     public static final String HAS_HINT = "first_hint";
     public static final String CHECK_DATE = "check_date";
+    public static final String TEXT = "text";
 }

@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
 import com.dante.knowledge.mvp.model.HItem;
-import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.net.DB;
 
 import java.util.List;
@@ -42,9 +41,7 @@ public class HPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
         final ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.hItem = items.get(position);
 
-        viewHolder.mTitle.setText(viewHolder.hItem.getTitle());
-        viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
-
+//        viewHolder.mTitle.setText(viewHolder.hItem.getTitle());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

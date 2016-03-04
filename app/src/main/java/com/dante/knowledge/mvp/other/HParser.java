@@ -6,7 +6,6 @@ import android.util.Log;
 import com.dante.knowledge.mvp.model.HDetail;
 import com.dante.knowledge.mvp.model.HItem;
 import com.dante.knowledge.mvp.model.Image;
-import com.dante.knowledge.utils.Constants;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import io.realm.Realm;
 import io.realm.RealmList;
 
 
@@ -34,8 +32,7 @@ public class HParser {
         this.type = type;
     }
 
-    public static boolean parseHItem(String response) {
-        Realm realm = Realm.getDefaultInstance();
+    public static List<HItem> parseHItem(String response) {
         List<HItem> items = new ArrayList<>();
         Document document = Jsoup.parse(response);
         Elements elements = document.select(".tr3 > td > h3 > a");
@@ -43,42 +40,29 @@ public class HParser {
             Element post = elements.get(i);
             String url = post.attr("abs:href");
             String title = post.text();
-            boolean notExisted = realm.where(HItem.class).equalTo(Constants.URL, url).findAll().isEmpty();
-            if (notExisted) {
-                HItem item = new HItem(System.currentTimeMillis() + "", url, title);
-                items.add(item);
-            }
+            HItem item = new HItem(System.currentTimeMillis() + "", url, title);
+            items.add(item);
             Log.i("test", "href>>>" + url + " text>>>" + title);
         }
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(items);
-        realm.commitTransaction();
-        realm.close();
-        return items.size() != 0;
+        return items;
     }
 
-    public boolean parseHDetail(String response, String postLink) {
+    public HDetail parseHDetail(final String response, final String url) {
+        Log.i("test", " Start parse HDetail>>>");
         RealmList<Image> images = new RealmList<>();
         Document document = Jsoup.parse(response);
         Elements elements = document.select(".tpc_content > img[src]");
         for (int i = 0; i < elements.size(); i++) {
             Element img = elements.get(i);
             String src = img.attr("src");
-            Log.i("test", " src>>>" + src);
             try {
                 Image image = Image.getFixedImage(context, src, type);
                 images.add(image);
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
-                return false;
             }
         }
-        HDetail detail = new HDetail(postLink, images);
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(detail);
-        realm.commitTransaction();
-        realm.close();
-        return !images.isEmpty();
+        return new HDetail(url, images);
     }
+
 }

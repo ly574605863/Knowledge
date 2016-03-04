@@ -69,7 +69,11 @@
             android:label="@string/title_activity_test"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
+        <activity
+            android:name=".mvp.view.HDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar.Default"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.callback.Callback;
 
 /**
  * Net request encapsulation
@@ -19,7 +19,7 @@ public class Net {
         return (networkInfo != null && networkInfo.isConnected());
     }
 
-    public static void get(String url, StringCallback callback, Object tag) {
+    public static void get(String url, Callback callback, Object tag) {
         OkHttpUtils.get().url(url).tag(tag)
                 .build().execute(callback);
     }
