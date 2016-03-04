@@ -35,8 +35,10 @@ public class ImageHelper {
                 e.printStackTrace();
             }
         }
-        FetchService.realm.copyToRealmOrUpdate(images);
-        FetchService.realm.commitTransaction();
+        if (images.size() >= 0) {
+            FetchService.realm.copyToRealmOrUpdate(images);
+            FetchService.realm.commitTransaction();
+        }
         return images.size() != 0;
     }
 
