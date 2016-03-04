@@ -116,6 +116,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        return;
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(API.TAG_SPLASH);
