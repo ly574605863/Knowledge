@@ -38,8 +38,9 @@ public class ImageHelper {
         if (images.size() >= 0) {
             FetchService.realm.copyToRealmOrUpdate(images);
             FetchService.realm.commitTransaction();
+            return true;
         }
-        return images.size() != 0;
+        return false;
     }
 
     public boolean saveImages(String[] urls) {

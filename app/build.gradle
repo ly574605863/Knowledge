@@ -39,7 +39,7 @@ android {
         abi {
             enable true
             reset()
-            include  'armeabi-v7a', 'x86'
+            include 'armeabi-v7a', 'x86'
         }
     }
 }
@@ -63,4 +63,7 @@ dependencies {
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'com.github.oxoooo:pull-back-layout:1.0.1'
+    debugCompile 'com.github.moduth:blockcanary-ui:1.1.4'
+    releaseCompile 'com.github.moduth:blockcanary-no-op:1.1.4'
+    compile 'com.github.anrwatchdog:anrwatchdog:1.1.+'
 }

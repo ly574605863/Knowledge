@@ -50,7 +50,6 @@ public class FetchService extends IntentService {
 
     public FetchService() {
         super("PictureFetchService");
-        localBroadcastManager = LocalBroadcastManager.getInstance(this);
     }
 
 
@@ -71,9 +70,9 @@ public class FetchService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
         realm = Realm.getDefaultInstance();
         realm.beginTransaction();
-
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FETCH.equals(action)) {
@@ -94,7 +93,7 @@ public class FetchService extends IntentService {
 
         if (type == PictureFragment.TYPE_GANK) {
             sendResult(parseGANK(response));
-
+            parseGANK(response);
         } else if (PictureFragment.TYPE_GANK < type
                 && type <= PictureFragment.TYPE_DB_RANK) {
 
@@ -121,8 +120,6 @@ public class FetchService extends IntentService {
     }
 
     private void fetchDetail(final String url, final boolean normalFetch) {
-        Log.i("test", "stop sign>>>" + String.valueOf(normalFetch) + String.valueOf(stopFetchAll));
-
         boolean isExisted = !realm.where(HDetail.class).equalTo(Constants.URL, url).findAll().isEmpty();
         if (isExisted) {
             return;
@@ -165,7 +162,7 @@ public class FetchService extends IntentService {
         }, this);
     }
 
-    private boolean parseGANK(String response) {
+        private boolean parseGANK(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray array = jsonObject.getJSONArray("results");
@@ -195,12 +192,6 @@ public class FetchService extends IntentService {
     private void handleActionBaz(String param1, String param2) {
         // TODO: Handle action Baz
         throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        realm.close();
-        return super.onUnbind(intent);
     }
 
 
