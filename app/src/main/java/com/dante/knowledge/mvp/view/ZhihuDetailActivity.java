@@ -39,10 +39,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Bind(R.id.web_container)
     FrameLayout webContainer;
     private WebView webView;
-    private int id;
-    private ZhihuStory story;
     private ZhihuDetail zhihuDetail;
-    private NewsDetailPresenter<ZhihuStory> presenter;
 
     @Override
     protected void initLayoutId() {
@@ -52,8 +49,8 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void initViews() {
         super.initViews();
-        id = getIntent().getIntExtra(Constants.ID, 0);
-        story = DB.getById(id, ZhihuStory.class);
+        int id = getIntent().getIntExtra(Constants.ID, 0);
+        ZhihuStory story = DB.getById(id, ZhihuStory.class);
         zhihuDetail = DB.getById(id, ZhihuDetail.class);
         if (story == null) {
             //can't find zhihuItem, so this id is passed by Zhihutop
@@ -61,7 +58,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         } else {
             toolbarLayout.setTitle(story.getTitle());
         }
-        presenter = new ZhihuDetailPresenter(this);
+        NewsDetailPresenter<ZhihuStory> presenter = new ZhihuDetailPresenter(this);
         initWebView();
         if (zhihuDetail == null) {
             presenter.loadNewsDetail(story);

@@ -32,7 +32,7 @@ public class BannerView implements Holder<ZhihuTop> {
     public void UpdateUI(final Context context, int position, final ZhihuTop entity) {
         final ImageView imageView = (ImageView) view.findViewById(R.id.story_img);
         TextView textView = (TextView) view.findViewById(R.id.h_title);
-        Imager.load(context, entity.getImage(), imageView);
+        Imager.loadWithHighPriority(entity.getImage(), imageView);
         textView.setText(entity.getTitle());
         view.setOnClickListener(new View.OnClickListener() {
             @Override

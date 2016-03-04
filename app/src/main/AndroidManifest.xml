@@ -71,8 +71,7 @@
         </activity>
         <activity
             android:name=".mvp.view.HDetailActivity"
-            android:theme="@style/AppTheme.NoActionBar.Default"
-            android:parentActivityName=".MainActivity">
+            android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
     </application>
 

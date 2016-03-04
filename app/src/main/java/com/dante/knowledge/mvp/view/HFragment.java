@@ -124,7 +124,9 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
 
             @Override
             public void onResponse(String response) {
-                FetchService.startActionFetch(getActivity(), type, response);
+                if (isLive()){
+                    FetchService.startActionFetch(getActivity(), type, response);
+                }
             }
         };
 

@@ -83,7 +83,7 @@ public class FetchService extends IntentService {
             } else if (ACTION_FETCH_H_DETAIL.equals(action)) {
                 String url = intent.getStringExtra(Constants.URL);
                 stopFetchAll = true;
-                fetchDetail(url, true);
+//                fetchDetail(url, true);// TODO: 16/3/4 test if it causes the ANR
             }
         }
     }

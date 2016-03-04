@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.dante.knowledge.KnowledgeApp;
 
@@ -20,7 +21,15 @@ public class Imager {
                 .into(view);
     }
 
-    public static void load( String url, int animationId, ImageView view) {
+    public static void loadWithHighPriority( String url, ImageView view) {
+        Glide.with(KnowledgeApp.context)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .priority(Priority.HIGH)
+                .into(view);
+    }
+
+    public static void load(String url, int animationId, ImageView view) {
         Glide.with(KnowledgeApp.context)
                 .load(url)
                 .animate(animationId)

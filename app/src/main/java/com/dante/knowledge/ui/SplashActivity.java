@@ -117,7 +117,7 @@ public class SplashActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //test
+        //disable back button when showing splash
     }
 
     @Override

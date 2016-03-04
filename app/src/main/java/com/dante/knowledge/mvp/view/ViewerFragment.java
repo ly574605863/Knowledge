@@ -68,24 +68,28 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         loadPicture();
     }
 
+    //Make target a field member instead of an anonymous inner class
+    //to avoid being GC the moment after loading the picture
+    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
+
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            super.onLoadFailed(e, errorDrawable);
+            loadPicture();
+        }
+
+        @Override
+        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+            imageView.setImageDrawable(resource);
+            getActivity().supportStartPostponedEnterTransition();
+        }
+    };
+
     private void loadPicture() {
         Glide.with(this)
                 .load(url)
                 .dontAnimate()
-                .into(new SimpleTarget<GlideDrawable>() {
-
-                    @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        super.onLoadFailed(e, errorDrawable);
-                        loadPicture();
-                    }
-
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        imageView.setImageDrawable(resource);
-                        getActivity().supportStartPostponedEnterTransition();
-                    }
-                });
+                .into(target);
     }
 
     @Override

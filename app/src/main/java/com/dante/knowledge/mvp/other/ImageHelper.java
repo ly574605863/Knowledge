@@ -3,12 +3,11 @@ package com.dante.knowledge.mvp.other;
 import android.content.Context;
 
 import com.dante.knowledge.mvp.model.Image;
+import com.dante.knowledge.mvp.presenter.FetchService;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import io.realm.Realm;
 
 /**
  * A helper of Image model transactions.
@@ -36,11 +35,8 @@ public class ImageHelper {
                 e.printStackTrace();
             }
         }
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(images);
-        realm.commitTransaction();
-        realm.close();
+        FetchService.realm.copyToRealmOrUpdate(images);
+        FetchService.realm.commitTransaction();
         return images.size() != 0;
     }
 
