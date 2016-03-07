@@ -9,9 +9,12 @@ import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
-import com.zhy.http.okhttp.callback.StringCallback;
+import com.zhy.http.okhttp.callback.Callback;
+
+import java.io.IOException;
 
 import okhttp3.Call;
+import okhttp3.Response;
 
 /**
  * deals with the fresh news' data work
@@ -41,9 +44,10 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
     }
 
     private void getFreshNews(final OnLoadDataListener listener) {
-        StringCallback callback = new StringCallback() {
+        Callback<FreshJson> callback = new Callback<FreshJson>() {
             @Override
             public void onError(Call call, Exception e) {
+                e.printStackTrace();
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     Net.get(API.FRESH_NEWS + page, this, API.TAG_FRESH);
                     return;
@@ -52,12 +56,16 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
             }
 
             @Override
-            public void onResponse(String response) {
-                FreshJson news = Json.parseFreshNews(response);
-                DB.saveList(news.getPosts());
-                SPUtil.save(Constants.PAGE, page);
+            public void onResponse(FreshJson response) {
+                DB.saveList(response.getPosts());
                 listener.onSuccess();
                 page++;
+                SPUtil.save(Constants.PAGE, page);
+            }
+
+            @Override
+            public FreshJson parseNetworkResponse(Response response) throws IOException {
+                return Json.parseFreshNews(response.body().string());
             }
         };
 
@@ -84,9 +92,10 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
     private void requestData(final FreshPost freshPost, final OnLoadDetailListener<FreshDetailJson> listener) {
         lastGetTime = System.currentTimeMillis();
-        StringCallback callback = new StringCallback() {
+        Callback<FreshDetailJson> callback = new Callback<FreshDetailJson>() {
             @Override
             public void onError(Call call, Exception e) {
+                e.printStackTrace();
                 if (System.currentTimeMillis() - lastGetTime < GET_DURATION) {
                     Net.get(API.FRESH_NEWS_DETAIL + freshPost.getId(), this, API.TAG_FRESH);
                     return;
@@ -96,10 +105,14 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
             }
 
             @Override
-            public void onResponse(String response) {
-                FreshDetailJson detail = Json.parseFreshDetail(response);
-                DB.save(detail.getPost());
-                listener.onDetailSuccess(detail);
+            public FreshDetailJson parseNetworkResponse(Response response) throws IOException {
+                return Json.parseFreshDetail(response.body().string());
+            }
+
+            @Override
+            public void onResponse(FreshDetailJson response) {
+                DB.save(response.getPost());
+                listener.onDetailSuccess(response);
             }
         };
         Net.get(API.FRESH_NEWS_DETAIL + freshPost.getId(), callback, API.TAG_FRESH);
