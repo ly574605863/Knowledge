@@ -55,7 +55,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private PictureAdapter adapter;
     private RealmResults<Image> images;
     private long GET_DURATION = 3000;
-    private UpdateReceiver updateReceiver;
+    private UpdateReceiver loadReceiver;
     private LocalBroadcastManager localBroadcastManager;
     private FragmentActivity context;
 
@@ -77,7 +77,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_PICTURE);
-        localBroadcastManager.unregisterReceiver(updateReceiver);
+        localBroadcastManager.unregisterReceiver(loadReceiver);
         SPUtil.save(type + Constants.PAGE, page);
         super.onDestroyView();
     }
@@ -93,10 +93,10 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     protected void initViews() {
         super.initViews();
-        updateReceiver = new UpdateReceiver(this);
+        loadReceiver = new UpdateReceiver(this);
         context = getActivity();
         localBroadcastManager = LocalBroadcastManager.getInstance(context);
-        localBroadcastManager.registerReceiver(updateReceiver, new IntentFilter(FetchService.ACTION_FETCH));
+        localBroadcastManager.registerReceiver(loadReceiver, new IntentFilter(FetchService.ACTION_FETCH));
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PictureAdapter(context) {
@@ -185,7 +185,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
             @Override
             public void onResponse(String response) {
-                if (isLive()){
+                if (isAlive()) {
                     FetchService.startActionFetch(getActivity(), type, response);
                 }
             }
@@ -232,7 +232,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     protected void AlwaysInit() {
         super.AlwaysInit();
-
     }
 
     @Override
@@ -268,7 +267,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onFailure(String msg) {
         changeProgress(false);
         adapter.replaceWith(images);
-        if (isLive()) {
+        if (isAlive()) {
             Snackbar.make(rootView, getString(R.string.load_no_result), Snackbar.LENGTH_LONG)
                     .setAction(R.string.try_again, new View.OnClickListener() {
                         @Override
@@ -278,6 +277,4 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
                     }).show();
         }
     }
-
-
 }

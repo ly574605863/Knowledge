@@ -100,7 +100,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void loadFailed(String msg) {
-        if (isLive()) {
+        if (isAlive()) {
             UI.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }

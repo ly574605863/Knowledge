@@ -129,7 +129,7 @@ public class HDetailFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     public void onFailure(String msg) {
         changeProgress(false);
-        if (isLive()) {
+        if (isAlive()) {
             Snackbar.make(rootView, getString(R.string.load_no_result), Snackbar.LENGTH_LONG)
                     .setAction(R.string.try_again, new View.OnClickListener() {
                         @Override

@@ -124,7 +124,7 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
 
             @Override
             public void onResponse(String response) {
-                if (isLive()){
+                if (isAlive()){
                     FetchService.startActionFetch(getActivity(), type, response);
                 }
             }
@@ -172,7 +172,7 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
     @Override
     public void onFailure(String msg) {
         changeProgress(false);
-        if (isLive()) {
+        if (isAlive()) {
             UI.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }

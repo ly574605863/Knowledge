@@ -65,7 +65,7 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initData();
 
 
-    public boolean isLive() {
+    public boolean isAlive() {
         return getActivity() != null;
     }
 }

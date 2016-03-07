@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.dante.knowledge.mvp.model.HDetail;
 import com.dante.knowledge.mvp.model.HItem;
+import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.mvp.other.DBParser;
 import com.dante.knowledge.mvp.other.HParser;
 import com.dante.knowledge.mvp.other.ImageHelper;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmObject;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -72,7 +74,7 @@ public class FetchService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
+//        realm.beginTransaction();
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FETCH.equals(action)) {
@@ -82,33 +84,40 @@ public class FetchService extends IntentService {
             } else if (ACTION_FETCH_H_DETAIL.equals(action)) {
                 String url = intent.getStringExtra(Constants.URL);
                 stopFetchAll = true;
-//                fetchDetail(url, true);// TODO: 16/3/4 test if it causes the ANR
+                fetchDetail(url, true);
             }
         }
     }
 
 
     private void parse(String response) {
-        helper = new ImageHelper(this, type);
+        boolean isSuccess = false;
 
+        helper = new ImageHelper(this, type);
         if (type == PictureFragment.TYPE_GANK) {
-            sendResult(parseGANK(response));
-            parseGANK(response);
+            isSuccess = save(parseGANK(response));
         } else if (PictureFragment.TYPE_GANK < type
                 && type <= PictureFragment.TYPE_DB_RANK) {
-
-            boolean isSuccess = helper.saveImages(DBParser.parse(response));
-            sendResult(isSuccess);
-
+            isSuccess = save(helper.saveImages(DBParser.parse(response)));
         } else if (PictureFragment.TYPE_DB_RANK < type
                 && type < HFragment.TYPE_H_ORIGINAL) {
-
             List<HItem> items = HParser.parseHItem(response);
-            realm.copyToRealmOrUpdate(items);
-            realm.commitTransaction();
-            sendResult(items.size() > 0);
+            isSuccess = save(items);
             fetchAllDetail();
         }
+        sendResult(isSuccess);
+    }
+
+    private <E extends RealmObject> boolean save(List<E> objects) {
+        if (objects != null) {
+            if (objects.size() >= 0) {
+                FetchService.realm.beginTransaction();
+                FetchService.realm.copyToRealmOrUpdate(objects);
+                FetchService.realm.commitTransaction();
+                return true;
+            }
+        }
+        return false;
     }
 
     private void fetchAllDetail() {
@@ -162,7 +171,7 @@ public class FetchService extends IntentService {
         }, this);
     }
 
-        private boolean parseGANK(String response) {
+    private List<Image> parseGANK(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray array = jsonObject.getJSONArray("results");
@@ -178,7 +187,7 @@ public class FetchService extends IntentService {
             return helper.saveImages(urls, publishAts);
         } catch (JSONException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

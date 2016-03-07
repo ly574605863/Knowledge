@@ -23,8 +23,6 @@ import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import butterknife.ButterKnife;
-
 
 public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJson>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
 
@@ -39,7 +37,6 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
     public void onDestroyView() {
         OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU);
         SPUtil.save(type + Constants.POSITION, firstPosition);
-        ButterKnife.unbind(this);
         super.onDestroyView();
     }
 
@@ -109,7 +106,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
 
     @Override
     public void loadFailed(String msg) {
-        if (isLive()) {
+        if (isAlive()) {
             UI.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }
     }

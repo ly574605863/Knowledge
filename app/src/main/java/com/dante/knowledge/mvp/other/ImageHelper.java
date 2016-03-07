@@ -3,7 +3,6 @@ package com.dante.knowledge.mvp.other;
 import android.content.Context;
 
 import com.dante.knowledge.mvp.model.Image;
-import com.dante.knowledge.mvp.presenter.FetchService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,7 @@ public class ImageHelper {
         this.type = type;
     }
 
-    public boolean saveImages(String[] urls, String[] publishAts) {
+    public List<Image> saveImages(String[] urls, String[] publishAts) {
         List<Image> images = new ArrayList<>();
         for (int i = 0; i < urls.length; i++) {
             try {
@@ -35,15 +34,10 @@ public class ImageHelper {
                 e.printStackTrace();
             }
         }
-        if (images.size() >= 0) {
-            FetchService.realm.copyToRealmOrUpdate(images);
-            FetchService.realm.commitTransaction();
-            return true;
-        }
-        return false;
+        return images;
     }
 
-    public boolean saveImages(String[] urls) {
+    public List<Image> saveImages(String[] urls) {
         return saveImages(urls, null);
     }
 
