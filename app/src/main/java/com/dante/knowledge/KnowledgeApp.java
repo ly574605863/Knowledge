@@ -3,7 +3,6 @@ package com.dante.knowledge;
 import android.app.Application;
 import android.content.Context;
 
-import com.github.anrwatchdog.ANRWatchDog;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.squareup.leakcanary.LeakCanary;
@@ -23,18 +22,13 @@ public class KnowledgeApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        refWatcher = LeakCanary.install(this);
-        ANR();
         context = this;
+        refWatcher = LeakCanary.install(this);
+        BlockCanary.install(this, new AppBlockCanaryContext()).start();
         setupRealm();
     }
 
-    private void ANR() {
-        BlockCanary.install(this, new AppBlockCanaryContext()).start();
-        if (!BuildConfig.DEBUG) {
-            new ANRWatchDog().start();
-        }
-    }
+
 
     private void setupRealm() {
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
@@ -48,7 +42,6 @@ public class KnowledgeApp extends Application {
 
     public class AppBlockCanaryContext extends BlockCanaryContext {
         // override to provide context like app qualifier, uid, network type, block threshold, log save path
-
         // this is default block threshold, you can set it by phone's performance
         @Override
         public int getConfigBlockThreshold() {
