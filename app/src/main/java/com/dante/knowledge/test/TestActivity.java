@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.utils.Imager;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.jsoup.Jsoup;
@@ -22,6 +24,7 @@ public class TestActivity extends AppCompatActivity {
 
     String main = "http://keet.p2pdown.net/pw/thread.php?fid=14";
     String post = "http://keet.p2pdown.net/pw/htm_data/14/1602/298340.html";
+    String url = "http://www.paochefang.com/wp-content/uploads/paoimage/2016/02/111032hmw.jpg";
     private int type;
 
     @Override
@@ -35,6 +38,9 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                start(post, 1);
+                ImageView imageView = new ImageView(TestActivity.this);
+                setContentView(imageView);
+                Imager.load(TestActivity.this, url, imageView);
             }
         });
     }

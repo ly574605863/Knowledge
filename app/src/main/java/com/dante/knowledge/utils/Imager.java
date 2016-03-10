@@ -14,7 +14,7 @@ import com.dante.knowledge.KnowledgeApp;
 public class Imager {
 
     public static void load(Context context, String url, ImageView view) {
-        Glide.with(context.getApplicationContext())
+        Glide.with(context)
                 .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()

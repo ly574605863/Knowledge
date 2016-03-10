@@ -8,6 +8,8 @@ import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dante.knowledge.KnowledgeApp;
+
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -42,5 +44,20 @@ public class Tool {
         }
     }
 
-
+    public static int getStatusBarHeight(){
+        Class<?> c = null;
+        Object obj = null;
+        Field field = null;
+        int x = 0, statusBarHeight = 0;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            statusBarHeight = KnowledgeApp.context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+        return statusBarHeight;
+    }
 }

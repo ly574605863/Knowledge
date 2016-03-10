@@ -4,9 +4,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.SharedElementCallback;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.dante.knowledge.R;
@@ -17,6 +22,8 @@ import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
+import com.dante.knowledge.utils.Share;
+import com.dante.knowledge.utils.Tool;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -35,12 +42,22 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     FrameLayout container;
     private int position;
     private DetailPagerAdapter adapter;
-    private List<Image> images;
     private String menuType;
     private boolean isPicture;
     private int currentPosition;
     private int type;
+    private ShareActionProvider mShareActionProvider;
+    private List<Image> images;
+    private List<FreshPost> freshPosts;
 
+    private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+
+    private static final int SYSTEM_UI_HIDE = View.SYSTEM_UI_FLAG_IMMERSIVE
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_FULLSCREEN;
+    private boolean isSystemUiShown;
 
     @Override
     protected void initLayoutId() {
@@ -56,18 +73,26 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     @SuppressWarnings("unchecked")
     @Override
     protected void initViews() {
-        supportPostponeEnterTransition();
         super.initViews();
+        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.setMargins(0, Tool.getStatusBarHeight(), 0, 0);
+        if (isPicture) {
+            toolbar.setLayoutParams(lp);
+        }
+
+        supportPostponeEnterTransition();
         position = getIntent().getIntExtra(Constants.POSITION, 0);
 
         List<Fragment> fragments = new ArrayList<>();
 
         if (TabsFragment.MENU_NEWS.equals(menuType)) {
-            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, DB.findAll(FreshPost.class).size());
+            freshPosts = DB.findAllDateSorted(FreshPost.class);
+            adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, freshPosts.size());
 
             for (int i = 0; i < DB.findAll(FreshPost.class).size(); i++) {
                 fragments.add(FreshDetailFragment.newInstance(i));
             }
+
         } else if (isPicture) {
             ((PullBackLayout) container).setCallback(this);
 
@@ -83,7 +108,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
                 fragments.add(ViewerFragment.newInstance(images.get(i).getUrl()));
             }
             adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, images.size());
-
         }
         pager.setAdapter(adapter);
         pager.setOffscreenPageLimit(2);
@@ -98,13 +122,26 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             public void onPageSelected(int position) {
                 currentPosition = position;
                 setEnterSharedElement(position);
+                if (isPicture) {
+                    setShareIntent(images.get(position).getUrl());
+                } else {
+                    setShareIntent(freshPosts.get(position).getUrl());
+                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
+                if (isPicture) {
+                    hideToolbar();
+                    hideSystemUi();
+                }
             }
         });
+    }
+
+    public void toggleUI() {
+        toggleSystemUI();
+        toggleToolbar();
     }
 
     private void setEnterSharedElement(final int position) {
@@ -127,7 +164,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullStart() {
-
+        toggleUI();
     }
 
     @Override
@@ -138,7 +175,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullCancel() {
-
+        toggleUI();
     }
 
     @Override
@@ -202,5 +239,52 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         System.exit(0);
     }
 
+    public void toggleSystemUI() {
+        if (isSystemUiShown) {
+            hideSystemUi();
+        } else {
+            showSystemUi();
+        }
+    }
 
+    private void showSystemUi() {
+        pager.setSystemUiVisibility(SYSTEM_UI_SHOW);
+        isSystemUiShown = true;
+    }
+
+    private void hideSystemUi() {
+        pager.setSystemUiVisibility(SYSTEM_UI_HIDE);
+        isSystemUiShown = false;
+    }
+
+    private void setShareIntent(String data) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(
+                    Share.getShareIntent(data)
+            );
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        if (isPicture) {
+            setShareIntent(images.get(position).getUrl());
+        } else {
+            setShareIntent(freshPosts.get(position).getUrl());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

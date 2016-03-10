@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.DB;
@@ -19,6 +21,7 @@ import io.realm.Realm;
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
+    private boolean isShowToolbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (null != toolbar) {
             setSupportActionBar(toolbar);
-            if (getSupportActionBar() != null){
+            if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
@@ -55,6 +58,23 @@ public abstract class BaseActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void toggleToolbar() {
+        if (isShowToolbar) {
+            hideToolbar();
+        } else {
+            showToolbar();
+        }
+    }
+
+    public void hideToolbar() {
+        isShowToolbar = false;
+        toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+    }
+
+    public void showToolbar() {
+        isShowToolbar = true;
+        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+    }
 
     @Override
     protected void onDestroy() {
