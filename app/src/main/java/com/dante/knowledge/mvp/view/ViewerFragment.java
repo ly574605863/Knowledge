@@ -2,17 +2,12 @@ package com.dante.knowledge.mvp.view;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.ShareActionProvider;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -21,12 +16,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
-import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
-import com.dante.knowledge.utils.Share;
-import com.dante.knowledge.utils.Tool;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
@@ -43,12 +35,9 @@ import butterknife.Bind;
 public class ViewerFragment extends BaseFragment implements View.OnLongClickListener, View.OnClickListener {
 
     @Bind(R.id.image)
-    TouchImageView imageView;
+    ImageView imageView;
     private String url;
     private SaveImageTask task;
-    private DetailActivity activity;
-    private ShareActionProvider mShareActionProvider;
-    private boolean isCurrentFragment;
 
     @Override
     public void onDestroyView() {
@@ -74,14 +63,11 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     protected void initViews() {
-        activity = (DetailActivity) getActivity();
-
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
         loadPicture();
     }
 
-    private Uri uri;
     //Make target a field member instead of an anonymous inner class
     //to avoid being GC the moment after loading the picture
     private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
@@ -94,21 +80,10 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-            uri = Tool.drawableToUri(resource);
-            //setUser called before onResourceReady, so need to call it manually
-            setUserVisibleHint(getUserVisibleHint());
             imageView.setImageDrawable(resource);
             getActivity().supportStartPostponedEnterTransition();
         }
     };
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (null != uri&& isVisibleToUser) {
-            activity.setShareImageIntent(uri);
-        }
-    }
 
     private void loadPicture() {
         Glide.with(this)
@@ -137,8 +112,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public void onClick(View v) {
-        activity.toggleUI();
-
         if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
             Toast.makeText(getContext(), getString(R.string.view_img_hint), Toast.LENGTH_LONG).show();
             SPUtil.save(Constants.HAS_HINT, true);
@@ -186,22 +159,5 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             }
             Toast.makeText(getContext(), getString(R.string.save_img_success) + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         }
-    }
-
-    private void setShareIntent() {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(
-                    Share.getShareIntent(getString(R.string.share_app_description))
-            );
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        getActivity().getMenuInflater().inflate(R.menu.share_menu, menu);
-        MenuItem item = menu.findItem(R.id.menu_item_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        setShareIntent();
     }
 }
