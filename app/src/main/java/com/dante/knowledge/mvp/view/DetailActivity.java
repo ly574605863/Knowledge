@@ -1,5 +1,6 @@
 package com.dante.knowledge.mvp.view;
 
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -122,9 +123,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             public void onPageSelected(int position) {
                 currentPosition = position;
                 setEnterSharedElement(position);
-                if (isPicture) {
-                    setShareIntent(images.get(position).getUrl());
-                } else {
+                if (!isPicture) {
                     setShareIntent(freshPosts.get(position).getUrl());
                 }
             }
@@ -196,6 +195,10 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         adapter.notifyDataSetChanged();
     }
 
+    public String currentUrl() {
+        return images.get(currentPosition).getUrl();
+    }
+
     private class DetailPagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> fragments;
@@ -257,10 +260,18 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         isSystemUiShown = false;
     }
 
-    private void setShareIntent(String data) {
+    public void setShareIntent(String data) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(
                     Share.getShareIntent(data)
+            );
+        }
+    }
+
+    public void setShareImageIntent(Uri uri) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(
+                    Share.getShareImageIntent(uri)
             );
         }
     }
@@ -270,9 +281,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         getMenuInflater().inflate(R.menu.share_menu, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        if (isPicture) {
-            setShareIntent(images.get(position).getUrl());
-        } else {
+        if (!isPicture) {
             setShareIntent(freshPosts.get(position).getUrl());
         }
         return true;

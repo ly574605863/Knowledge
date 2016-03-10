@@ -2,6 +2,7 @@ package com.dante.knowledge.mvp.view;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +26,7 @@ import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
+import com.dante.knowledge.utils.Tool;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
@@ -46,6 +48,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     private SaveImageTask task;
     private DetailActivity activity;
     private ShareActionProvider mShareActionProvider;
+    private boolean isCurrentFragment;
 
     @Override
     public void onDestroyView() {
@@ -78,6 +81,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         loadPicture();
     }
 
+    private Uri uri;
     //Make target a field member instead of an anonymous inner class
     //to avoid being GC the moment after loading the picture
     private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
@@ -90,10 +94,21 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+            uri = Tool.drawableToUri(resource);
+            //setUser called before onResourceReady, so need to call it manually
+            setUserVisibleHint(getUserVisibleHint());
             imageView.setImageDrawable(resource);
             getActivity().supportStartPostponedEnterTransition();
         }
     };
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (null != uri&& isVisibleToUser) {
+            activity.setShareImageIntent(uri);
+        }
+    }
 
     private void loadPicture() {
         Glide.with(this)

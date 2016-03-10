@@ -2,6 +2,7 @@ package com.dante.knowledge.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 
 import com.dante.knowledge.R;
 
@@ -16,6 +17,13 @@ public class Share {
         textIntent.putExtra(Intent.EXTRA_TEXT, shareText);
         textIntent.setType("text/plain");
         return textIntent;
+    }
+    public static Intent getShareImageIntent(Uri uri) {
+        Intent image = new Intent();
+        image.setAction(Intent.ACTION_SEND);
+        image.putExtra(Intent.EXTRA_STREAM, uri);
+        image.setType("image/*");
+        return image;
     }
     public static Intent getShareHtmlIntent(String htmlText) {
         Intent textIntent = new Intent();
