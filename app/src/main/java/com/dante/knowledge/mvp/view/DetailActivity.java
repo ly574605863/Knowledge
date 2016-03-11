@@ -51,14 +51,13 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     private List<Image> images;
     private List<FreshPost> freshPosts;
 
-    private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+    private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
     private static final int SYSTEM_UI_HIDE = View.SYSTEM_UI_FLAG_IMMERSIVE
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN;
-    private boolean isSystemUiShown;
+
+    private boolean isSystemUiShown = true;
 
     @Override
     protected void initLayoutId() {
@@ -154,7 +153,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
-                Log.i("test", "pager position " + position);
                 SPUtil.save("shared_index", position);
                 names.clear();
                 names.add(images.get(position).getUrl());
@@ -269,6 +267,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             );
         }
     }
+
     public void setShareImageIntent(Uri uri) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(
@@ -276,6 +275,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             );
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);

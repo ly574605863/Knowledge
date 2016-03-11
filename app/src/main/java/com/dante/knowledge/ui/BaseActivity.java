@@ -21,7 +21,7 @@ import io.realm.Realm;
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
-    private boolean isShowToolbar;
+    private boolean isShowToolbar= true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

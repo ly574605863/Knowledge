@@ -1,27 +1,24 @@
 package com.dante.knowledge.mvp.view;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
-import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.Tool;
 
 import java.util.concurrent.ExecutionException;
@@ -76,40 +73,39 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
 
-        loadPicture = new LoadBitmapTask().execute();
+        loadPicture = new LoadPictureTask().execute();
+//        loadPicture();
     }
 
     private Uri uri;
     //Make target a field member instead of an anonymous inner class
     //to avoid being GC the moment after loading the picture
-//    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
-//
-//        @Override
-//        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-//            super.onLoadFailed(e, errorDrawable);
-//            loadPicture();
-//        }
-//
-//        @Override
-//        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//            imageView.setImageDrawable(resource);
-//            activity.supportStartPostponedEnterTransition();
-//        }
-//    };
-//    private void loadPicture() {
-//        Glide.with(this)
-//                .load(url)
-//                .dontAnimate()
-//                .into(target);
-//    }
+    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
 
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            super.onLoadFailed(e, errorDrawable);
+            loadPicture();
+        }
+
+        @Override
+        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+            imageView.setImageDrawable(resource);
+            activity.supportStartPostponedEnterTransition();
+        }
+    };
+    private void loadPicture() {
+        Glide.with(this)
+                .load(url)
+                .dontAnimate()
+                .into(target);
+    }
 
     @Override
     protected void initData() {
         imageView.setOnClickListener(this);
         imageView.setOnLongClickListener(this);
     }
-
 
     @Override
     public boolean onLongClick(View v) {
@@ -119,14 +115,13 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     @Override
     public void onClick(View v) {
         activity.toggleUI();
-
         if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
             Toast.makeText(getContext(), getString(R.string.view_img_hint), Toast.LENGTH_LONG).show();
             SPUtil.save(Constants.HAS_HINT, true);
         }
     }
 
-    private class LoadBitmapTask extends AsyncTask<Void, Void, Bitmap> {
+    private class LoadPictureTask extends AsyncTask<Void, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(Void... voids) {
             if (isCancelled()) {
@@ -148,9 +143,9 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             if (isCancelled()) {
                 return;
             }
-            task = new ShareIntentTask().execute(picture);
             imageView.setImageBitmap(picture);
             activity.supportStartPostponedEnterTransition();
+            task = new ShareIntentTask().execute(picture);
         }
     }
 
