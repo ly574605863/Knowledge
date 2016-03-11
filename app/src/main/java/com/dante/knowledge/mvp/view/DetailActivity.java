@@ -79,6 +79,8 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         lp.setMargins(0, Tool.getStatusBarHeight(), 0, 0);
         if (isPicture) {
             toolbar.setLayoutParams(lp);
+            toolbar.setTitle("");
+            setSupportActionBar(toolbar);
         }
 
         supportPostponeEnterTransition();
@@ -267,7 +269,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             );
         }
     }
-
     public void setShareImageIntent(Uri uri) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(
@@ -275,7 +276,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             );
         }
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
