@@ -4,6 +4,8 @@ package com.dante.knowledge.mvp.view;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.ui.BaseFragment;
@@ -34,18 +36,13 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState == null||DetailActivity.needRefresh) {
+        if (savedInstanceState == null) {
             //restoring position when reentering fragment.
             lastPosition = SPUtil.getInt(type + Constants.POSITION);
             if (lastPosition > 0) {
                 recyclerView.scrollToPosition(lastPosition);
             }
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
     }
 
     @Override
@@ -57,6 +54,7 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
     public void onPause() {
         super.onPause();
         SPUtil.save(type + Constants.POSITION, firstPosition);
+        Log.i("test", "RecyclerFragment: save>>>>" + firstPosition);
     }
 
     @Override

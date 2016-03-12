@@ -62,6 +62,11 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     public void onResume() {
         super.onResume();
+        lastPosition = SPUtil.getInt(type + Constants.POSITION);
+        if (lastPosition>0){
+            recyclerView.scrollToPosition(lastPosition);
+        }
+        Log.i("test", "restore>>>>" + lastPosition + " key: "+type + Constants.POSITION);
         if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
             PRELOAD_COUNT++;
             fetch(false);

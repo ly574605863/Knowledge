@@ -1,12 +1,17 @@
 package com.dante.knowledge.mvp.view;
 
+import android.annotation.TargetApi;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -30,9 +35,9 @@ import butterknife.Bind;
 import io.realm.RealmChangeListener;
 import ooo.oxo.library.widget.PullBackLayout;
 
+@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 public class DetailActivity extends BaseActivity implements PullBackLayout.Callback, RealmChangeListener {
 
-    public static boolean needRefresh = false;
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.container)
@@ -43,16 +48,30 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     private boolean isPicture;
     private int currentPosition;
     private int type;
-    private ShareActionProvider mShareActionProvider;
     private List<Image> images;
     private List<FreshPost> freshPosts;
 
     private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
-    private static final int SYSTEM_UI_HIDE =  View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+    private static final int SYSTEM_UI_HIDE = View.SYSTEM_UI_FLAG_IMMERSIVE
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN;
 
     private boolean isSystemUiShown = true;
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SPUtil.save(type + Constants.POSITION, currentPosition);
+        Log.i("test", "Detail: save>>>>onPause>>>" + currentPosition);
+    }
+
+    @Override
+    protected void onDestroy() {
+        OkHttpUtils.getInstance().cancelTag(this);
+        super.onDestroy();
+        System.exit(0);
+    }
 
     @Override
     protected void initLayoutId() {
@@ -108,11 +127,10 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onPageSelected(int position) {
-                needRefresh =true;
                 currentPosition = position;
                 setEnterSharedElement(position);
                 if (!isPicture) {
-                    setShareIntent(freshPosts.get(position).getUrl());
+//                    setShareIntent(freshPosts.get(position).getUrl());
                 }
             }
 
@@ -216,19 +234,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         }
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        SPUtil.save(type + Constants.POSITION, currentPosition);
-    }
-
-    @Override
-    protected void onDestroy() {
-        OkHttpUtils.getInstance().cancelTag(this);
-        super.onDestroy();
-        System.exit(0);
-    }
-
     public void toggleSystemUI() {
         if (isSystemUiShown) {
             hideSystemUi();
@@ -247,21 +252,21 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         isSystemUiShown = false;
     }
 
-    public void setShareIntent(String data) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(
-                    Share.getShareIntent(data)
-            );
-        }
-    }
-
-    public void setShareImageIntent(Uri uri) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(
-                    Share.getShareImageIntent(uri)
-            );
-        }
-    }
+//    public void setShareIntent(String data) {
+//        if (mShareActionProvider != null) {
+//            mShareActionProvider.setShareIntent(
+//                    Share.getShareIntent(data)
+//            );
+//        }
+//    }
+//
+//    public void setShareImageIntent(Uri uri) {
+//        if (mShareActionProvider != null) {
+//            mShareActionProvider.setShareIntent(
+//                    Share.getShareImageIntent(uri)
+//            );
+//        }
+//    }
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {

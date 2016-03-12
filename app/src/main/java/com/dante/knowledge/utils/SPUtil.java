@@ -13,19 +13,18 @@ public class SPUtil {
 
     private static Context context = KnowledgeApp.context;
     private static SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    private static SharedPreferences.Editor editor = sp.edit();
 
     public static void save(String key, String value) {
-        SharedPreferences.Editor editor = sp.edit();
         editor.putString(key, value);
         editor.apply();
     }
     public static void save(String key, boolean value) {
-        SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean(key, value);
         editor.apply();
     }
     public static void save(String key, int value) {
-        SharedPreferences.Editor editor = sp.edit();
+         editor = sp.edit();
         editor.putInt(key, value);
         editor.apply();
     }

@@ -105,7 +105,6 @@ public class MainActivity extends BaseActivity
     private void doublePressBackToQuit() {
         if (backPressed) {
             super.onBackPressed();
-            DB.realm.close();
             return;
         }
         backPressed = true;
@@ -165,6 +164,5 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 }

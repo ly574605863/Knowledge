@@ -51,7 +51,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mListener = listener;
         zhihuStories = DB.findAll(ZhihuStory.class);
         tops = DB.findAll(ZhihuTop.class);
-        Log.i("test", "findAll");
 
     }
 
@@ -138,7 +137,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return new BannerView();
                 }
             }, tops);
-            Log.i("test", "tops");
 
         }
 
