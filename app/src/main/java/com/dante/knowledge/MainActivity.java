@@ -9,6 +9,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.dante.knowledge.mvp.view.TabsFragment;
 import com.dante.knowledge.net.DB;
@@ -16,6 +18,7 @@ import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
+import com.dante.knowledge.utils.Imager;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
@@ -76,6 +79,9 @@ public class MainActivity extends BaseActivity
     }
 
     private void initNavigationView() {
+        View header = navView.getHeaderView(0);
+        ImageView head = (ImageView) header.findViewById(R.id.headImage);
+        Imager.load(this, R.drawable.head, head);
         navView.setNavigationItemSelectedListener(this);
         if (SPUtil.getBoolean(SettingFragment.SECRET_MODE)) {
             navView.inflateMenu(R.menu.main_menu_all);
@@ -97,7 +103,7 @@ public class MainActivity extends BaseActivity
     }
 
     private void doublePressBackToQuit() {
-        if (backPressed){
+        if (backPressed) {
             super.onBackPressed();
             DB.realm.close();
             return;
@@ -150,7 +156,7 @@ public class MainActivity extends BaseActivity
             replace(TabsFragment.MENU_SECRET);
 
         } else if (id == R.id.nav_share) {
-            Share.shareText(this,getString(R.string.share_app_description));
+            Share.shareText(this, getString(R.string.share_app_description));
 
         } else if (id == R.id.nav_setting) {
             startActivity(new Intent(this, SettingsActivity.class));
@@ -159,7 +165,6 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
 }

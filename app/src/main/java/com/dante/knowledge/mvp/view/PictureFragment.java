@@ -267,14 +267,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onFailure(String msg) {
         changeProgress(false);
         adapter.replaceWith(images);
-        if (isAlive() && rootView!=null) {
-            Snackbar.make(rootView, getString(R.string.load_no_result), Snackbar.LENGTH_LONG)
-                    .setAction(R.string.try_again, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            fetch(false);
-                        }
-                    }).show();
-        }
+        fetch(false);
     }
 }

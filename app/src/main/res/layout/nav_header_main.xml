@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="180dp"
     android:background="#309393"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:gravity="bottom">
 
@@ -11,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/head"
-        android:id="@+id/image" />
+        android:id="@+id/headImage" />
 
 </RelativeLayout>

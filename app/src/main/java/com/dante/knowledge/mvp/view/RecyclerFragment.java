@@ -34,13 +34,18 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
     @Override
     public void onViewStateRestored(Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null||DetailActivity.needRefresh) {
             //restoring position when reentering fragment.
             lastPosition = SPUtil.getInt(type + Constants.POSITION);
             if (lastPosition > 0) {
                 recyclerView.scrollToPosition(lastPosition);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override

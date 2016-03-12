@@ -30,7 +30,7 @@ import okhttp3.Call;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static final int SPLASH_DURATION = 3000;
+    private static final int SPLASH_DURATION = 2500;
     private static final String SPLASH = "splash";
     private ImageView splash;
     private String today;

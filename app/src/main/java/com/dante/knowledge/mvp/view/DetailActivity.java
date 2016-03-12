@@ -5,14 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.SharedElementCallback;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.dante.knowledge.R;
@@ -24,7 +20,6 @@ import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
-import com.dante.knowledge.utils.Tool;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -37,6 +32,7 @@ import ooo.oxo.library.widget.PullBackLayout;
 
 public class DetailActivity extends BaseActivity implements PullBackLayout.Callback, RealmChangeListener {
 
+    public static boolean needRefresh = false;
     @Bind(R.id.pager)
     ViewPager pager;
     @Bind(R.id.container)
@@ -53,8 +49,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
-    private static final int SYSTEM_UI_HIDE = View.SYSTEM_UI_FLAG_IMMERSIVE
-            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+    private static final int SYSTEM_UI_HIDE =  View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN;
 
     private boolean isSystemUiShown = true;
@@ -113,6 +108,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onPageSelected(int position) {
+                needRefresh =true;
                 currentPosition = position;
                 setEnterSharedElement(position);
                 if (!isPicture) {
@@ -154,8 +150,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullStart() {
-        hideToolbar();
-        hideSystemUi();
+
     }
 
     @Override

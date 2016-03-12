@@ -4,11 +4,13 @@ package com.dante.knowledge.mvp.view;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -177,9 +179,9 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        getActivity().getMenuInflater().inflate(R.menu.share_menu, menu);
-//        MenuItem item = menu.findItem(R.id.menu_item_share);
-//        mShareActionProvider= (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-//        setShareIntent();
+        getActivity().getMenuInflater().inflate(R.menu.share_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        setShareIntent();
     }
 }

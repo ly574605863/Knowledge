@@ -1,10 +1,8 @@
 package com.dante.knowledge.mvp.view;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,24 +10,18 @@ import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.Tool;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +33,7 @@ import butterknife.Bind;
  */
 public class ViewerFragment extends BaseFragment implements View.OnLongClickListener, View.OnClickListener {
 
-    @Bind(R.id.image)
+    @Bind(R.id.headImage)
     TouchImageView imageView;
     private String url;
     private DetailActivity activity;

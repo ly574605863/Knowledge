@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.dante.knowledge"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 4
         versionName "1.2"
