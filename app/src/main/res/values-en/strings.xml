@@ -58,4 +58,5 @@
     <string name="save_img_success">Girl is saved at</string>
     <string name="view_img_hint">Pull down to exit; Long press the girl to save to local.</string>
     <string name="save_img">Save</string>
+    <string name="press_back_twice">Are you sure to leave?</string>
 </resources>

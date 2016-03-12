@@ -80,7 +80,7 @@ public class MainActivity extends BaseActivity
         if (SPUtil.getBoolean(SettingFragment.SECRET_MODE)) {
             navView.inflateMenu(R.menu.main_menu_all);
         } else {
-            navView.inflateMenu(R.menu.main_menu_all);
+            navView.inflateMenu(R.menu.main_drawer);
         }
         //select the first menu at startup
         navView.getMenu().getItem(0).setChecked(true);

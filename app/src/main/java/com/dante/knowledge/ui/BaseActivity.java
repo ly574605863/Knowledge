@@ -40,20 +40,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         ButterKnife.bind(this);
         initAppBar();
-        Log.i("test", "onCreate");
-
         DB.realm = Realm.getDefaultInstance();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("test", "onStart");
-
         if (DB.realm==null|| DB.realm.isClosed()){
             DB.realm = Realm.getDefaultInstance();
-            Log.i("test", "new realm");
-
         }
     }
 
@@ -94,4 +88,12 @@ public abstract class BaseActivity extends AppCompatActivity {
             toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
         }
     }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        DB.realm.close();
+//        Log.i("test", "realm.close");
+//    }
+
 }

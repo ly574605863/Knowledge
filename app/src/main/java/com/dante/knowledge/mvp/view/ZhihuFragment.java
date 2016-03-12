@@ -46,7 +46,6 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
         super.AlwaysInit();
 //        adapter = new ZhihuListAdapter(this);
 //        recyclerView.setAdapter(adapter);
-        Log.i("test", "zhihufragment");
     }
 
     @Override
@@ -68,8 +67,6 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
                 }
             }
         });
-        Log.i("test", "initViews");
-
     }
 
     private void onListScrolled() {

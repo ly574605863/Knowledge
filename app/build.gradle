@@ -8,8 +8,8 @@ android {
         applicationId "com.dante.knowledge"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.11"
+        versionCode 4
+        versionName "1.2"
     }
     buildTypes {
 
@@ -24,6 +24,7 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
         }
     }
 }
@@ -37,9 +38,9 @@ android {
     }
     splits {
         abi {
-            enable true
+            enable false
             reset()
-            include 'armeabi-v7a', 'x86'
+            include 'armeabi-v7a'
         }
     }
 }
