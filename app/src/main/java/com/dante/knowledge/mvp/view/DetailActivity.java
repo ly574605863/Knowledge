@@ -74,17 +74,8 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     @Override
     protected void initViews() {
         super.initViews();
-        FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        lp.setMargins(0, Tool.getStatusBarHeight(), 0, 0);
-        if (isPicture) {
-            toolbar.setLayoutParams(lp);
-            toolbar.setTitle("");
-            setSupportActionBar(toolbar);
-        }
-
         supportPostponeEnterTransition();
         position = getIntent().getIntExtra(Constants.POSITION, 0);
-
         List<Fragment> fragments = new ArrayList<>();
 
         if (TabsFragment.MENU_NEWS.equals(menuType)) {
@@ -163,7 +154,8 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullStart() {
-        toggleUI();
+        hideToolbar();
+        hideSystemUi();
     }
 
     @Override
@@ -250,12 +242,12 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         }
     }
 
-    private void showSystemUi() {
+    public void showSystemUi() {
         pager.setSystemUiVisibility(SYSTEM_UI_SHOW);
         isSystemUiShown = true;
     }
 
-    private void hideSystemUi() {
+    public void hideSystemUi() {
         pager.setSystemUiVisibility(SYSTEM_UI_HIDE);
         isSystemUiShown = false;
     }
@@ -276,16 +268,16 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.share_menu, menu);
-        MenuItem item = menu.findItem(R.id.menu_item_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        if (!isPicture) {
-            setShareIntent(freshPosts.get(position).getUrl());
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.share_menu, menu);
+//        MenuItem item = menu.findItem(R.id.menu_item_share);
+//        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+//        if (!isPicture) {
+//            setShareIntent(freshPosts.get(position).getUrl());
+//        }
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

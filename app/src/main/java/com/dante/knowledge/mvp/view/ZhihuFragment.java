@@ -7,6 +7,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.dante.knowledge.MainActivity;
@@ -41,6 +42,14 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
     }
 
     @Override
+    protected void AlwaysInit() {
+        super.AlwaysInit();
+//        adapter = new ZhihuListAdapter(this);
+//        recyclerView.setAdapter(adapter);
+        Log.i("test", "zhihufragment");
+    }
+
+    @Override
     protected void initViews() {
         super.initViews();
         type = TabsFragment.TYPE_ZHIHU;
@@ -59,6 +68,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
                 }
             }
         });
+        Log.i("test", "initViews");
 
     }
 

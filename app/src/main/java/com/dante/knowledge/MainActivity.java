@@ -1,6 +1,7 @@
 package com.dante.knowledge;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -10,12 +11,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dante.knowledge.mvp.view.TabsFragment;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
 import com.dante.knowledge.ui.SettingsActivity;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
+import com.dante.knowledge.utils.UI;
 import com.testin.agent.TestinAgent;
 
 import butterknife.Bind;
@@ -29,6 +32,8 @@ public class MainActivity extends BaseActivity
     DrawerLayout drawerLayout;
     private String currentType;
     private Fragment currentFragment;
+
+    boolean backPressed;
 
     @Override
     protected void initLayoutId() {
@@ -87,8 +92,24 @@ public class MainActivity extends BaseActivity
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            doublePressBackToQuit();
         }
+    }
+
+    private void doublePressBackToQuit() {
+        if (backPressed){
+            super.onBackPressed();
+            DB.realm.close();
+            return;
+        }
+        backPressed = true;
+        UI.showSnack(drawerLayout, R.string.press_back_twice);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                backPressed = false;
+            }
+        }, 2000);
     }
 
     @Override
@@ -129,10 +150,7 @@ public class MainActivity extends BaseActivity
             replace(TabsFragment.MENU_SECRET);
 
         } else if (id == R.id.nav_share) {
-            startActivity(
-                    Intent.createChooser(
-                            Share.getShareIntent(getString(R.string.share_app_description)),
-                            getString(R.string.share_app)));
+            Share.shareText(this,getString(R.string.share_app_description));
 
         } else if (id == R.id.nav_setting) {
             startActivity(new Intent(this, SettingsActivity.class));
@@ -141,5 +159,7 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 
 }

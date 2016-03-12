@@ -57,4 +57,5 @@
     <string name="save_img_failed">Unable to save image.</string>
     <string name="save_img_success">Girl is saved at</string>
     <string name="view_img_hint">Pull down to exit; Long press the girl to save to local.</string>
+    <string name="save_img">Save</string>
 </resources>

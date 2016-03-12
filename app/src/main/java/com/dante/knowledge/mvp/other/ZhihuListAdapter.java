@@ -3,6 +3,7 @@ package com.dante.knowledge.mvp.other;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,8 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mListener = listener;
         zhihuStories = DB.findAll(ZhihuStory.class);
         tops = DB.findAll(ZhihuTop.class);
+        Log.i("test", "findAll");
+
     }
 
     public void addNews(ZhihuJson news) {
@@ -135,6 +138,8 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return new BannerView();
                 }
             }, tops);
+            Log.i("test", "tops");
+
         }
 
     }

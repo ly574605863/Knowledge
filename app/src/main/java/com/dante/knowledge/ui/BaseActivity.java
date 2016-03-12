@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
@@ -39,7 +40,21 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(layoutId);
         ButterKnife.bind(this);
         initAppBar();
+        Log.i("test", "onCreate");
+
         DB.realm = Realm.getDefaultInstance();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("test", "onStart");
+
+        if (DB.realm==null|| DB.realm.isClosed()){
+            DB.realm = Realm.getDefaultInstance();
+            Log.i("test", "new realm");
+
+        }
     }
 
     private void initAppBar() {
@@ -67,18 +82,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void hideToolbar() {
-        isShowToolbar = false;
-        toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+        if (toolbar!=null){
+            isShowToolbar = false;
+            toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
+        }
     }
 
     public void showToolbar() {
-        isShowToolbar = true;
-        toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        DB.realm.close();
+        if (toolbar!=null){
+            isShowToolbar = true;
+            toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+        }
     }
 }

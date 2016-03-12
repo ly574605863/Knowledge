@@ -1,10 +1,15 @@
 package com.dante.knowledge.mvp.view;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.widget.Toast;
@@ -19,8 +24,14 @@ import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
+import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.Tool;
+import com.dante.knowledge.utils.UI;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -36,17 +47,21 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     private DetailActivity activity;
     private Bitmap bitmap;
     private AsyncTask loadPicture;
-    private AsyncTask task;
+    private AsyncTask share;
+    private AsyncTask save;
 
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (null != task) {
-            task.cancel(true);
+        if (null != share) {
+            share.cancel(true);
         }
         if (null != loadPicture) {
             loadPicture.cancel(true);
+        }
+        if (null != save) {
+            save.cancel(true);
         }
         if (null != bitmap && !bitmap.isRecycled()) {
             bitmap.recycle();
@@ -72,34 +87,31 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         activity = (DetailActivity) getActivity();
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
-
         loadPicture = new LoadPictureTask().execute();
-//        loadPicture();
     }
 
-    private Uri uri;
     //Make target a field member instead of an anonymous inner class
     //to avoid being GC the moment after loading the picture
-    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
-
-        @Override
-        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            super.onLoadFailed(e, errorDrawable);
-            loadPicture();
-        }
-
-        @Override
-        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-            imageView.setImageDrawable(resource);
-            activity.supportStartPostponedEnterTransition();
-        }
-    };
-    private void loadPicture() {
-        Glide.with(this)
-                .load(url)
-                .dontAnimate()
-                .into(target);
-    }
+//    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
+//
+//        @Override
+//        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+//            super.onLoadFailed(e, errorDrawable);
+//            loadPicture();
+//        }
+//
+//        @Override
+//        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+//            imageView.setImageDrawable(resource);
+//            activity.supportStartPostponedEnterTransition();
+//        }
+//    };
+//    private void loadPicture() {
+//        Glide.with(this)
+//                .load(url)
+//                .dontAnimate()
+//                .into(target);
+//    }
 
     @Override
     protected void initData() {
@@ -109,16 +121,27 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View v) {
+        AlertDialog.Builder builder =new AlertDialog.Builder(activity);
+        final String[] items={getString(R.string.share_to), getString(R.string.save_img)};
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which==0){
+                    share = new ShareIntentTask().execute(bitmap);
+                }else if (which ==1){
+                    activity.hideSystemUi();
+                    save=new SaveImageTask().execute(bitmap);
+                }
+            }
+        });
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.create().show();
         return true;
     }
 
     @Override
     public void onClick(View v) {
         activity.toggleUI();
-        if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
-            Toast.makeText(getContext(), getString(R.string.view_img_hint), Toast.LENGTH_LONG).show();
-            SPUtil.save(Constants.HAS_HINT, true);
-        }
     }
 
     private class LoadPictureTask extends AsyncTask<Void, Void, Bitmap> {
@@ -145,15 +168,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             }
             imageView.setImageBitmap(picture);
             activity.supportStartPostponedEnterTransition();
-            task = new ShareIntentTask().execute(picture);
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && uri != null) {
-            activity.setShareImageIntent(uri);
         }
     }
 
@@ -169,8 +183,34 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         protected void onPostExecute(Uri result) {
-            uri = result;
-            setUserVisibleHint(getUserVisibleHint());
+            Share.shareImage(activity, result);
+        }
+    }
+
+    private class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
+
+        @Override
+        protected File doInBackground(Bitmap... params) {
+            File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis()+ ".png");
+            try {
+                FileOutputStream stream = new FileOutputStream(file);
+                params[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
+                stream.flush();
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return file;
+        }
+
+        @Override
+        protected void onPostExecute(File file) {
+            if (file.exists()){
+                Snackbar.make(rootView, getString(R.string.save_img_success)
+                        + file.getAbsolutePath(), Snackbar.LENGTH_SHORT).show();
+            }else {
+                UI.showSnack(rootView, R.string.save_img_failed);
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package com.dante.knowledge.mvp.model;
 
 
+import android.text.format.DateUtils;
+
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
@@ -9,8 +11,11 @@ import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.Dater;
 import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.callback.Callback;
+
+import java.util.Date;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -85,11 +90,8 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
             Net.get(API.NEWS_LATEST, callback, API.TAG_ZHIHU);
 
         } else if (type == API.TYPE_BEFORE) {
-            RealmResults<ZhihuJson> list = DB.findAll(ZhihuJson.class);
-            if (!list.isEmpty()) {
-                date = list.last().getDate();
-                Net.get(API.NEWS_BEFORE + date, callback, API.TAG_ZHIHU);
-            }
+            date = SPUtil.get(Constants.DATE, Dater.parseStandardDate(new Date()));
+            Net.get(API.NEWS_BEFORE + date, callback, API.TAG_ZHIHU);
         }
     }
 

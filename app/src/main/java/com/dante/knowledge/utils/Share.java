@@ -44,4 +44,12 @@ public class Share {
                 Intent.createChooser(getShareHtmlIntent(text),
                         context.getString(R.string.share_to)));
     }
+
+    public static void shareImage(Context context, Uri uri){
+        context.startActivity(
+                Intent.createChooser(getShareImageIntent(uri),
+                        context.getString(R.string.share_to)));
+    }
+
+
 }

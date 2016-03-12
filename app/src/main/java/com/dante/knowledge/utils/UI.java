@@ -11,12 +11,13 @@ import com.dante.knowledge.KnowledgeApp;
  */
 public class UI {
 
-    private static Context context =KnowledgeApp.context;
+    private static Context context = KnowledgeApp.context;
 
-    public static void showSnack(View rootView, int textId){
-        Snackbar.make(rootView, context.getString(textId), Snackbar.LENGTH_SHORT).show();
+    public static void showSnack(View rootView, int textId) {
+        Snackbar.make(rootView, textId, Snackbar.LENGTH_SHORT).show();
     }
-    public static void showSnackLong(View rootView, int textId){
-        Snackbar.make(rootView, context.getString(textId), Snackbar.LENGTH_LONG).show();
+
+    public static void showSnackLong(View rootView, int textId) {
+        Snackbar.make(rootView, textId, Snackbar.LENGTH_LONG).show();
     }
 }
