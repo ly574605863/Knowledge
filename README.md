@@ -14,17 +14,17 @@ Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/
 ![ScreenShots](screenshots/menu.jpg)
 
 ##可以学到：
-- `Android Design`库的使用
-- 自定义你的基类`Activity`
+- Android Design库的使用
+- 自定义你的基类Activity
 - 应用MVP模式到项目中
-- 使用`Webview`时避免内存泄露
-- `OKhttp`封装框架的用法
-- 用`Gson`解析网络数据
-- 用`Glide`加载图片
-- 使用`Realm`缓存数据
+- 使用Webview时避免内存泄露
+- OKhttp封装框架的用法
+- 用Gson解析网络数据
+- 用Glide加载图片
+- 用Realm缓存数据
 - 加特效的启动页的写法
 - 设置页的写法
-- 添加`Activity`的转换特效（对，duang的那种）
+- Activity的转换特效（对，duang的那种）
 - 更多惊喜等待你发现（手动斜眼）
 
 ## 使用到的库
@@ -49,5 +49,5 @@ Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/
 - [ ] 更换主题
 
 ## 支持我
-如果你喜欢这个`repository`，请我喝杯咖啡，我会更用心让它更完美~
+如果你喜欢这个repository，请我喝杯咖啡，我会更用心让它更完美~
 ![打开你的微信](get_me_a_drink.jpg)
