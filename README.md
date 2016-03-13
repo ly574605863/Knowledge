@@ -1,7 +1,7 @@
 [Check out English version](README_en.md)
 --
 
-#![icon](http://p18.qhimg.com/t01c772ee2af44388a5.png)妹知
+#妹知
 **是妹知不是妹汁！既有妹子又有知识~**
 
 ##简介
