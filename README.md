@@ -2,7 +2,7 @@
 --
 
 #妹知
-是妹知不是妹汁！既有妹子又有知识~（已在360手机助手和应用宝上线，但是应用宝我却搜不到- -知道为啥的告诉我下）
+是妹知不是妹汁！既有妹子又有知识~（比较懒，只在360手机助手上线了）
 
 ##简介
 Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0202/2397.html)模式的项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，还可以浏览妹子图，让我们一起嘿嘿嘿~（如果你在学习中遇到任何bug、疑问，请[提交一个issue](https://github.com/DanteAndroid/Knowledge/issues/new)）
@@ -14,17 +14,18 @@ Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/
 ![ScreenShots](screenshots/menu.jpg)
 
 ##可以学到：
-- Android Design库的使用
-- 自定义你的基类Activity
+- `Android Design`库的使用
+- 自定义你的基类`Activity`
 - 应用MVP模式到项目中
-- 使用Webview时避免内存泄露
-- OKhttp封装框架的用法
-- 用Gson解析网络数据
-- 用Glide加载图片
-- 使用Realm缓存数据
+- 使用`Webview`时避免内存泄露
+- `OKhttp`封装框架的用法
+- 用`Gson`解析网络数据
+- 用`Glide`加载图片
+- 使用`Realm`缓存数据
 - 加特效的启动页的写法
 - 设置页的写法
-- 添加Activity的转换特效（对，duang的那种）
+- 添加`Activity`的转换特效（对，duang的那种）
+- 更多惊喜等待你发现（手动斜眼）
 
 ## 使用到的库
     dependencies {
@@ -48,5 +49,5 @@ Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/
 - [ ] 更换主题
 
 ## 支持我
-如果你喜欢这个repository，请我喝杯咖啡，我会更用心让它更完美~
+如果你喜欢这个`repository`，请我喝杯咖啡，我会更用心让它更完美~
 ![打开你的微信](get_me_a_drink.jpg)
