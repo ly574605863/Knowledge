@@ -2,7 +2,7 @@
 --
 
 #妹知
-是妹知不是妹汁！既有妹子又有知识~（比较懒，只在360手机助手上线了）
+是妹知不是妹汁！既有妹子又有知识~（比较懒，只在[360手机助手](http://openbox.mobilem.360.cn/index/d/sid/3220990)上线了）
 
 ##简介
 Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0202/2397.html)模式的项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，还可以浏览妹子图，让我们一起嘿嘿嘿~（如果你在学习中遇到任何bug、疑问，请[提交一个issue](https://github.com/DanteAndroid/Knowledge/issues/new)）
