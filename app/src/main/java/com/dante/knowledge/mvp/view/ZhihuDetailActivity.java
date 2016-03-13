@@ -3,6 +3,7 @@ package com.dante.knowledge.mvp.view;
 import android.annotation.SuppressLint;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -126,6 +127,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        DB.realm.close();
         System.exit(0);
     }
 

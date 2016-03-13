@@ -65,7 +65,7 @@ public abstract class RecyclerFragment extends BaseFragment implements SwipeRefr
         swipeRefresh.setOnRefreshListener(this);
     }
 
-    public void changeProgress(final boolean refreshState) {
+    public void showProgress(final boolean refreshState) {
         if (null != swipeRefresh) {
             swipeRefresh.setRefreshing(refreshState);
         }

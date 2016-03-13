@@ -24,5 +24,4 @@ public class AboutActivity extends BaseActivity {
         super.initViews();
         versionName.append(" "+BuildConfig.VERSION_NAME);
     }
-
 }

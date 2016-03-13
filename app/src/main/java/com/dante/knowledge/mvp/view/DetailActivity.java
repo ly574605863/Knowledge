@@ -63,6 +63,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void onPause() {
         super.onPause();
         SPUtil.save(type + Constants.POSITION, currentPosition);
+        // TODO: 2016/3/13 Check out the restore position problem
         Log.i("test", "Detail: save>>>>onPause>>>" + currentPosition);
     }
 
@@ -70,6 +71,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void onDestroy() {
         OkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
+        DB.realm.close();
         System.exit(0);
     }
 
@@ -288,4 +290,5 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

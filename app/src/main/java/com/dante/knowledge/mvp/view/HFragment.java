@@ -81,7 +81,7 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
         lastPosition = layoutManager.findLastVisibleItemPosition();
 
         if (lastPosition + PRELOAD_COUNT == adapter.getItemCount()) {
-            changeProgress(true);
+            showProgress(true);
             loadMore();
         }
     }
@@ -135,7 +135,7 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
 
     @Override
     public void onRefresh() {
-        changeProgress(true);
+        showProgress(true);
         fetch(true);
     }
 
@@ -164,14 +164,14 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
 
     @Override
     public void onSuccess() {
-        changeProgress(false);
+        showProgress(false);
         adapter.addNews();
         page++;
     }
 
     @Override
     public void onFailure(String msg) {
-        changeProgress(false);
+        showProgress(false);
         if (isAlive()) {
             UI.showSnack(((MainActivity) getActivity()).getDrawerLayout(), R.string.load_fail);
         }

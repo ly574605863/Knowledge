@@ -3,7 +3,6 @@ package com.dante.knowledge.mvp.view;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
@@ -14,7 +13,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
-import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.UpdateReceiver;
 import com.dante.knowledge.mvp.model.Image;
@@ -62,11 +60,12 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     public void onResume() {
         super.onResume();
-        lastPosition = SPUtil.getInt(type + Constants.POSITION);
-        if (lastPosition>0){
-            recyclerView.scrollToPosition(lastPosition);
-        }
-        Log.i("test", "restore>>>>" + lastPosition + " key: "+type + Constants.POSITION);
+        // TODO: 2016/3/13 Check out the restore position problem
+//        lastPosition = SPUtil.getInt(type + Constants.POSITION);
+//        if (lastPosition>0){
+//            recyclerView.scrollToPosition(lastPosition);
+//        }
+        Log.i("test", "restore>>>>" + lastPosition + " key: " + type + Constants.POSITION);
         if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
             PRELOAD_COUNT++;
             fetch(false);
@@ -77,6 +76,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public void onPause() {
         firstPosition = layoutManager.findFirstVisibleItemPositions(new int[layoutManager.getSpanCount()])[0];
         super.onPause();
+        showProgress(false);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
         //split show progress code with fetch code
         //so user may not see the annoying circle here and there
         if (lastPosition > itemCount - PRELOAD_COUNT / 3) {
-            changeProgress(true);
+            showProgress(true);
         }
     }
 
@@ -246,7 +246,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
             swipeRefresh.post(new Runnable() {
                 @Override
                 public void run() {
-                    changeProgress(true);
+                    showProgress(true);
                 }
             });
             fetch(true);
@@ -263,14 +263,14 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     public void onSuccess() {
-        changeProgress(false);
+        showProgress(false);
         adapter.replaceWith(images);
         page++;
     }
 
     @Override
     public void onFailure(String msg) {
-        changeProgress(false);
+        showProgress(false);
         adapter.replaceWith(images);
         fetch(false);
     }

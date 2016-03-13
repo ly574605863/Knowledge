@@ -88,12 +88,5 @@ public abstract class BaseActivity extends AppCompatActivity {
             toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
         }
     }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        DB.realm.close();
-//        Log.i("test", "realm.close");
-//    }
 
 }

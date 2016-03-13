@@ -7,7 +7,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.dante.knowledge.MainActivity;
@@ -98,7 +97,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
 
     @Override
     public void showProgress() {
-        changeProgress(true);
+        showProgress(true);
     }
 
     @Override
@@ -108,7 +107,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
 
     @Override
     public void hideProgress() {
-        changeProgress(false);
+        showProgress(false);
     }
 
     @Override

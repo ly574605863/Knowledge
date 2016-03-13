@@ -85,7 +85,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void showProgress() {
-        changeProgress(true);
+        showProgress(true);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void hideProgress() {
-        changeProgress(false);
+        showProgress(false);
     }
 
     @Override

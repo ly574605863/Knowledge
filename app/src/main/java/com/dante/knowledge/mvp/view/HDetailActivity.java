@@ -4,6 +4,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dante.knowledge.R;
+import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 
@@ -30,7 +31,7 @@ public class HDetailActivity extends BaseActivity {
             }
         });
         setSupportActionBar(toolbar);
-        assert getSupportActionBar()!=null;
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         replaceFragment(HDetailFragment.newInstance(url), TabsFragment.MENU_H);
     }
@@ -48,5 +49,11 @@ public class HDetailActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        DB.realm.close();
     }
 }

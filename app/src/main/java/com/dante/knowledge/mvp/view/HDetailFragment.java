@@ -108,7 +108,7 @@ public class HDetailFragment extends RecyclerFragment implements OnLoadDataListe
     protected void initData() {
         detail = DB.getByUrl(url, HDetail.class);
         if (detail == null) {
-            changeProgress(true);
+            showProgress(true);
             fetch();
         } else {
             images = detail.getImages();
@@ -122,13 +122,13 @@ public class HDetailFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     public void onSuccess() {
-        changeProgress(false);
+        showProgress(false);
 //        adapter.replaceWith(images);
     }
 
     @Override
     public void onFailure(String msg) {
-        changeProgress(false);
+        showProgress(false);
         if (isAlive()) {
             Snackbar.make(rootView, getString(R.string.load_no_result), Snackbar.LENGTH_LONG)
                     .setAction(R.string.try_again, new View.OnClickListener() {
