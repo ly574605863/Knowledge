@@ -5,7 +5,7 @@
 是妹知不是妹汁！既有妹子又有知识~（已在360手机助手和应用宝上线，但是应用宝我却搜不到- -知道为啥的告诉我下）
 
 ##简介
-Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0202/2397.html)模式的项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，还可以浏览妹子图，让我们一起嘿嘿嘿~（如果你在学习中遇到任何bug、疑问，请[提交一个issue](/issues/new)）
+Knowledge是一个**MaterialDesign**风格和[MVP](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0202/2397.html)模式的项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，还可以浏览妹子图，让我们一起嘿嘿嘿~（如果你在学习中遇到任何bug、疑问，请[提交一个issue](https://github.com/DanteAndroid/Knowledge/issues/new)）
 截图
 ---
 ![ScreenShots](screenshots/girl.jpg)
