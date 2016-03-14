@@ -17,7 +17,6 @@ public class Imager {
     public static void load(Context context, String url, ImageView view) {
         Glide.with(context)
                 .load(url)
-                .error(R.drawable.error)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .crossFade()
                 .into(view);

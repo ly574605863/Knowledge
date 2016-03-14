@@ -50,7 +50,6 @@
         <activity
             android:name=".mvp.view.DetailActivity"
             android:label="@string/activity_detail"
-            android:process=":remote"
             android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
         <activity

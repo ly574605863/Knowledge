@@ -120,7 +120,6 @@ public class TabsFragment extends BaseFragment {
             titles.add(getString(R.string.zhihu_news));
             titles.add(getString(R.string.fresh_news));
         }
-
         adapter.setFragments(fragments, titles);
     }
 

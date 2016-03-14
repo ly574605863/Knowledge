@@ -55,9 +55,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         if (null != save) {
             save.cancel(true);
         }
-        if (null != bitmap && !bitmap.isRecycled()) {
-            bitmap.recycle();
-        }
+
     }
 
     public static ViewerFragment newInstance(String url) {

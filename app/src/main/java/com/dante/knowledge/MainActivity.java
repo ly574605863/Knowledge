@@ -165,6 +165,8 @@ public class MainActivity extends BaseActivity
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

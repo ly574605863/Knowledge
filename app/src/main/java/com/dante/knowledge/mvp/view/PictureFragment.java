@@ -1,8 +1,10 @@
 package com.dante.knowledge.mvp.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +28,10 @@ import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +50,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     public static final int TYPE_DB_RANK = 5;
 
     private static final int LOAD_COUNT_LARGE = 15;
+    private static final int REQUEST_VIEW = 1;
     private static int LOAD_COUNT = 8;
     private static int PRELOAD_COUNT = 10;
 
@@ -58,19 +65,20 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private FragmentActivity context;
 
     @Override
-    public void onResume() {
-        super.onResume();
-        // TODO: 2016/3/13 Check out the restore position problem
-//        lastPosition = SPUtil.getInt(type + Constants.POSITION);
-//        if (lastPosition>0){
-//            recyclerView.scrollToPosition(lastPosition);
-//        }
-        Log.i("test", "restore>>>>" + lastPosition + " key: " + type + Constants.POSITION);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (lastPosition > layoutManager.getItemCount() - PRELOAD_COUNT) {
             PRELOAD_COUNT++;
             fetch(false);
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        lastPosition = SPUtil.getInt(type + Constants.POSITION);
+        recyclerView.scrollToPosition(lastPosition > 0 ? lastPosition : 0);
+    }
+
 
     @Override
     public void onPause() {
@@ -145,8 +153,9 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
         ActivityOptionsCompat options = ActivityOptionsCompat
                 .makeSceneTransitionAnimation(context, view, adapter.get(position).getUrl());
-        ActivityCompat.startActivity(context, intent, options.toBundle());
+        ActivityCompat.startActivityForResult(context, intent, REQUEST_VIEW, options.toBundle());
     }
+
 
     private void onListScrolled() {
         int itemCount = layoutManager.getItemCount();
