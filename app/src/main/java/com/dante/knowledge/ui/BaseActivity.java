@@ -12,6 +12,7 @@ import android.view.animation.DecelerateInterpolator;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.DB;
+import com.umeng.message.PushAgent;
 
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -41,6 +42,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         initAppBar();
         DB.realm = Realm.getDefaultInstance();
+        initSDK();
+    }
+
+    private void initSDK() {
+        PushAgent.getInstance(this).onAppStart();
     }
 
     @Override

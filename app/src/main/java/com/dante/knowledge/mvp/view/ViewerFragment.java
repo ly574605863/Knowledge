@@ -3,6 +3,7 @@ package com.dante.knowledge.mvp.view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.bumptech.glide.request.target.Target;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.BlurBuilder;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.Tool;
@@ -111,22 +113,50 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View v) {
-        AlertDialog.Builder builder =new AlertDialog.Builder(activity);
-        final String[] items={getString(R.string.share_to), getString(R.string.save_img)};
+        blurImage();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        final String[] items = {getString(R.string.share_to), getString(R.string.save_img)};
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (which==0){
+                if (which == 0) {
                     share = new ShareIntentTask().execute(bitmap);
-                }else if (which ==1){
+                } else if (which == 1) {
                     activity.hideSystemUi();
-                    save=new SaveImageTask().execute(bitmap);
+                    save = new SaveImageTask().execute(bitmap);
                 }
             }
         });
-        builder.setIcon(R.mipmap.ic_launcher);
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                imageView.setImageBitmap(bitmap);
+            }
+        });
+        dialog.show();
         return true;
+    }
+
+    /**
+     * this is a test for blur bitmap, the result seems good.
+     */
+    private void blurImage() {
+        new AsyncTask<Bitmap, Void, Bitmap>() {
+
+            @Override
+            protected Bitmap doInBackground(Bitmap... bitmaps) {
+                //change the 'reuseBitmap' to true to blur the image persistently
+                return BlurBuilder.blur(bitmaps[0], BlurBuilder.BLUR_RADIUS_MEDIUM, false);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                imageView.setImageBitmap(bitmap);
+
+            }
+        }.execute(bitmap);
     }
 
     @Override
@@ -177,11 +207,11 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         }
     }
 
-    private class SaveImageTask extends AsyncTask<Bitmap, Void, File>{
+    private class SaveImageTask extends AsyncTask<Bitmap, Void, File> {
 
         @Override
         protected File doInBackground(Bitmap... params) {
-            File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis()+ ".png");
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".png");
             try {
                 FileOutputStream stream = new FileOutputStream(file);
                 params[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -195,10 +225,10 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         protected void onPostExecute(File file) {
-            if (file.exists()){
+            if (file.exists()) {
                 Snackbar.make(rootView, getString(R.string.save_img_success)
                         + file.getAbsolutePath(), Snackbar.LENGTH_SHORT).show();
-            }else {
+            } else {
                 UI.showSnack(rootView, R.string.save_img_failed);
             }
         }

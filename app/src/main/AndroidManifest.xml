@@ -29,6 +29,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
@@ -72,6 +73,21 @@
             android:name=".mvp.view.HDetailActivity"
             android:theme="@style/AppTheme.NoActionBar.Default">
         </activity>
+
+        <!-- umengPush configuration-->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="56e7ba1c67e58e5f780027d3">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_MESSAGE_SECRET"
+            android:value="b88cb709dc0c645b0d2d0d5d5aee6448">
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID, not used">
+        </meta-data>
+
     </application>
 
 </manifest>

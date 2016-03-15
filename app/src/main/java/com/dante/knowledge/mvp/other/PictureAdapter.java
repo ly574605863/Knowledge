@@ -9,12 +9,13 @@ import android.view.ViewGroup;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.ArrayRecyclerAdapter;
 import com.dante.knowledge.libraries.RatioImageView;
+import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.utils.Imager;
 
 /**
  * Adapt image data to pictures waterfall
  */
-public abstract class PictureAdapter extends ArrayRecyclerAdapter<com.dante.knowledge.mvp.model.Image, PictureAdapter.ViewHolder> {
+public abstract class PictureAdapter extends ArrayRecyclerAdapter<Image, PictureAdapter.ViewHolder> {
 
     private Context context;
 

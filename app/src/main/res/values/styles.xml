@@ -36,11 +36,10 @@
 
     <style name="ViewerTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
     </style>
 
     <style name="ViewerTheme.TransNav">
-        <item name="android:windowTranslucentNavigation">true</item>
+
     </style>
 
 </resources>

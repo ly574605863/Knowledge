@@ -83,3 +83,38 @@
 -keepclasseswithmembers class * {
     @retrofit2.http.* <methods>;
 }
+
+#configuration for renderscript
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+-keep class android.support.v8.renderscript.** { *; }
+
+#configuration for umengPush
+-dontwarn com.ut.mini.**
+-dontwarn okio.**
+-dontwarn com.xiaomi.**
+-dontwarn com.squareup.wire.**
+-dontwarn android.support.v4.**
+-keepattributes *Annotation*
+-keep class android.support.v4.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class okio.** {*;}
+-keep class com.squareup.wire.** {*;}
+-keep class com.umeng.message.protobuffer.* {
+	 public <fields>;
+         public <methods>;
+}
+-keep class com.umeng.message.* {
+	 public <fields>;
+         public <methods>;
+}
+-keep class org.android.agoo.impl.* {
+	 public <fields>;
+         public <methods>;
+}
+-keep class org.android.agoo.service.* {*;}
+-keep class org.android.spdy.**{*;}
+-keep public class com.dante.knowledge.R$*{
+    public static final int *;
+}

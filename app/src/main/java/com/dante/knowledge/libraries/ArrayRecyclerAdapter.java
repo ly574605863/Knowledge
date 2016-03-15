@@ -100,8 +100,8 @@ public abstract class ArrayRecyclerAdapter<E, VH extends RecyclerView.ViewHolder
                 return true;
             } else {
                 return false;
-            }
-        }
+    }
+}
     }
 
     @Override

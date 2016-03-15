@@ -2,6 +2,7 @@ package com.dante.knowledge.mvp.view;
 
 import android.annotation.TargetApi;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -65,7 +66,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     @Override
     protected void onPause() {
         super.onPause();
-        SPUtil.save(type+ Constants.POSITION, currentPosition);
+        SPUtil.save(type + Constants.POSITION, currentPosition);
     }
 
 
@@ -177,7 +178,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     @Override
     public void onPull(float v) {
         getWindow().getDecorView().getBackground().setAlpha(0xff - (int) Math.floor(0xff * v));
-
     }
 
     @Override
