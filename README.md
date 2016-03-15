@@ -3,7 +3,13 @@
 
 #妹知
 **是妹知不是妹汁！既有妹子又有知识~**
-1. [可以学到](#get-started)
+
+## 目录
+1. [关于](#简介)
+1. [截图](#截图)
+1. [知识](#可以学到)
+1. [依赖](#使用到的库)
+1. [支持](#支持我)
 
 ##简介
 Knowledge是一个[MaterialDesign](http://www.google.com/design/spec/material-design/)风格和[MVP](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0202/2397.html)模式的项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，还可以浏览妹子图，让我们一起嘿嘿嘿~（作者比较懒，只在[360手机助手](http://openbox.mobilem.360.cn/index/d/sid/3220990)上线了。如果你在学习中遇到任何bug、疑问，请[提交一个issue](https://github.com/DanteAndroid/Knowledge/issues/new)）
