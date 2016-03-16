@@ -90,7 +90,7 @@
 }
 -keep class android.support.v8.renderscript.** { *; }
 
-#configuration for umengPush
+#configuration for umeng
 -dontwarn com.ut.mini.**
 -dontwarn okio.**
 -dontwarn com.xiaomi.**
@@ -118,3 +118,9 @@
 -keep public class com.dante.knowledge.R$*{
     public static final int *;
 }
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+-keep public class * extends com.umeng.**
+-keep class com.umeng.** { *; }
+-dontwarn com.umeng.**

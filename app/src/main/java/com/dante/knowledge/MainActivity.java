@@ -27,6 +27,8 @@ import com.testin.agent.TestinAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UHandler;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UpdateStatus;
 
 import butterknife.Bind;
 
@@ -62,11 +64,12 @@ public class MainActivity extends BaseActivity
         agent.enable(new IUmengRegisterCallback() {
             @Override
             public void onRegistered(String s) {
-                //onRegistered方法的参数registrationId即是device_token
                 Log.i("device_token", s);
             }
         });
-//        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
+        UmengUpdateAgent.silentUpdate(this);
+        UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
+        //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
     }
 
 
@@ -74,13 +77,11 @@ public class MainActivity extends BaseActivity
         return drawerLayout;
     }
 
-
     private void replace(String type) {
         if (!type.equals(currentType)) {
             currentType = type;
             replaceFragment(TabsFragment.newInstance(type), type);
         }
-
     }
 
     private void setupDrawer() {

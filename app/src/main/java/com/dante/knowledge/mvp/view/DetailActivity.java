@@ -39,7 +39,7 @@ import butterknife.Bind;
 import io.realm.RealmChangeListener;
 import ooo.oxo.library.widget.PullBackLayout;
 
-@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+@TargetApi(Build.VERSION_CODES.KITKAT)
 public class DetailActivity extends BaseActivity implements PullBackLayout.Callback, RealmChangeListener {
 
     @Bind(R.id.pager)
@@ -57,7 +57,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
-    private static final int SYSTEM_UI_HIDE = View.SYSTEM_UI_FLAG_IMMERSIVE
+    private static final int SYSTEM_UI_HIDE = View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
             | View.SYSTEM_UI_FLAG_FULLSCREEN;
 
@@ -140,18 +140,11 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (isPicture) {
-                    hideToolbar();
-                    hideSystemUi();
-                }
+                hideSystemUi();
             }
         });
     }
 
-    public void toggleUI() {
-        toggleSystemUI();
-        toggleToolbar();
-    }
 
     private void setEnterSharedElement(final int position) {
         setEnterSharedElementCallback(new SharedElementCallback() {
@@ -182,7 +175,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
     @Override
     public void onPullCancel() {
-        toggleUI();
+
     }
 
     @Override
@@ -238,9 +231,9 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     }
 
     public void toggleSystemUI() {
-        if (isSystemUiShown) {
+        if (isSystemUiShown){
             hideSystemUi();
-        } else {
+        }else {
             showSystemUi();
         }
     }

@@ -87,6 +87,14 @@
             android:name="UMENG_CHANNEL"
             android:value="Channel ID, not used">
         </meta-data>
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
 
     </application>
 

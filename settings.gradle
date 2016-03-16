@@ -1,1 +1,1 @@
-include ':app', ':umengPush'
+include ':app', ':umeng'

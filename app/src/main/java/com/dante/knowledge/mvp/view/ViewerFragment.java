@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.dante.knowledge.KnowledgeApp;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
@@ -43,6 +45,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     private AsyncTask loadPicture;
     private AsyncTask share;
     private AsyncTask save;
+    private Bitmap blurBitmap;
 
 
     @Override
@@ -82,29 +85,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         loadPicture = new LoadPictureTask().execute();
     }
 
-    //Make target a field member instead of an anonymous inner class
-    //to avoid being GC the moment after loading the picture
-//    private SimpleTarget<GlideDrawable> target = new SimpleTarget<GlideDrawable>() {
-//
-//        @Override
-//        public void onLoadFailed(Exception e, Drawable errorDrawable) {
-//            super.onLoadFailed(e, errorDrawable);
-//            loadPicture();
-//        }
-//
-//        @Override
-//        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//            imageView.setImageDrawable(resource);
-//            activity.supportStartPostponedEnterTransition();
-//        }
-//    };
-//    private void loadPicture() {
-//        Glide.with(this)
-//                .load(url)
-//                .dontAnimate()
-//                .into(target);
-//    }
-
     @Override
     protected void initData() {
         imageView.setOnClickListener(this);
@@ -113,7 +93,9 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View v) {
-        blurImage();
+        if (blurBitmap != null) {
+            imageView.setImageBitmap(blurBitmap);
+        }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final String[] items = {getString(R.string.share_to), getString(R.string.save_img)};
@@ -133,35 +115,28 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
                 imageView.setImageBitmap(bitmap);
+                activity.hideSystemUi();
             }
         });
         dialog.show();
         return true;
     }
 
-    /**
-     * this is a test for blur bitmap, the result seems good.
-     */
-    private void blurImage() {
-        new AsyncTask<Bitmap, Void, Bitmap>() {
 
-            @Override
-            protected Bitmap doInBackground(Bitmap... bitmaps) {
-                //change the 'reuseBitmap' to true to blur the image persistently
-                return BlurBuilder.blur(bitmaps[0], BlurBuilder.BLUR_RADIUS_MEDIUM, false);
-            }
+    private class BlurTask extends AsyncTask<Bitmap, Void, Void> {
 
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                imageView.setImageBitmap(bitmap);
+        @Override
+        protected Void doInBackground(Bitmap... bitmaps) {
+            //change the 'reuseBitmap' to true to blur the image persistently
+            blurBitmap = BlurBuilder.blur(bitmaps[0], BlurBuilder.BLUR_RADIUS_MEDIUM, false);
+            return null;
+        }
 
-            }
-        }.execute(bitmap);
     }
 
     @Override
     public void onClick(View v) {
-        activity.toggleUI();
+        activity.toggleSystemUI();
     }
 
     private class LoadPictureTask extends AsyncTask<Void, Void, Bitmap> {
@@ -188,6 +163,8 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             }
             imageView.setImageBitmap(picture);
             activity.supportStartPostponedEnterTransition();
+            //prepare blur bitmap
+            new BlurTask().execute(bitmap);
         }
     }
 
@@ -226,8 +203,10 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         @Override
         protected void onPostExecute(File file) {
             if (file.exists()) {
+                MediaScannerConnection.scanFile(KnowledgeApp.context, new String[]{file.getPath()}, null, null);
                 Snackbar.make(rootView, getString(R.string.save_img_success)
                         + file.getAbsolutePath(), Snackbar.LENGTH_SHORT).show();
+
             } else {
                 UI.showSnack(rootView, R.string.save_img_failed);
             }
