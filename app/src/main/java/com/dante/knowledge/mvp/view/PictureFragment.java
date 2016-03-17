@@ -280,7 +280,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     @Override
     public void onFailure(String msg) {
         showProgress(false);
-        adapter.replaceWith(images);
         fetch(false);
     }
 }

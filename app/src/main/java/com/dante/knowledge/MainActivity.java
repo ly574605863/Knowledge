@@ -59,12 +59,7 @@ public class MainActivity extends BaseActivity
 
     private void initSDK() {
         PushAgent agent = PushAgent.getInstance(this);
-        agent.enable(new IUmengRegisterCallback() {
-            @Override
-            public void onRegistered(String s) {
-                Log.i("device_token", s);
-            }
-        });
+        agent.enable();
         UmengUpdateAgent.silentUpdate(this);
         UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
         //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
