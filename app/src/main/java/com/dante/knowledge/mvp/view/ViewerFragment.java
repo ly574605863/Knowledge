@@ -21,6 +21,7 @@ import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.BlurBuilder;
 import com.dante.knowledge.utils.Constants;
+import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.Tool;
 import com.dante.knowledge.utils.UI;
@@ -28,6 +29,8 @@ import com.dante.knowledge.utils.UI;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
@@ -42,23 +45,14 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     private String url;
     private DetailActivity activity;
     private Bitmap bitmap;
-    private AsyncTask loadPicture;
-    private AsyncTask share;
-    private AsyncTask save;
-    private Bitmap blurBitmap;
 
+    private List<AsyncTask> tasks = new ArrayList<>();
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (null != share) {
-            share.cancel(true);
-        }
-        if (null != loadPicture) {
-            loadPicture.cancel(true);
-        }
-        if (null != save) {
-            save.cancel(true);
+        for (AsyncTask task : tasks) {
+            task.cancel(true);
         }
 
     }
@@ -82,7 +76,20 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         activity = (DetailActivity) getActivity();
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
-        loadPicture = new LoadPictureTask().execute();
+        new LoadPictureTask().execute();
+    }
+
+    private void showHint() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle(R.string.hint).
+                setMessage(R.string.browse_picture_hint).
+                setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                }).
+                create().show();
     }
 
     @Override
@@ -93,9 +100,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     @Override
     public boolean onLongClick(View v) {
-        if (blurBitmap != null) {
-            imageView.setImageBitmap(blurBitmap);
-        }
+        new BlurTask().execute(bitmap);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         final String[] items = {getString(R.string.share_to), getString(R.string.save_img)};
@@ -103,10 +108,10 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 0) {
-                    share = new ShareIntentTask().execute(bitmap);
+                    new ShareIntentTask().execute(bitmap);
                 } else if (which == 1) {
                     activity.hideSystemUi();
-                    save = new SaveImageTask().execute(bitmap);
+                    new SaveImageTask().execute(bitmap);
                 }
             }
         });
@@ -123,19 +128,32 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
     }
 
 
-    private class BlurTask extends AsyncTask<Bitmap, Void, Void> {
-
+    private class BlurTask extends AsyncTask<Bitmap, Void, Bitmap> {
         @Override
-        protected Void doInBackground(Bitmap... bitmaps) {
+        protected Bitmap doInBackground(Bitmap... bitmaps) {
+            if (isCancelled()) {
+                return null;
+            }
+            tasks.add(this);
             //change the 'reuseBitmap' to true to blur the image persistently
-            blurBitmap = BlurBuilder.blur(bitmaps[0], BlurBuilder.BLUR_RADIUS_MEDIUM, false);
-            return null;
+            return BlurBuilder.blur(bitmaps[0]);
         }
 
+        @Override
+        protected void onPostExecute(Bitmap blurBitmap) {
+            if (blurBitmap != null) {
+                imageView.setImageBitmap(blurBitmap);
+            }
+
+        }
     }
 
     @Override
     public void onClick(View v) {
+        if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
+            showHint();
+            SPUtil.save(Constants.HAS_HINT, true);
+        }
         activity.toggleSystemUI();
     }
 
@@ -145,6 +163,8 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             if (isCancelled()) {
                 return null;
             }
+            tasks.add(this);
+
             try {
                 bitmap = Glide.with(ViewerFragment.this).load(url)
                         .asBitmap()
@@ -163,8 +183,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             }
             imageView.setImageBitmap(picture);
             activity.supportStartPostponedEnterTransition();
-            //prepare blur bitmap
-            new BlurTask().execute(bitmap);
         }
     }
 
@@ -175,6 +193,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             if (isCancelled()) {
                 return null;
             }
+            tasks.add(this);
             return Tool.bitmapToUri(params[0]);
         }
 
@@ -188,6 +207,10 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         protected File doInBackground(Bitmap... params) {
+            if (isCancelled()) {
+                return null;
+            }
+            tasks.add(this);
             File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), System.currentTimeMillis() + ".png");
             try {
                 FileOutputStream stream = new FileOutputStream(file);
@@ -202,7 +225,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
         @Override
         protected void onPostExecute(File file) {
-            if (file.exists()) {
+            if (file != null && file.exists()) {
                 MediaScannerConnection.scanFile(KnowledgeApp.context, new String[]{file.getPath()}, null, null);
                 Snackbar.make(rootView, getString(R.string.save_img_success)
                         + file.getAbsolutePath(), Snackbar.LENGTH_SHORT).show();

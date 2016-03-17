@@ -1,6 +1,7 @@
 package com.dante.knowledge.mvp.view;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;

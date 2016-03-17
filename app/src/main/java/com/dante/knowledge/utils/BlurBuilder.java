@@ -4,18 +4,23 @@ import android.graphics.Bitmap;
 
 public class BlurBuilder {
 
-    public static final int BLUR_RADIUS_LITTLE = 20;
-    public static final int BLUR_RADIUS_LIGHT = 35;
-    public static final int BLUR_RADIUS_MEDIUM = 50;
-    public static final int BLUR_RADIUS_HIGH = 80;
-    public static final int BLUR_RADIUS_TOTAL = 100;
+    public static final int BLUR_RADIUS = 8;
+    public static final int BLUR_LITTLE = 8;
+    public static final int BLUR_BASIC = 18;
+    public static final int BLUR_MEDIUM = 40;
+    public static final int BLUR_HIGH = 80;
 
     public static Bitmap blur(Bitmap bitmap) {
-        return blur(bitmap, BLUR_RADIUS_MEDIUM, true);
+        return blur(bitmap, BLUR_RADIUS, BLUR_LITTLE, false);
+    }
+    public static Bitmap blur(Bitmap bitmap, int scale) {
+        return blur(bitmap, BLUR_RADIUS, scale, false);
     }
 
-    public static Bitmap blur(Bitmap sentBitmap, int radius, boolean reuseBitmap) {
+    public static Bitmap blur(Bitmap originalBitmap, int radius, int scale, boolean reuseBitmap) {
 
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap,
+                originalBitmap.getWidth() / scale, originalBitmap.getHeight() / scale, false);
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
         //
@@ -46,9 +51,9 @@ public class BlurBuilder {
 
         Bitmap bitmap;
         if (reuseBitmap) {
-            bitmap = sentBitmap;
+            bitmap = scaledBitmap;
         } else {
-            bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+            bitmap = scaledBitmap.copy(originalBitmap.getConfig(), true);
         }
 
         if (radius < 1) {

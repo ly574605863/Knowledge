@@ -7,9 +7,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
+import com.bugtags.library.Bugtags;
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.DB;
 import com.umeng.message.PushAgent;
@@ -23,7 +25,7 @@ import io.realm.Realm;
 public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
-    private boolean isShowToolbar= true;
+    private boolean isShowToolbar = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +54,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (DB.realm==null|| DB.realm.isClosed()){
+        if (DB.realm == null || DB.realm.isClosed()) {
             DB.realm = Realm.getDefaultInstance();
         }
     }
@@ -82,17 +84,35 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void hideToolbar() {
-        if (toolbar!=null){
+        if (toolbar != null) {
             isShowToolbar = false;
             toolbar.animate().translationY(-toolbar.getBottom()).setInterpolator(new AccelerateInterpolator()).start();
         }
     }
 
     public void showToolbar() {
-        if (toolbar!=null){
+        if (toolbar != null) {
             isShowToolbar = true;
             toolbar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Bugtags.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Bugtags.onPause(this);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Bugtags.onDispatchTouchEvent(this, ev);
+        return super.dispatchTouchEvent(ev);
+
+    }
 }

@@ -23,7 +23,6 @@ import com.dante.knowledge.utils.Imager;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
-import com.testin.agent.TestinAgent;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UHandler;
@@ -59,7 +58,6 @@ public class MainActivity extends BaseActivity
     }
 
     private void initSDK() {
-        TestinAgent.init(this, "df8e4b39e329e8e2bea19618b3d7c9c4", "your channel ID");
         PushAgent agent = PushAgent.getInstance(this);
         agent.enable(new IUmengRegisterCallback() {
             @Override

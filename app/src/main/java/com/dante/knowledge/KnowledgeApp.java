@@ -3,6 +3,7 @@ package com.dante.knowledge;
 import android.app.Application;
 import android.content.Context;
 
+import com.bugtags.library.Bugtags;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.github.moduth.blockcanary.BlockCanaryContext;
 import com.squareup.leakcanary.LeakCanary;
@@ -26,8 +27,8 @@ public class KnowledgeApp extends Application {
         refWatcher = LeakCanary.install(this);
         BlockCanary.install(this, new AppBlockCanaryContext()).start();
         setupRealm();
+        Bugtags.start("17483b5ba7f71cf806b0707f3b1542c1", this, Bugtags.BTGInvocationEventShake);
     }
-
 
 
     private void setupRealm() {
