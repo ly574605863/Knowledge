@@ -94,6 +94,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         super.initViews();
         supportPostponeEnterTransition();
         position = getIntent().getIntExtra(Constants.POSITION, 0);
+        currentPosition = position;
         List<Fragment> fragments = new ArrayList<>();
 
         if (TabsFragment.MENU_NEWS.equals(menuType)) {
@@ -133,14 +134,13 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
             public void onPageSelected(int position) {
                 currentPosition = position;
                 setEnterSharedElement(position);
-                if (!isPicture) {
-//                    setShareIntent(freshPosts.get(position).getUrl());
-                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                hideSystemUi();
+                if (isPicture) {
+                    hideSystemUi();
+                }
             }
         });
     }
@@ -231,9 +231,9 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     }
 
     public void toggleSystemUI() {
-        if (isSystemUiShown){
+        if (isSystemUiShown) {
             hideSystemUi();
-        }else {
+        } else {
             showSystemUi();
         }
     }
