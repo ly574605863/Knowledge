@@ -104,6 +104,7 @@
     <string name="browse_picture_hint">浏览图片时，您可以长按以分享/保存该图片.</string>
     <string name="hint">提示</string>
     <string name="ok">知道啦</string>
+    <string name="start_download_update">检测到新版，开始下载…</string>
 
     <!--umeng end-->
 

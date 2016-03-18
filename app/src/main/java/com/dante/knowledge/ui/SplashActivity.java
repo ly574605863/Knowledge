@@ -95,7 +95,7 @@ public class SplashActivity extends AppCompatActivity {
         if ("".equals(url)) {
             Glide.with(this).load(R.drawable.splash).crossFade(SPLASH_DURATION).into(splash);
         } else {
-            Imager.load(url, R.anim.scale_anim, splash);
+            Imager.load(url, R.anim.splash_anim, splash);
         }
         startAppDelay();
     }

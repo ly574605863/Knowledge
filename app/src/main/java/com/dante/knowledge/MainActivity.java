@@ -26,8 +26,13 @@ import com.dante.knowledge.utils.UI;
 import com.umeng.message.IUmengRegisterCallback;
 import com.umeng.message.PushAgent;
 import com.umeng.message.UHandler;
+import com.umeng.update.UmengDownloadListener;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
+
+import java.io.File;
 
 import butterknife.Bind;
 
@@ -62,6 +67,23 @@ public class MainActivity extends BaseActivity
         agent.enable();
         UmengUpdateAgent.silentUpdate(this);
         UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
+        UmengUpdateAgent.setDownloadListener(new UmengDownloadListener() {
+            @Override
+            public void OnDownloadStart() {
+            }
+
+            @Override
+            public void OnDownloadUpdate(int i) {
+
+            }
+
+            @Override
+            public void OnDownloadEnd(int status, String path) {
+                if (status==UpdateStatus.DOWNLOAD_COMPLETE_SUCCESS){
+                    UmengUpdateAgent.startInstall(getApplicationContext(), new File(path));
+                }
+            }
+        });
         //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
     }
 
