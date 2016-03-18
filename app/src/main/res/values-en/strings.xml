@@ -58,7 +58,7 @@
     <string name="save_img_success">Girl is saved at</string>
     <string name="view_img_hint">Pull down to exit; Long press the girl to save to local.</string>
     <string name="save_img">Save</string>
-    <string name="press_back_twice">Are you sure to leave?</string>
+    <string name="leave_app">Are you sure to leave?</string>
 
     <!--umeng start-->
     <string name="umeng_common_action_info_exist">The app is already in downloading list.</string>
@@ -93,6 +93,8 @@
     <string name="browse_picture_hint">Long press to share/save it when browsing pictures.</string>
     <string name="hint">Hint</string>
     <string name="ok">Okay</string>
+    <string name="start_download_update">New version found, start download...</string>
+    <string name="email_not_install">You don\'t have an email application.</string>
     <!--umeng end-->
 
 </resources>

@@ -115,12 +115,12 @@
 }
 -keep class org.android.agoo.service.* {*;}
 -keep class org.android.spdy.**{*;}
--keep public class com.dante.knowledge.R$*{
-    public static final int *;
-}
 -keepclassmembers class * {
    public <init>(org.json.JSONObject);
 }
 -keep public class * extends com.umeng.**
 -keep class com.umeng.** { *; }
 -dontwarn com.umeng.**
+-keep class **.R$* {
+    <fields>;
+}

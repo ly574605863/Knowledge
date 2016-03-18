@@ -9,15 +9,15 @@ android {
         applicationId "com.dante.knowledge"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 5
-        versionName "1.2"
+        versionCode 6
+        versionName "1.22"
     }
     buildTypes {
 
         debug {
-            applicationIdSuffix '.debug'
+            applicationIdSuffix ''
             versionNameSuffix '-DEBUG'
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
         }
@@ -79,4 +79,6 @@ dependencies {
     debugCompile 'com.github.moduth:blockcanary-ui:1.1.4'
     releaseCompile 'com.github.moduth:blockcanary-no-op:1.1.4'
     compile 'com.bugtags.library:bugtags-lib:latest.integration'
+    compile 'com.mikepenz:iconics-core:2.5.10@aar'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1.original@aar'
 }

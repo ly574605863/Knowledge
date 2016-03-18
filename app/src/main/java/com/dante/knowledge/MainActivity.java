@@ -1,13 +1,13 @@
 package com.dante.knowledge;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,13 +23,12 @@ import com.dante.knowledge.utils.Imager;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
-import com.umeng.message.IUmengRegisterCallback;
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.typeface.GenericFont;
 import com.umeng.message.PushAgent;
-import com.umeng.message.UHandler;
 import com.umeng.update.UmengDownloadListener;
 import com.umeng.update.UmengUpdateAgent;
-import com.umeng.update.UmengUpdateListener;
-import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
 import java.io.File;
@@ -79,7 +78,7 @@ public class MainActivity extends BaseActivity
 
             @Override
             public void OnDownloadEnd(int status, String path) {
-                if (status==UpdateStatus.DOWNLOAD_COMPLETE_SUCCESS){
+                if (status == UpdateStatus.DOWNLOAD_COMPLETE_SUCCESS) {
                     UmengUpdateAgent.startInstall(getApplicationContext(), new File(path));
                 }
             }
@@ -107,17 +106,35 @@ public class MainActivity extends BaseActivity
     }
 
     private void initNavigationView() {
-        View header = navView.getHeaderView(0);
-        ImageView head = (ImageView) header.findViewById(R.id.headImage);
-        Imager.load(this, R.drawable.head, head);
+        //load headerView's image
+        Imager.load(this, R.drawable.head, (ImageView) navView.getHeaderView(0).findViewById(R.id.headImage));
         navView.setNavigationItemSelectedListener(this);
-        if (SPUtil.getBoolean(SettingFragment.SECRET_MODE)) {
+        boolean isSecretOn = SPUtil.getBoolean(SettingFragment.SECRET_MODE);
+        if (isSecretOn) {
             navView.inflateMenu(R.menu.main_menu_all);
         } else {
             navView.inflateMenu(R.menu.main_drawer);
         }
         //select the first menu at startup
-        navView.getMenu().getItem(0).setChecked(true);
+        Menu menu = navView.getMenu();
+        menu.getItem(0).setChecked(true);
+
+        menu.getItem(0).setIcon(
+                new IconicsDrawable(this).
+                        icon(GoogleMaterial.Icon.gmd_explore));
+        menu.getItem(1).setIcon(
+                new IconicsDrawable(this).
+                        icon(GoogleMaterial.Icon.gmd_face)
+                        .color(Color.RED));
+        Menu sub = menu.getItem(isSecretOn ? 3 : 2).getSubMenu();
+        sub.getItem(0).setIcon(
+                new IconicsDrawable(this).
+                        icon(GoogleMaterial.Icon.gmd_share)
+                        .color(Color.DKGRAY));
+        sub.getItem(1).setIcon(
+                new IconicsDrawable(this).
+                        icon(GoogleMaterial.Icon.gmd_settings)
+                        .color(Color.GRAY));
     }
 
 
@@ -136,7 +153,7 @@ public class MainActivity extends BaseActivity
             return;
         }
         backPressed = true;
-        UI.showSnack(drawerLayout, R.string.press_back_twice);
+        UI.showSnack(drawerLayout, R.string.leave_app);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

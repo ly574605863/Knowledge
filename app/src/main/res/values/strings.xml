@@ -69,7 +69,7 @@
     <string name="view_img_hint">向下拉图片退出浏览；长按图片可以保存到手机~</string>
     <string name="title_activity_test" translatable="false">TestActivity</string>
     <string name="save_img">保存</string>
-    <string name="press_back_twice">真的要离开人家了嘛~</string>
+    <string name="leave_app">真的要离开人家了吗~</string>
     <!--umeng start-->
     <string name="umeng_common_action_info_exist">正在下载中.</string>
     <string name="umeng_common_info_interrupt">下载出错啦，请检查网络后继续。</string>
@@ -105,6 +105,7 @@
     <string name="hint">提示</string>
     <string name="ok">知道啦</string>
     <string name="start_download_update">检测到新版，开始下载…</string>
+    <string name="email_not_install">您的手机没有安装邮件app。</string>
 
     <!--umeng end-->
 

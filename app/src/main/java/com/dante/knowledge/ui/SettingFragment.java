@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.dante.knowledge.R;
 import com.dante.knowledge.utils.App;
 import com.dante.knowledge.utils.FileUtil;
+import com.dante.knowledge.utils.IntentUtil;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
 
@@ -140,10 +141,14 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
     private void sendEmailFeedback() {
         Intent email = new Intent(Intent.ACTION_SENDTO);
-        email.setData(Uri.parse("mailto:danteandroi@gmail.com"));
-        email.putExtra(Intent.EXTRA_SUBJECT, "Knowledge Feedback");
-        email.putExtra(Intent.EXTRA_TEXT, "Hi，");
-        startActivity(email);
+        if (IntentUtil.isIntentSafe(email)){
+            email.setData(Uri.parse("mailto:danteandroi@gmail.com"));
+            email.putExtra(Intent.EXTRA_SUBJECT, "Knowledge Feedback");
+            email.putExtra(Intent.EXTRA_TEXT, "Hi，");
+            startActivity(email);
+        }else {
+            UI.showSnack(rootView, R.string.email_not_install);
+        }
     }
 
 }
