@@ -98,7 +98,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.header.setText(context.getString(R.string.hottest));
                 viewHolder.header.setVisibility(View.VISIBLE);
                 viewHolder.mItem.setVisibility(View.GONE);
-
                 return;
             } else {
                 viewHolder.zhihuStory = zhihuStories.get(position - 2);//position=0, 1 are occupied with banner, header
@@ -137,7 +136,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return new BannerView();
                 }
             }, tops);
-
+            itemHolder.banner.notifyDataSetChanged();
         }
 
     }

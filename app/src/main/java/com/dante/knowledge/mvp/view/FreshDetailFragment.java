@@ -154,7 +154,9 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     public void showLoadFailed(String msg) {
-        UI.showSnackLong(rootView, R.string.load_fail);
+        if (rootView != null) {
+            UI.showSnackLong(rootView, R.string.load_fail);
+        }
     }
 
     @Override
