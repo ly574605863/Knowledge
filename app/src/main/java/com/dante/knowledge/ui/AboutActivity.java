@@ -1,9 +1,16 @@
 package com.dante.knowledge.ui;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
+import android.support.design.widget.Snackbar;
 import android.widget.TextView;
 
 import com.dante.knowledge.BuildConfig;
 import com.dante.knowledge.R;
+import com.dante.knowledge.utils.IntentUtil;
+import com.dante.knowledge.utils.UI;
 
 import butterknife.Bind;
 
@@ -22,6 +29,15 @@ public class AboutActivity extends BaseActivity {
     @Override
     protected void initViews() {
         super.initViews();
-        versionName.append(" "+BuildConfig.VERSION_NAME);
+        versionName.append(" " + BuildConfig.VERSION_NAME);
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        if (IntentUtil.isIntentSafe(intent)) {
+            super.startActivity(intent);
+        } else {
+            UI.showSnack(versionName, R.string.email_not_install);
+        }
     }
 }
