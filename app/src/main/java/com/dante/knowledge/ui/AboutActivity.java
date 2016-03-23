@@ -1,10 +1,6 @@
 package com.dante.knowledge.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.net.Uri;
-import android.support.design.widget.Snackbar;
 import android.widget.TextView;
 
 import com.dante.knowledge.BuildConfig;
@@ -40,4 +36,5 @@ public class AboutActivity extends BaseActivity {
             UI.showSnack(versionName, R.string.email_not_install);
         }
     }
+
 }

@@ -69,7 +69,7 @@
     <string name="view_img_hint">向下拉图片退出浏览；长按图片可以保存到手机~</string>
     <string name="title_activity_test" translatable="false">TestActivity</string>
     <string name="save_img">保存</string>
-    <string name="leave_app">真的要离开人家了吗~</string>
+    <string name="leave_app">真的要离开人家了吗？</string>
     <!--umeng start-->
     <string name="umeng_common_action_info_exist">正在下载中.</string>
     <string name="umeng_common_info_interrupt">下载出错啦，请检查网络后继续。</string>

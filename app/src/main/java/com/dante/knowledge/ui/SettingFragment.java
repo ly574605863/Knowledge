@@ -51,7 +51,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         about = findPreference(FEED_BACK);
         version = findPreference(APP_VERSION);
         splash = findPreference(ORIGINAL_SPLASH);
-        clearCache.setSummary(clearCache.getSummary() + getCacheSize());
+        clearCache.setSummary(clearCache.getSummary() + " " + getCacheSize());
         splash.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
@@ -76,7 +76,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
     }
 
     private void secretStepTwo() {
-        if (System.currentTimeMillis() - startTime < DURATION * (secretIndex+1) ){
+        if (System.currentTimeMillis() - startTime < DURATION * (secretIndex + 1)) {
             if (secretIndex > 2) {
                 Log.i("test", "splash " + secretIndex);
                 secretIndex++;
@@ -101,7 +101,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
             startTime = System.currentTimeMillis();
             first = false;
         }
-        if (System.currentTimeMillis() - startTime < DURATION * (secretIndex+1) ){
+        if (System.currentTimeMillis() - startTime < DURATION * (secretIndex + 1)) {
             if (secretIndex < 3) {
                 secretIndex++;
             }
@@ -141,12 +141,12 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
     private void sendEmailFeedback() {
         Intent email = new Intent(Intent.ACTION_SENDTO);
-        if (IntentUtil.isIntentSafe(email)){
+        if (IntentUtil.isIntentSafe(email)) {
             email.setData(Uri.parse("mailto:danteandroi@gmail.com"));
             email.putExtra(Intent.EXTRA_SUBJECT, "Knowledge Feedback");
             email.putExtra(Intent.EXTRA_TEXT, "Hi，");
             startActivity(email);
-        }else {
+        } else {
             UI.showSnack(rootView, R.string.email_not_install);
         }
     }

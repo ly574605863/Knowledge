@@ -13,5 +13,6 @@ public class SettingsActivity extends BaseActivity {
     @Override
     protected void initViews() {
         setContentView(layoutId);
+        initAppBar();
     }
 }
