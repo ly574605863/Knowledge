@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity
         } else {
             navView.inflateMenu(R.menu.main_drawer);
         }
-        //select the first menu at startup
+        //seRlect the first menu at startup
         Menu menu = navView.getMenu();
         menu.getItem(0).setChecked(true);
 
@@ -137,6 +137,11 @@ public class MainActivity extends BaseActivity
                 new IconicsDrawable(this).
                         icon(GoogleMaterial.Icon.gmd_settings)
                         .color(Color.GRAY));
+        if (isSecretOn) {
+            sub.getItem(2).setIcon(new IconicsDrawable(this)
+                    .icon(GoogleMaterial.Icon.gmd_whatshot)
+                    .color(Color.WHITE));
+        }
     }
 
 

@@ -217,6 +217,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
                 params[0].compress(Bitmap.CompressFormat.PNG, 100, stream);
                 stream.flush();
                 stream.close();
+                MediaScannerConnection.scanFile(KnowledgeApp.context, new String[]{file.getPath()}, null, null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -226,7 +227,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         @Override
         protected void onPostExecute(File file) {
             if (file != null && file.exists()) {
-                MediaScannerConnection.scanFile(KnowledgeApp.context, new String[]{file.getPath()}, null, null);
                 Snackbar.make(rootView, getString(R.string.save_img_success)
                         + file.getAbsolutePath(), Snackbar.LENGTH_SHORT).show();
 
