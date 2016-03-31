@@ -3,7 +3,6 @@ package com.dante.knowledge.mvp.view;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -23,7 +22,7 @@ import com.dante.knowledge.utils.BlurBuilder;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
-import com.dante.knowledge.utils.Tool;
+import com.dante.knowledge.utils.BitmapUtil;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
@@ -54,7 +53,8 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         for (AsyncTask task : tasks) {
             task.cancel(true);
         }
-
+        bitmap.recycle();
+        bitmap = null;
     }
 
     public static ViewerFragment newInstance(String url) {
@@ -194,7 +194,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
                 return null;
             }
             tasks.add(this);
-            return Tool.bitmapToUri(params[0]);
+            return BitmapUtil.bitmapToUri(params[0]);
         }
 
         @Override

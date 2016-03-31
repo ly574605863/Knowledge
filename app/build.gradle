@@ -17,7 +17,7 @@ android {
         debug {
             applicationIdSuffix ''
             versionNameSuffix '-DEBUG'
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
         }
@@ -50,7 +50,9 @@ android {
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled false
     }
-
+}
+android {
+    useLibrary 'org.apache.http.legacy'
 }
 //自动上传插件
 bugtags {
