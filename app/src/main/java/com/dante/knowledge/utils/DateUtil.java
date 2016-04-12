@@ -9,7 +9,7 @@ import java.util.Locale;
 /**
  * deals with string work like copy, parse.
  */
-public class Dater {
+public class DateUtil {
 
     public static final String LAST_DATE = "lastDate";
 
@@ -74,7 +74,7 @@ public class Dater {
     }
 
     public static String lastDay(String date) {
-        Date d = Dater.parseStandardDate(date);
+        Date d = DateUtil.parseStandardDate(date);
         return parseStandardDate(lastDay(d));
     }
 

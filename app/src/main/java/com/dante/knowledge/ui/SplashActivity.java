@@ -15,7 +15,7 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.Net;
 import com.dante.knowledge.utils.Constants;
-import com.dante.knowledge.utils.Dater;
+import com.dante.knowledge.utils.DateUtil;
 import com.dante.knowledge.utils.Imager;
 import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -56,7 +56,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private void initSplash() {
-        today = Dater.parseStandardDate(new Date());
+        today = DateUtil.parseStandardDate(new Date());
         loadImageFile();
         if (!today.equals(SPUtil.getString(Constants.DATE))) {
             getSplash();

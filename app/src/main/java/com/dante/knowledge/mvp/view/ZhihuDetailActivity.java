@@ -66,7 +66,6 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         } else {
             showDetail(zhihuDetail);
         }
-        initFAB();
     }
 
     private void initFAB() {
@@ -146,6 +145,7 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
         String html = "<html><head>" + css + "</head><body>" + detailNews.getBody() + "</body></html>";
         html = html.replace("<div class=\"img-place-holder\">", "");
         webView.loadDataWithBaseURL("x-data://base", html, "text/html", "UTF-8", null);
+        initFAB();
     }
 
     @Override

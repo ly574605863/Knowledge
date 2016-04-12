@@ -3,7 +3,6 @@ package com.dante.knowledge.mvp.other;
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import com.dante.knowledge.mvp.model.ZhihuStory;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.BannerView;
 import com.dante.knowledge.net.DB;
-import com.dante.knowledge.utils.Dater;
+import com.dante.knowledge.utils.DateUtil;
 import com.dante.knowledge.utils.Imager;
 
 import java.util.List;
@@ -103,7 +102,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 viewHolder.zhihuStory = zhihuStories.get(position - 2);//position=0, 1 are occupied with banner, header
                 //type == 1 means this item is added by me, so it's a header to show date.
                 if (viewHolder.zhihuStory.getType() == 1) {
-                    String date = Dater.getDisplayDate(viewHolder.zhihuStory.getId() + "");
+                    String date = DateUtil.getDisplayDate(viewHolder.zhihuStory.getId() + "");
                     viewHolder.header.setText(date);
                     viewHolder.header.setVisibility(View.VISIBLE);
                     viewHolder.header.setClickable(false);

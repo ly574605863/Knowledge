@@ -94,6 +94,11 @@
             android:textIsSelectable="true"
             android:text="@string/my_email" />
 
+        <Spinner
+            android:layout_width="140dp"
+            android:layout_height="46dp"
+            android:id="@+id/spinner"/>
+
     </LinearLayout>
 
 </LinearLayout>
