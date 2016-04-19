@@ -27,7 +27,7 @@
     <string name="version">Version </string>
     <string name="column_not_available">Not available now, please update or contact with me :D</string>
     <string name="menu_share">Share</string>
-    <string name="license">lisence</string>
+    <string name="license">licence</string>
     <string name="license_description">All the resources are from network, if it has become an infringement, please inform me</string>
     <string name="clear_cache_failed">Fail to delete cache.</string>
     <string name="clear_cache_success">Cache cleared.</string>

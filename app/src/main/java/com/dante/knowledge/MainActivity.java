@@ -3,20 +3,16 @@ package com.dante.knowledge;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.dante.knowledge.mvp.view.TabsFragment;
-import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.AboutActivity;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.SettingFragment;
@@ -27,7 +23,6 @@ import com.dante.knowledge.utils.Share;
 import com.dante.knowledge.utils.UI;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import com.mikepenz.iconics.typeface.GenericFont;
 import com.umeng.message.PushAgent;
 import com.umeng.update.UmengDownloadListener;
 import com.umeng.update.UmengUpdateAgent;
@@ -117,7 +112,7 @@ public class MainActivity extends BaseActivity
         } else {
             navView.inflateMenu(R.menu.main_drawer);
         }
-        //seRlect the first menu at startup
+        //select the first menu at startup
         Menu menu = navView.getMenu();
         menu.getItem(0).setChecked(true);
 
@@ -138,7 +133,7 @@ public class MainActivity extends BaseActivity
                         icon(GoogleMaterial.Icon.gmd_settings)
                         .color(Color.GRAY));
         if (isSecretOn) {
-            sub.getItem(2).setIcon(new IconicsDrawable(this)
+            menu.getItem(2).setIcon(new IconicsDrawable(this)
                     .icon(GoogleMaterial.Icon.gmd_whatshot)
                     .color(Color.WHITE));
         }
@@ -221,6 +216,5 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DB.realm.close();
     }
 }

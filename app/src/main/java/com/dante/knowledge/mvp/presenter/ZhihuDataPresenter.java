@@ -1,7 +1,5 @@
 package com.dante.knowledge.mvp.presenter;
 
-import android.content.Context;
-
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.NewsPresenter;
 import com.dante.knowledge.mvp.interf.NewsView;
@@ -11,6 +9,7 @@ import com.dante.knowledge.mvp.model.ZhihuJson;
 import com.dante.knowledge.mvp.model.ZhihuModel;
 import com.dante.knowledge.mvp.model.ZhihuStory;
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.ui.BaseActivity;
 
 /**
  * helps to present zhihu news list
@@ -20,9 +19,9 @@ public class ZhihuDataPresenter implements NewsPresenter, OnLoadDataListener {
     private NewsView<ZhihuJson> mNewsView;
     private NewsModel<ZhihuStory, ZhihuDetail> mNewsModel;
 
-    public ZhihuDataPresenter(NewsView<ZhihuJson> newsView, Context context) {
+    public ZhihuDataPresenter(NewsView<ZhihuJson> newsView, BaseActivity activity) {
         this.mNewsView = newsView;
-        mNewsModel = new ZhihuModel();
+        mNewsModel = new ZhihuModel(activity);
     }
 
 

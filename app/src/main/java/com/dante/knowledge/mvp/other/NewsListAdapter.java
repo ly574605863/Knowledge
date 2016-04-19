@@ -12,21 +12,26 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
 import com.dante.knowledge.mvp.model.FreshPost;
 import com.dante.knowledge.net.DB;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Imager;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Fresh news' recyclerView adapter
  */
 public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final Realm realm;
     private List<FreshPost> freshPosts;
     private OnListFragmentInteract mListener;
 
-    public NewsListAdapter(OnListFragmentInteract listener) {
+    public NewsListAdapter(OnListFragmentInteract listener, BaseActivity activity) {
         mListener = listener;
-        freshPosts = DB.findAllDateSorted(FreshPost.class);
+        realm = activity.mRealm;
+        freshPosts = DB.findAllDateSorted(realm, FreshPost.class);
     }
 
     public void addNews() {

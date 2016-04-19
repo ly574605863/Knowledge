@@ -25,6 +25,7 @@ import com.dante.knowledge.mvp.model.FreshDetailJson;
 import com.dante.knowledge.mvp.model.FreshPost;
 import com.dante.knowledge.mvp.presenter.FreshDetailPresenter;
 import com.dante.knowledge.net.DB;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.ui.BaseFragment;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.Share;
@@ -58,6 +59,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     private NewsDetailPresenter<FreshPost> presenter;
     private ShareActionProvider mShareActionProvider;
     private int position;
+    private BaseActivity context;
 
     public FreshDetailFragment() {
     }
@@ -73,8 +75,9 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = (BaseActivity) getActivity();
         if (getArguments() != null) {
-            freshPosts = DB.findAllDateSorted(FreshPost.class);
+            freshPosts = DB.findAllDateSorted(context.mRealm, FreshPost.class);
             position = getArguments().getInt(Constants.POSITION);
             freshPost = freshPosts.get(position);
             setHasOptionsMenu(true);
@@ -88,7 +91,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     protected void initViews() {
-        presenter = new FreshDetailPresenter(this);
+        presenter = new FreshDetailPresenter(this, context);
     }
 
     @Override

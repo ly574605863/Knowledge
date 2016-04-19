@@ -7,12 +7,14 @@ import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.callback.Callback;
 
 import java.io.IOException;
 
+import io.realm.Realm;
 import okhttp3.Call;
 import okhttp3.Response;
 
@@ -28,10 +30,17 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
      * a continuous request with increasing one page each time
      */
     public static final int TYPE_CONTINUOUS = 1;
+    private final Realm realm;
 
     private int page;
     private long lastGetTime;
     public static final int GET_DURATION = 3000;
+    private BaseActivity mActivity;
+
+    public FreshModel(BaseActivity activity) {
+        mActivity = activity;
+        realm=mActivity.mRealm;
+    }
 
     @Override
     public void getNews(int type, final OnLoadDataListener listener) {
@@ -57,7 +66,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
             @Override
             public void onResponse(FreshJson response) {
-                DB.saveList(response.getPosts());
+                DB.saveList(realm, response.getPosts());
                 listener.onSuccess();
                 page++;
                 SPUtil.save(Constants.PAGE, page);
@@ -80,7 +89,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
     }
 
     private boolean getDetailFromDB(FreshPost freshPost, OnLoadDetailListener<FreshDetailJson> listener) {
-        FreshDetail post = DB.getById(freshPost.getId(), FreshDetail.class);
+        FreshDetail post = DB.getById(realm, freshPost.getId(), FreshDetail.class);
         if (null != post) {
             FreshDetailJson detailNews = new FreshDetailJson();
             detailNews.setPost(post);
@@ -111,7 +120,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
             @Override
             public void onResponse(FreshDetailJson response) {
-                DB.save(response.getPost());
+                DB.save(realm, response.getPost());
                 listener.onDetailSuccess(response);
             }
         };

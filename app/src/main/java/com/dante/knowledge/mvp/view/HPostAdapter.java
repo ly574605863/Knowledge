@@ -10,6 +10,7 @@ import com.dante.knowledge.R;
 import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
 import com.dante.knowledge.mvp.model.HItem;
 import com.dante.knowledge.net.DB;
+import com.dante.knowledge.ui.BaseActivity;
 
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class HPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<HItem> items;
     private OnListFragmentInteract mListener;
 
-    public HPostAdapter(OnListFragmentInteract listener) {
+    public HPostAdapter(OnListFragmentInteract listener, BaseActivity activity) {
         mListener = listener;
-        items = DB.findAllDateSorted(HItem.class);
+        items = DB.findAllDateSorted(activity.mRealm, HItem.class);
     }
 
     public void addNews() {

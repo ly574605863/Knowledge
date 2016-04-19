@@ -10,9 +10,4 @@ public class SettingsActivity extends BaseActivity {
         layoutId= R.layout.activity_setting;
     }
 
-    @Override
-    protected void initViews() {
-        setContentView(layoutId);
-        initAppBar();
-    }
 }

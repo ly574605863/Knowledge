@@ -1,6 +1,5 @@
 package com.dante.knowledge.mvp.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -18,6 +17,7 @@ import com.dante.knowledge.mvp.model.ZhihuJson;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
@@ -32,6 +32,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
     private ZhihuListAdapter adapter;
     private ConvenientBanner banner;
     private LinearLayoutManager layoutManager;
+    private BaseActivity context;
 
     @Override
     public void onDestroyView() {
@@ -51,11 +52,11 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
     protected void initViews() {
         super.initViews();
         type = TabsFragment.TYPE_ZHIHU;
-        Context context = getActivity();
+        context = (BaseActivity)getActivity();
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ZhihuListAdapter(this);
+        adapter = new ZhihuListAdapter(this, context);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -80,7 +81,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
 
     @Override
     protected void initData() {
-        presenter = new ZhihuDataPresenter(this, getContext());
+        presenter = new ZhihuDataPresenter(this, (BaseActivity)getActivity());
         initBanner();
         onRefresh();
     }

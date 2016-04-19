@@ -39,8 +39,7 @@ public class TabsFragment extends BaseFragment {
     public static final String MENU_H = "h";
 
     private List<RecyclerFragment> fragments = new ArrayList<>();
-    private List<String> titles;
-    private NewsTabPagerAdapter adapter;
+    private TabPagerAdapter adapter;
     private String menuType;
 
     public static TabsFragment newInstance(String type) {
@@ -58,7 +57,7 @@ public class TabsFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        adapter = new NewsTabPagerAdapter(getChildFragmentManager());
+        adapter = new TabPagerAdapter(getChildFragmentManager());
         initFragments();
         pager.setAdapter(adapter);
         if (MENU_PIC.equals(menuType)) {
@@ -86,6 +85,7 @@ public class TabsFragment extends BaseFragment {
     private void initFragments() {
         menuType = getArguments().getString(Constants.TYPE);
 
+        List<String> mTitles;
         if (MENU_PIC.equals(menuType)) {
             String[] titles = new String[]{
                     getString(R.string.gank),
@@ -94,7 +94,7 @@ public class TabsFragment extends BaseFragment {
                     getString(R.string.db_silk),
                     getString(R.string.db_breast),
                     getString(R.string.db_butt)};
-            this.titles = Arrays.asList(titles);
+            mTitles = Arrays.asList(titles);
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_GANK));
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_RANK));
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_LEG));
@@ -102,25 +102,25 @@ public class TabsFragment extends BaseFragment {
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_BREAST));
             fragments.add(PictureFragment.newInstance(PictureFragment.TYPE_DB_BUTT));
             if (fragments.size() != titles.length) {
-                throw new IllegalArgumentException("You need add all fragments in MenuTabFragment");
+                throw new IllegalArgumentException("You need add all fragments in "+getClass().getSimpleName());
             }
 
         } else if (MENU_SECRET.equals(menuType)) {
             String[] titles = new String[]{getString(R.string.h_beauty), getString(R.string.h_selfie), getString(R.string.h_exposure), getString(R.string.h_original)};
-            this.titles = Arrays.asList(titles);
+            mTitles = Arrays.asList(titles);
             fragments.add(HFragment.newInstance(HFragment.TYPE_H_BEAUTY));
             fragments.add(HFragment.newInstance(HFragment.TYPE_H_SELFIE));
             fragments.add(HFragment.newInstance(HFragment.TYPE_H_EXPOSURE));
             fragments.add(HFragment.newInstance(HFragment.TYPE_H_ORIGINAL));
 
         } else {
-            titles = new ArrayList<>();
+            mTitles = new ArrayList<>();
             fragments.add(new ZhihuFragment());
             fragments.add(new FreshFragment());
-            titles.add(getString(R.string.zhihu_news));
-            titles.add(getString(R.string.fresh_news));
+            mTitles.add(getString(R.string.zhihu_news));
+            mTitles.add(getString(R.string.fresh_news));
         }
-        adapter.setFragments(fragments, titles);
+        adapter.setFragments(fragments, mTitles);
     }
 
     private void scrollToTop(RecyclerView list) {
@@ -149,12 +149,12 @@ public class TabsFragment extends BaseFragment {
     }
 
 
-    public static class NewsTabPagerAdapter extends FragmentPagerAdapter {
+    public static class TabPagerAdapter extends FragmentPagerAdapter {
 
         private List<RecyclerFragment> fragments;
         private List<String> titles;
 
-        public NewsTabPagerAdapter(FragmentManager fm) {
+        public TabPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 

@@ -6,14 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 
 import com.bugtags.library.Bugtags;
 import com.dante.knowledge.R;
-import com.dante.knowledge.net.DB;
 import com.umeng.message.PushAgent;
 
 import butterknife.ButterKnife;
@@ -26,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
     private boolean isShowToolbar = true;
+    public Realm mRealm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,8 +41,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initViews() {
         setContentView(layoutId);
         ButterKnife.bind(this);
+        mRealm = Realm.getDefaultInstance();
         initAppBar();
-        DB.realm = Realm.getDefaultInstance();
         initSDK();
     }
 
@@ -51,13 +50,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         PushAgent.getInstance(this).onAppStart();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (DB.realm == null || DB.realm.isClosed()) {
-            DB.realm = Realm.getDefaultInstance();
-        }
-    }
 
     public void initAppBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -107,6 +99,12 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         Bugtags.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mRealm.close();
     }
 
     @Override

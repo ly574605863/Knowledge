@@ -7,6 +7,7 @@ import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.mvp.model.ZhihuDetail;
 import com.dante.knowledge.mvp.model.ZhihuModel;
 import com.dante.knowledge.mvp.model.ZhihuStory;
+import com.dante.knowledge.ui.BaseActivity;
 
 /**
  * helps to present zhihu news detail page
@@ -16,8 +17,8 @@ public class ZhihuDetailPresenter implements NewsDetailPresenter<ZhihuStory>, On
     private NewsModel<ZhihuStory, ZhihuDetail> newsModel;
     private NewsDetailView<ZhihuDetail> newsDetailView;
 
-    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView) {
-        this.newsModel = new ZhihuModel();
+    public ZhihuDetailPresenter(NewsDetailView<ZhihuDetail> newsDetailView, BaseActivity activity) {
+        this.newsModel = new ZhihuModel(activity);
         this.newsDetailView = newsDetailView;
     }
 

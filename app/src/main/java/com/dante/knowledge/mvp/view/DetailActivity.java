@@ -1,19 +1,12 @@
 package com.dante.knowledge.mvp.view;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
-import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -26,12 +19,8 @@ import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
-import com.dante.knowledge.utils.Share;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -47,14 +36,12 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     ViewPager pager;
     @Bind(R.id.container)
     FrameLayout container;
-    private int position;
     private DetailPagerAdapter adapter;
     private String menuType;
     private boolean isPicture;
     private int currentPosition;
     private int type;
     private List<Image> images;
-    private List<FreshPost> freshPosts;
 
     private static final int SYSTEM_UI_SHOW = View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
@@ -75,7 +62,6 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void onDestroy() {
         OkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
-        DB.realm.close();
     }
 
     @Override
@@ -94,15 +80,15 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
     protected void initViews() {
         super.initViews();
         supportPostponeEnterTransition();
-        position = getIntent().getIntExtra(Constants.POSITION, 0);
+        int position = getIntent().getIntExtra(Constants.POSITION, 0);
         currentPosition = position;
         List<Fragment> fragments = new ArrayList<>();
 
         if (TabsFragment.MENU_NEWS.equals(menuType)) {
-            freshPosts = DB.findAllDateSorted(FreshPost.class);
+            List<FreshPost> freshPosts = DB.findAllDateSorted(mRealm, FreshPost.class);
             adapter = new DetailPagerAdapter(getSupportFragmentManager(), fragments, freshPosts.size());
 
-            for (int i = 0; i < DB.findAll(FreshPost.class).size(); i++) {
+            for (int i = 0; i < DB.findAll(mRealm, FreshPost.class).size(); i++) {
                 fragments.add(FreshDetailFragment.newInstance(i));
             }
 
@@ -111,10 +97,10 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
 
             if (TabsFragment.MENU_H.equals(menuType)) {
                 String url = getIntent().getStringExtra(Constants.URL);
-                images = DB.getByUrl(url, HDetail.class).getImages();
+                images = DB.getByUrl(mRealm,url, HDetail.class).getImages();
             } else if (TabsFragment.MENU_PIC.equals(menuType)) {
                 type = getIntent().getIntExtra(Constants.TYPE, 0);
-                images = DB.getImages(type);
+                images = DB.getImages(mRealm, type);
             }
 
             for (int i = 0; i < images.size(); i++) {

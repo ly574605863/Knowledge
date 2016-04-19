@@ -1,6 +1,5 @@
 package com.dante.knowledge.mvp.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import com.dante.knowledge.mvp.interf.UpdateReceiver;
 import com.dante.knowledge.mvp.presenter.FetchService;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
@@ -54,14 +54,14 @@ public class HFragment extends RecyclerFragment implements OnListFragmentInterac
     @Override
     protected void initViews() {
         super.initViews();
-        Context context = getActivity();
+        BaseActivity context = (BaseActivity) getActivity();
         type = getArguments().getInt(Constants.TYPE);
         layoutManager = new LinearLayoutManager(context);
         updateReceiver = new UpdateReceiver(this);
         broadcastManager = LocalBroadcastManager.getInstance(context);
         broadcastManager.registerReceiver(updateReceiver, new IntentFilter(FetchService.ACTION_FETCH));
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new HPostAdapter(this);
+        adapter = new HPostAdapter(this, context);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

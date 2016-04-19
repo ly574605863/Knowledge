@@ -3,7 +3,6 @@ package com.dante.knowledge.mvp.view;
 import android.annotation.SuppressLint;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -51,15 +50,15 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     protected void initViews() {
         super.initViews();
         int id = getIntent().getIntExtra(Constants.ID, 0);
-        ZhihuStory story = DB.getById(id, ZhihuStory.class);
-        zhihuDetail = DB.getById(id, ZhihuDetail.class);
+        ZhihuStory story = DB.getById(mRealm, id, ZhihuStory.class);
+        zhihuDetail = DB.getById(mRealm, id, ZhihuDetail.class);
         if (story == null) {
             //can't find zhihuItem, so this id is passed by Zhihutop
-            toolbarLayout.setTitle(DB.getById(id, ZhihuTop.class).getTitle());
+            toolbarLayout.setTitle(DB.getById(mRealm, id, ZhihuTop.class).getTitle());
         } else {
             toolbarLayout.setTitle(story.getTitle());
         }
-        NewsDetailPresenter<ZhihuStory> presenter = new ZhihuDetailPresenter(this);
+        NewsDetailPresenter<ZhihuStory> presenter = new ZhihuDetailPresenter(this, this);
         initWebView();
         if (zhihuDetail == null) {
             presenter.loadNewsDetail(story);
@@ -126,7 +125,6 @@ public class ZhihuDetailActivity extends BaseActivity implements NewsDetailView<
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DB.realm.close();
         System.exit(0);
     }
 

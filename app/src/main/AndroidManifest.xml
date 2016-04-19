@@ -73,11 +73,11 @@
         <!-- umengPush configuration-->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="56e7ba1c67e58e5f780027d3">
+            android:value="${umeng_app_key}">
         </meta-data>
         <meta-data
             android:name="UMENG_MESSAGE_SECRET"
-            android:value="b88cb709dc0c645b0d2d0d5d5aee6448">
+            android:value="${umeng_message_secret}">
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"

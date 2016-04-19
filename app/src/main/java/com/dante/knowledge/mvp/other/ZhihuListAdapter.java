@@ -18,10 +18,13 @@ import com.dante.knowledge.mvp.model.ZhihuStory;
 import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.BannerView;
 import com.dante.knowledge.net.DB;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.DateUtil;
 import com.dante.knowledge.utils.Imager;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 /**
  * Zhihu news' recyclerView adapter
@@ -43,14 +46,15 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<ZhihuStory> zhihuStories;
     private List<ZhihuTop> tops;
+    private Realm mRealm;
 
     private OnListFragmentInteract mListener;
 
-    public ZhihuListAdapter(OnListFragmentInteract listener) {
+    public ZhihuListAdapter(OnListFragmentInteract listener, BaseActivity activity) {
         mListener = listener;
-        zhihuStories = DB.findAll(ZhihuStory.class);
-        tops = DB.findAll(ZhihuTop.class);
-
+        mRealm = activity.mRealm;
+        zhihuStories = DB.findAll(mRealm, ZhihuStory.class);
+        tops = DB.findAll(mRealm, ZhihuTop.class);
     }
 
     public void addNews(ZhihuJson news) {

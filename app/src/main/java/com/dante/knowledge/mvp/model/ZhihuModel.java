@@ -8,6 +8,7 @@ import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Json;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.DateUtil;
 import com.dante.knowledge.utils.SPUtil;
@@ -24,6 +25,12 @@ import okhttp3.Response;
  * deals with the zhihu news' data work
  */
 public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
+
+    private BaseActivity mActivity;
+
+    public ZhihuModel(BaseActivity activity) {
+        mActivity = activity;
+    }
 
     private String date;
     private long lastGetTime;
@@ -119,7 +126,7 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
             @Override
             public void onResponse(ZhihuDetail response) {
-                DB.saveOrUpdate(response);
+                DB.saveOrUpdate(mActivity.mRealm, response);
                 listener.onDetailSuccess(response);
             }
 

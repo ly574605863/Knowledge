@@ -26,7 +26,7 @@ public class API {
 
 
     //Pictures of beauties API
-    public static String GANK = "http://gank.avosapps.com/api/data/%E7%A6%8F%E5%88%A9/";
+    public static String GANK = "http://gank.io/api/data/%E7%A6%8F%E5%88%A9/";
     public static String DB_BREAST = "http://www.dbmeinv.com/dbgroup/show.htm?cid=2&pager_offset=";
     public static String DB_BUTT = "http://www.dbmeinv.com/dbgroup/show.htm?cid=6&pager_offset=";
     public static String DB_SILK = "http://www.dbmeinv.com/dbgroup/show.htm?cid=7&pager_offset=";

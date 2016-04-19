@@ -7,6 +7,7 @@ import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
 import com.dante.knowledge.mvp.model.FreshDetailJson;
 import com.dante.knowledge.mvp.model.FreshModel;
 import com.dante.knowledge.mvp.model.FreshPost;
+import com.dante.knowledge.ui.BaseActivity;
 
 /**
  * helps to present fresh news detail page
@@ -16,8 +17,8 @@ public class FreshDetailPresenter implements NewsDetailPresenter<FreshPost>, OnL
     private NewsModel<FreshPost, FreshDetailJson> mNewsModel;
     private NewsDetailView<FreshDetailJson> newsDetailView;
 
-    public FreshDetailPresenter(NewsDetailView<FreshDetailJson> newsDetailView) {
-        this.mNewsModel = new FreshModel();
+    public FreshDetailPresenter(NewsDetailView<FreshDetailJson> newsDetailView, BaseActivity activity) {
+        this.mNewsModel = new FreshModel(activity);
         this.newsDetailView = newsDetailView;
     }
 

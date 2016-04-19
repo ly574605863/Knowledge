@@ -1,7 +1,6 @@
 package com.dante.knowledge.mvp.view;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,6 +17,7 @@ import com.dante.knowledge.mvp.other.NewsListAdapter;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.FreshDataPresenter;
 import com.dante.knowledge.net.API;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
@@ -33,6 +33,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     private NewsPresenter presenter;
     private NewsListAdapter adapter;
     private LinearLayoutManager layoutManager;
+    private BaseActivity context;
 
     @Override
     public void onDestroyView() {
@@ -44,11 +45,11 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     @Override
     protected void initViews() {
         super.initViews();
-        Context context = getActivity();
+        context = (BaseActivity) getActivity();
         type = TabsFragment.TYPE_FRESH;
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NewsListAdapter( this);
+        adapter = new NewsListAdapter(this, context);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -74,7 +75,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     protected void initData() {
-        presenter = new FreshDataPresenter(this);
+        presenter = new FreshDataPresenter(this, context);
         onRefresh();
     }
 

@@ -1,13 +1,11 @@
 package com.dante.knowledge.mvp.view;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.SharedElementCallback;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,15 +21,12 @@ import com.dante.knowledge.mvp.presenter.FetchService;
 import com.dante.knowledge.net.API;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.net.Net;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -62,7 +57,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     private long GET_DURATION = 3000;
     private UpdateReceiver loadReceiver;
     private LocalBroadcastManager localBroadcastManager;
-    private FragmentActivity context;
+    private BaseActivity context;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -107,7 +102,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
     protected void initViews() {
         super.initViews();
         loadReceiver = new UpdateReceiver(this);
-        context = getActivity();
+        context = (BaseActivity)getActivity();
         localBroadcastManager = LocalBroadcastManager.getInstance(context);
         localBroadcastManager.registerReceiver(loadReceiver, new IntentFilter(FetchService.ACTION_FETCH));
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -163,13 +158,12 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
         firstPosition = layoutManager.findFirstVisibleItemPositions(spans)[0];
         lastPosition = layoutManager.findLastVisibleItemPositions(spans)[1];
-
+getFragmentManager().beginTransaction();
         if (isFirst && page <= 1) {
             if (lastPosition > images.size() / 3) {
                 page = SPUtil.getInt(type + Constants.PAGE);
                 fetch(false);
             }
-
         } else if (lastPosition > itemCount - PRELOAD_COUNT) {
             fetch(false);
         }
@@ -250,7 +244,7 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initData() {
-        images = DB.getImages(type);
+        images = DB.getImages(context.mRealm, type);
         if (images.isEmpty()) {
             swipeRefresh.post(new Runnable() {
                 @Override

@@ -4,7 +4,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.dante.knowledge.R;
-import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 
@@ -54,6 +53,5 @@ public class HDetailActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DB.realm.close();
     }
 }

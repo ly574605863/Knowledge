@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.dante.knowledge.mvp.model.Image;
 import com.dante.knowledge.mvp.other.PictureAdapter;
 import com.dante.knowledge.mvp.presenter.FetchService;
 import com.dante.knowledge.net.DB;
+import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 
 import io.realm.RealmList;
@@ -46,7 +46,7 @@ public class HDetailFragment extends RecyclerFragment implements OnLoadDataListe
     private long GET_DURATION = 3000;
     private UpdateReceiver updateReceiver;
     private LocalBroadcastManager localBroadcastManager;
-    private FragmentActivity context;
+    private BaseActivity context;
 
     @Override
     public void onPause() {
@@ -72,7 +72,7 @@ public class HDetailFragment extends RecyclerFragment implements OnLoadDataListe
     protected void initViews() {
         super.initViews();
         updateReceiver = new UpdateReceiver(this);
-        context = getActivity();
+        context =(BaseActivity)getActivity();
         localBroadcastManager = LocalBroadcastManager.getInstance(context);
         localBroadcastManager.registerReceiver(updateReceiver, new IntentFilter(FetchService.ACTION_FETCH));
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
@@ -106,7 +106,7 @@ public class HDetailFragment extends RecyclerFragment implements OnLoadDataListe
 
     @Override
     protected void initData() {
-        detail = DB.getByUrl(url, HDetail.class);
+        detail = DB.getByUrl(context.mRealm, url, HDetail.class);
         if (detail == null) {
             showProgress(true);
             fetch();
