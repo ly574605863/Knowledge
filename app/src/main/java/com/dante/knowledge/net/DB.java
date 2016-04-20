@@ -15,8 +15,6 @@ import io.realm.Sort;
  */
 public class DB {
 
-    public static Realm realm;
-
     public static void saveOrUpdate(Realm realm, RealmObject realmObject) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(realmObject);

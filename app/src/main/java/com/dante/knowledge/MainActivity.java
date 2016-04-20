@@ -29,6 +29,7 @@ import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UpdateStatus;
 
 import java.io.File;
+import java.util.Random;
 
 import butterknife.Bind;
 
@@ -61,6 +62,14 @@ public class MainActivity extends BaseActivity
     private void initSDK() {
         PushAgent agent = PushAgent.getInstance(this);
         agent.enable();
+        if (new Random().nextBoolean()){
+             update();
+        }
+
+        //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
+    }
+
+    private void update() {
         UmengUpdateAgent.silentUpdate(this);
         UmengUpdateAgent.setUpdateUIStyle(UpdateStatus.STYLE_NOTIFICATION);
         UmengUpdateAgent.setDownloadListener(new UmengDownloadListener() {
@@ -80,7 +89,6 @@ public class MainActivity extends BaseActivity
                 }
             }
         });
-        //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
     }
 
 

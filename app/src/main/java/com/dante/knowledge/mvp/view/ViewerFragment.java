@@ -19,11 +19,11 @@ import com.dante.knowledge.KnowledgeApp;
 import com.dante.knowledge.R;
 import com.dante.knowledge.libraries.TouchImageView;
 import com.dante.knowledge.ui.BaseFragment;
+import com.dante.knowledge.utils.BitmapUtil;
 import com.dante.knowledge.utils.BlurBuilder;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.Share;
-import com.dante.knowledge.utils.BitmapUtil;
 import com.dante.knowledge.utils.UI;
 
 import java.io.File;
@@ -40,6 +40,7 @@ import butterknife.Bind;
  */
 public class ViewerFragment extends BaseFragment implements View.OnLongClickListener, View.OnClickListener {
 
+    private static final String TAG = "test";
     @Bind(R.id.headImage)
     TouchImageView imageView;
     private String url;
@@ -54,8 +55,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         for (AsyncTask task : tasks) {
             task.cancel(true);
         }
-        bitmap.recycle();
-        bitmap = null;
     }
 
     public static ViewerFragment newInstance(String url) {
@@ -78,6 +77,7 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
         new LoadPictureTask().execute();
+        Log.i(TAG, "initViews: ");
     }
 
     private void showHint() {
