@@ -76,12 +76,7 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = (BaseActivity) getActivity();
-        if (getArguments() != null) {
-            freshPosts = DB.findAllDateSorted(context.mRealm, FreshPost.class);
-            position = getArguments().getInt(Constants.POSITION);
-            freshPost = freshPosts.get(position);
-            setHasOptionsMenu(true);
-        }
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -96,6 +91,11 @@ public class FreshDetailFragment extends BaseFragment implements NewsDetailView<
 
     @Override
     protected void initData() {
+        if (getArguments() != null) {
+            position = getArguments().getInt(Constants.POSITION);
+            freshPosts = DB.findAllDateSorted(context.mRealm, FreshPost.class);
+            freshPost = freshPosts.get(position);
+        }
         presenter.loadNewsDetail(freshPost);
         toolbar.setTitle(freshPost.getTitle());
         final AppCompatActivity activity = (AppCompatActivity) getActivity();

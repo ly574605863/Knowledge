@@ -38,9 +38,6 @@ public class DB {
     }
 
     public static <T extends RealmObject> T getByUrl(Realm realm, String url, Class<T> realmObjectClass) {
-        if (realm.isClosed()){
-            realm = Realm.getDefaultInstance();
-        }
         return realm.where(realmObjectClass).equalTo(Constants.URL, url).findFirst();
     }
 

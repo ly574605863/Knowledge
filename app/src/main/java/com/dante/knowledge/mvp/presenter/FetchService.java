@@ -33,7 +33,7 @@ import okhttp3.Response;
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
  * a service on a separate handler thread.
- * <p/>
+ * <p>
  * helper methods.
  */
 public class FetchService extends IntentService {
@@ -45,10 +45,8 @@ public class FetchService extends IntentService {
     private LocalBroadcastManager localBroadcastManager;
     public long GET_DURATION = 3000;
     private int type;
-    private String data;
     private boolean stopFetchAll;
     private ImageHelper helper;
-    public static Realm realm;
 
     public FetchService() {
         super("PictureFetchService");
@@ -73,18 +71,18 @@ public class FetchService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
-        realm = Realm.getDefaultInstance();
+        Realm realm = Realm.getDefaultInstance();
 //        realm.beginTransaction();
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_FETCH.equals(action)) {
                 type = intent.getIntExtra(Constants.TYPE, 0);
-                data = intent.getStringExtra(Constants.DATA);
+                String data = intent.getStringExtra(Constants.DATA);
                 parse(data);
             } else if (ACTION_FETCH_H_DETAIL.equals(action)) {
                 String url = intent.getStringExtra(Constants.URL);
                 stopFetchAll = true;
-                fetchDetail(url, true);
+                fetchDetail(realm, url, true);
             }
         }
     }
@@ -111,9 +109,11 @@ public class FetchService extends IntentService {
     private <E extends RealmObject> boolean save(List<E> objects) {
         if (objects != null) {
             if (objects.size() >= 0) {
-                FetchService.realm.beginTransaction();
-                FetchService.realm.copyToRealmOrUpdate(objects);
-                FetchService.realm.commitTransaction();
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                realm.copyToRealmOrUpdate(objects);
+                realm.commitTransaction();
+                realm.close();
                 return true;
             }
         }
@@ -121,14 +121,16 @@ public class FetchService extends IntentService {
     }
 
     private void fetchAllDetail() {
+        Realm realm = Realm.getDefaultInstance();
         List<HItem> items = realm.where(HItem.class).findAll();
         for (HItem item : items) {
             final String url = item.getUrl();
-            fetchDetail(url, false);
+            fetchDetail(realm, url, false);
         }
+        realm.close();
     }
 
-    private void fetchDetail(final String url, final boolean normalFetch) {
+    private void fetchDetail(Realm realm, final String url, final boolean normalFetch) {
         boolean isExisted = !realm.where(HDetail.class).equalTo(Constants.URL, url).findAll().isEmpty();
         if (isExisted) {
             return;

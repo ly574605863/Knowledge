@@ -75,8 +75,7 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
     private void saveZhihu(final ZhihuJson zhihuJson) {
         if (null != zhihuJson) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.executeTransaction(new Realm.Transaction() {
+            mActivity.mRealm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
                     if (type == API.TYPE_LATEST) {

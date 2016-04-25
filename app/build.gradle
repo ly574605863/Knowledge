@@ -35,6 +35,8 @@ android {
                                     umeng_message_secret: "b88cb709dc0c645b0d2d0d5d5aee6448"]
         }
     }
+
+
 }
 repositories {
     // ...

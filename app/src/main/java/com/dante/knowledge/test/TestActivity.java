@@ -6,11 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.dante.knowledge.R;
 import com.dante.knowledge.net.Net;
-import com.dante.knowledge.utils.Imager;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.jsoup.Jsoup;
@@ -18,14 +16,20 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.Random;
+
 import okhttp3.Call;
 
 public class TestActivity extends AppCompatActivity {
 
+    private static final String TAG = "test";
     String main = "http://keet.p2pdown.net/pw/thread.php?fid=14";
     String post = "http://keet.p2pdown.net/pw/htm_data/14/1602/298340.html";
     String url = "http://www.paochefang.com/wp-content/uploads/paoimage/2016/02/111032hmw.jpg";
     private int type;
+    private Thread a;
+    private Thread b;
+    private boolean isRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +42,15 @@ public class TestActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 //                start(post, 1);
-                ImageView imageView = new ImageView(TestActivity.this);
-                setContentView(imageView);
-                Imager.load(TestActivity.this, url, imageView);
+//                ImageView imageView = new ImageView(TestActivity.this);
+//                setContentView(imageView);
+//                Imager.load(TestActivity.this, url, imageView);
+                print();
+
             }
         });
+
+        print();
     }
 
     private void start(String url, final int type) {
@@ -82,6 +90,35 @@ public class TestActivity extends AppCompatActivity {
             String title = post.text();
             Log.i("test", "href>>>" + link + " text>>>" + title);
         }
+    }
+
+
+    public void print() {
+        Random random = new Random();
+        int[] array = {
+                -random.nextInt(10),
+                -random.nextInt(10),
+                -random.nextInt(10),
+                -random.nextInt(10),
+                -random.nextInt(10)
+        };
+
+        int max = array[0];
+        int secondMax = 0;
+        for (int i = 0; i < array.length; i++) {
+            int currentNum = array[i];
+            System.out.println("NO." + i + " is: " + currentNum);
+
+            if (currentNum > max) {
+                secondMax = max;
+                max = currentNum;
+
+            } else if (secondMax < currentNum) {
+                secondMax = currentNum;
+            }
+        }
+        System.out.println("Second big number >>>" + secondMax);
+
     }
 
 }
