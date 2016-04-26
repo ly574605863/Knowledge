@@ -53,8 +53,6 @@ Knowledge是一个[MaterialDesign](http://www.google.com/design/spec/material-de
     }
 
 ## TODO
-- [ ] 代码重构
-- [ ] 项目包结构整理
 - [ ] 隐藏模式
 - [ ] 更换主题
 
