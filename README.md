@@ -16,8 +16,8 @@
 Knowledge是一个[MaterialDesign](http://www.google.com/design/spec/material-design/)风格和[MVP](http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0202/2397.html)模式的项目。你可以方便地阅读知乎日报和煎蛋网的新鲜事，还可以浏览妹子图，让我们一起嘿嘿嘿~（作者比较懒，只在[360手机助手](http://openbox.mobilem.360.cn/index/d/sid/3220990)上线了。如果你在学习中遇到任何bug、疑问，请[提交一个issue](https://github.com/DanteAndroid/Knowledge/issues/new)）
 
 ##截图
-<a href="./screenshots/girl."><img src="./screenshots/girl.png" width="40%"/></a><a href="./screenshots/main."><img src="./screenshots/main.png" width="40%"/></a>
-<a href="./screenshots/detail.jpg"><img src="./screenshots/detail.png" width="40%"/></a><a href="./screenshots/menu."><img src="./screenshots/menu.png" width="40%"/></a>
+<a href="./screenshots/girl.jpg"><img src="./screenshots/girl.jpg" width="40%"/></a><a href="./screenshots/main.jpg"><img src="./screenshots/main.jpg" width="40%"/></a>
+<a href="./screenshots/detail.jpg"><img src="./screenshots/detail.jpg" width="40%"/></a><a href="./screenshots/menu.jpg"><img src="./screenshots/menu.jpg" width="40%"/></a>
 <!--![ScreenShots](screenshots/girl.jpg)
 ![ScreenShots](screenshots/main.jpg)
 ![ScreenShots](screenshots/detail.jpg)
