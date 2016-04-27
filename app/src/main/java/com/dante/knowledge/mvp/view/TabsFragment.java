@@ -177,6 +177,11 @@ public class TabsFragment extends BaseFragment {
         public CharSequence getPageTitle(int position) {
             return titles.get(position);
         }
+
+        @Override
+        public float getPageWidth(int position) {
+            return super.getPageWidth(position);
+        }
     }
 
 }

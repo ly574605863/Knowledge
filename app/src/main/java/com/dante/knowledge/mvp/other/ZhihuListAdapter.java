@@ -19,12 +19,14 @@ import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.BannerView;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
+import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.DateUtil;
 import com.dante.knowledge.utils.Imager;
 
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.Sort;
 
 /**
  * Zhihu news' recyclerView adapter
@@ -53,6 +55,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public ZhihuListAdapter(OnListFragmentInteract listener, BaseActivity activity) {
         mListener = listener;
         mRealm = activity.mRealm;
+        mRealm.where(ZhihuJson.class).findAllSorted(Constants.DATE, Sort.DESCENDING);
         zhihuStories = DB.findAll(mRealm, ZhihuStory.class);
         tops = DB.findAll(mRealm, ZhihuTop.class);
     }
@@ -68,7 +71,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         if (viewType == TYPE_BANNER) {
             View view = inflater.inflate(R.layout.fragment_news_banner, parent, false);
             return new BannerViewHolder(view);

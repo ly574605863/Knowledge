@@ -62,8 +62,8 @@ public class MainActivity extends BaseActivity
     private void initSDK() {
         PushAgent agent = PushAgent.getInstance(this);
         agent.enable();
-        if (new Random().nextBoolean()){
-             update();
+        if (new Random().nextBoolean()) {
+            update();
         }
 
         //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
@@ -79,7 +79,6 @@ public class MainActivity extends BaseActivity
 
             @Override
             public void OnDownloadUpdate(int i) {
-
             }
 
             @Override
@@ -90,7 +89,6 @@ public class MainActivity extends BaseActivity
             }
         });
     }
-
 
     public DrawerLayout getDrawerLayout() {
         return drawerLayout;
@@ -200,7 +198,6 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.nav_knowledge) {
             replace(TabsFragment.MENU_NEWS);
         } else if (id == R.id.nav_beauty) {

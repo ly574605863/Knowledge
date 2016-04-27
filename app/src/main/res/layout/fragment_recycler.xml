@@ -12,5 +12,4 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         tools:listitem="@layout/fragment_news_item"/>
-
 </android.support.v4.widget.SwipeRefreshLayout>

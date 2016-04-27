@@ -58,10 +58,10 @@
             android:id="@+id/umeng_update_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/secondary_text_light"
             android:layout_margin="@dimen/activity_horizontal_margin"
+            android:lineSpacingMultiplier="1.2"
             android:paddingLeft="8dp"
-            android:lineSpacingMultiplier="1.2"/>
+            android:textColor="@android:color/secondary_text_light"/>
 
         <CheckBox
             android:id="@+id/umeng_update_id_check"
@@ -70,8 +70,8 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:button="@drawable/umeng_update_button_check_selector"
             android:text="@string/UMIgnore"
-            android:textSize="14sp"
-            android:textColor="@android:color/tertiary_text_light" />
+            android:textColor="@android:color/tertiary_text_light"
+            android:textSize="14sp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -93,8 +93,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textColor="@android:color/secondary_text_light"
-                android:text="@string/UMNotNow"/>
+                android:text="@string/UMNotNow"
+                android:textColor="@android:color/secondary_text_light"/>
 
             <Button
                 android:id="@+id/umeng_update_id_ignore"

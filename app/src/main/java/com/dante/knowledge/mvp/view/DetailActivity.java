@@ -215,6 +215,7 @@ public class DetailActivity extends BaseActivity implements PullBackLayout.Callb
         public ViewerFragment getCurrent(int position) {
             return (ViewerFragment) adapter.instantiateItem(pager, position);
         }
+
     }
 
     public void toggleSystemUI() {

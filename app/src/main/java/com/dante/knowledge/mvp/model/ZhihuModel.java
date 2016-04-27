@@ -30,28 +30,29 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
     public ZhihuModel(BaseActivity activity) {
         mActivity = activity;
+        realm = mActivity.mRealm;
     }
 
     private String date;
     private long lastGetTime;
     public static final int GET_DURATION = 2000;
     private int type;
+    private Realm realm;
 
     @Override
     public void getNews(final int type, final OnLoadDataListener listener) {
         this.type = type;
 
         lastGetTime = System.currentTimeMillis();
-        final Callback<String> callback = new Callback<String>() {
+        final Callback<ZhihuJson> callback = new Callback<ZhihuJson>() {
             @Override
-            public String parseNetworkResponse(Response response) throws Exception {
+            public ZhihuJson parseNetworkResponse(Response response) throws Exception {
                 ZhihuJson zhihuJson = Json.parseZhihuNews(response.body().string());
-                saveZhihu(zhihuJson);
                 date = zhihuJson.getDate();
                 if (type == API.TYPE_BEFORE) {
                     SPUtil.save(Constants.DATE, date);
                 }
-                return response.body().string();
+                return zhihuJson;
             }
 
             @Override
@@ -60,11 +61,13 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
                     getData(this);
                     return;
                 }
+                e.printStackTrace();
                 listener.onFailure("load zhihu news failed");
             }
 
             @Override
-            public void onResponse(String response) {
+            public void onResponse(ZhihuJson zhihuJson) {
+                saveZhihu(zhihuJson);
                 listener.onSuccess();
             }
 
@@ -75,16 +78,14 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
     private void saveZhihu(final ZhihuJson zhihuJson) {
         if (null != zhihuJson) {
-            mActivity.mRealm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    if (type == API.TYPE_LATEST) {
-                        realm.where(ZhihuTop.class).findAll().clear();
-                    }
-                    realm.copyToRealmOrUpdate(zhihuJson);
-                    realm.where(ZhihuJson.class).findAllSorted(Constants.DATE, Sort.DESCENDING);
-                }
-            });
+            realm.beginTransaction();
+            if (type == API.TYPE_LATEST) {
+                realm.where(ZhihuTop.class).findAll().clear();
+            }
+            realm.copyToRealmOrUpdate(zhihuJson);
+            realm.commitTransaction();
+            realm.where(ZhihuJson.class).findAllSorted(Constants.DATE, Sort.DESCENDING);
+
         }
     }
 
@@ -120,6 +121,7 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
                     Net.get(API.BASE_URL + newsItem.getId(), this, API.TAG_ZHIHU);
                     return;
                 }
+                e.printStackTrace();
                 listener.onFailure("load zhihu detail failed", e);
             }
 
