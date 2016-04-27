@@ -26,13 +26,14 @@ import com.dante.knowledge.utils.Imager;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.Sort;
 
 /**
  * Zhihu news' recyclerView adapter
  */
 
-public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements RealmChangeListener {
     private static final int TYPE_BANNER = 0;
     /**
      * header is a title to display date
@@ -49,6 +50,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<ZhihuStory> zhihuStories;
     private List<ZhihuTop> tops;
     private Realm mRealm;
+    public ConvenientBanner<ZhihuTop> banner;
 
     private OnListFragmentInteract mListener;
 
@@ -58,6 +60,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         mRealm.where(ZhihuJson.class).findAllSorted(Constants.DATE, Sort.DESCENDING);
         zhihuStories = DB.findAll(mRealm, ZhihuStory.class);
         tops = DB.findAll(mRealm, ZhihuTop.class);
+        mRealm.addChangeListener(this);
     }
 
     public void addNews(ZhihuJson news) {
@@ -142,7 +145,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     return new BannerView();
                 }
             }, tops);
-            itemHolder.banner.notifyDataSetChanged();
+            banner = itemHolder.banner;
         }
 
     }
@@ -163,6 +166,13 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public int getItemCount() {
         //items + banner + footer
         return zhihuStories.size() + 2;
+    }
+
+    @Override
+    public void onChange() {
+        if (null != banner) {
+            banner.notifyDataSetChanged();
+        }
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -200,8 +210,8 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             super(view);
             header = (TextView) view.findViewById(R.id.story_header);
             mImage = (ImageView) view.findViewById(R.id.story_img);
-            mTitle = (TextView) view.findViewById(R.id.h_title);
-            mItem = view.findViewById(R.id.h_item);
+            mTitle = (TextView) view.findViewById(R.id.news_title);
+            mItem = view.findViewById(R.id.news_item);
         }
 
         @Override

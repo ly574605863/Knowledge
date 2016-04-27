@@ -158,7 +158,6 @@ public class PictureFragment extends RecyclerFragment implements OnLoadDataListe
 
         firstPosition = layoutManager.findFirstVisibleItemPositions(spans)[0];
         lastPosition = layoutManager.findLastVisibleItemPositions(spans)[1];
-getFragmentManager().beginTransaction();
         if (isFirst && page <= 1) {
             if (lastPosition > images.size() / 3) {
                 page = SPUtil.getInt(type + Constants.PAGE);

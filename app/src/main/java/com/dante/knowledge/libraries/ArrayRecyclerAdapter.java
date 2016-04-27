@@ -16,6 +16,7 @@
 
 package com.dante.knowledge.libraries;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
@@ -231,7 +232,11 @@ public abstract class ArrayRecyclerAdapter<E, VH extends RecyclerView.ViewHolder
     public E set(int location, E object) {
         synchronized (lock) {
             E origin = list.set(location, object);
-            if (!Objects.equals(object, origin)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                if (!Objects.equals(object, origin)) {
+                    notifyItemChanged(location);
+                }
+            }else if (object.equals(origin)){
                 notifyItemChanged(location);
             }
             return origin;

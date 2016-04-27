@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/h_item"
+<RelativeLayout android:id="@+id/news_item"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="92dp"
@@ -19,7 +19,7 @@
         android:transitionName="@string/shared_img"/>
 
     <TextView
-        android:id="@+id/h_title"
+        android:id="@+id/news_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"

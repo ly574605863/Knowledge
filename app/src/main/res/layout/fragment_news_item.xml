@@ -18,7 +18,7 @@
         android:visibility="gone"/>
 
     <RelativeLayout
-        android:id="@+id/h_item"
+        android:id="@+id/news_item"
         android:layout_width="match_parent"
         android:layout_height="92dp"
         android:orientation="horizontal">
@@ -34,7 +34,7 @@
             android:transitionName="@string/shared_img"/>
 
         <TextView
-            android:id="@+id/h_title"
+            android:id="@+id/news_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

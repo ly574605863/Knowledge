@@ -66,8 +66,8 @@ public class HPostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         public ViewHolder(View view) {
             super(view);
-            mTitle = (TextView) view.findViewById(R.id.h_title);
-            mItem = view.findViewById(R.id.h_item);
+            mTitle = (TextView) view.findViewById(R.id.news_title);
+            mItem = view.findViewById(R.id.news_item);
         }
 
         @Override

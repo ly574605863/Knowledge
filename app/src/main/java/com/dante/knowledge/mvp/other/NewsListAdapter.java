@@ -79,8 +79,8 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public ViewHolder(View view) {
             super(view);
             mImage = (ImageView) view.findViewById(R.id.story_img);
-            mTitle = (TextView) view.findViewById(R.id.h_title);
-            mItem = view.findViewById(R.id.h_item);
+            mTitle = (TextView) view.findViewById(R.id.news_title);
+            mItem = view.findViewById(R.id.news_item);
         }
 
         @Override
