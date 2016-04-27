@@ -236,7 +236,7 @@ public abstract class ArrayRecyclerAdapter<E, VH extends RecyclerView.ViewHolder
                 if (!Objects.equals(object, origin)) {
                     notifyItemChanged(location);
                 }
-            }else if (object.equals(origin)){
+            }else if (!object.equals(origin)){
                 notifyItemChanged(location);
             }
             return origin;
