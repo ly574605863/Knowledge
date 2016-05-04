@@ -16,7 +16,6 @@ import com.dante.knowledge.mvp.model.FreshJson;
 import com.dante.knowledge.mvp.other.NewsListAdapter;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.FreshDataPresenter;
-import com.dante.knowledge.net.API;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
@@ -33,11 +32,11 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     private NewsPresenter presenter;
     private NewsListAdapter adapter;
     private LinearLayoutManager layoutManager;
-    private BaseActivity context;
+    private BaseActivity mActivity;
 
     @Override
     public void onDestroyView() {
-        OkHttpUtils.getInstance().cancelTag(API.TAG_FRESH);
+        OkHttpUtils.getInstance().cancelTag(mActivity);
         SPUtil.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
     }
@@ -45,11 +44,11 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
     @Override
     protected void initViews() {
         super.initViews();
-        context = (BaseActivity) getActivity();
+        mActivity = (BaseActivity) getActivity();
         type = TabsFragment.TYPE_FRESH;
-        layoutManager = new LinearLayoutManager(context);
+        layoutManager = new LinearLayoutManager(mActivity);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new NewsListAdapter(this, context);
+        adapter = new NewsListAdapter(this, mActivity);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -75,7 +74,7 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     protected void initData() {
-        presenter = new FreshDataPresenter(this, context);
+        presenter = new FreshDataPresenter(this, mActivity);
         onRefresh();
     }
 

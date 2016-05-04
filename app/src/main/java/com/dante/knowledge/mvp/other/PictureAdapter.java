@@ -21,7 +21,14 @@ public abstract class PictureAdapter extends ArrayRecyclerAdapter<Image, Picture
 
     public PictureAdapter(Context context) {
         this.context = context;
+        setHasStableIds(true);
     }
+
+    @Override
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
     protected abstract void onItemClick(View v, int position);
 
     @Override
@@ -32,7 +39,7 @@ public abstract class PictureAdapter extends ArrayRecyclerAdapter<Image, Picture
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        com.dante.knowledge.mvp.model.Image image = get(position);
+        Image image = get(position);
         holder.imageView.setOriginalSize(image.getWidth(), image.getHeight());
         Imager.load(holder.itemView.getContext(), image.getUrl(), holder.imageView);
     }

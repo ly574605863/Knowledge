@@ -26,6 +26,7 @@ import okhttp3.Response;
  */
 public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
+    private static final String TAG = "test";
     private BaseActivity mActivity;
 
     public ZhihuModel(BaseActivity activity) {
@@ -67,6 +68,9 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
             @Override
             public void onResponse(ZhihuJson zhihuJson) {
+                if (mActivity.isFinishing() ) {
+                    return;
+                }
                 saveZhihu(zhihuJson);
                 listener.onSuccess();
             }
@@ -91,11 +95,11 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
     private void getData(Callback callback) {
         if (type == API.TYPE_LATEST) {
-            Net.get(API.NEWS_LATEST, callback, API.TAG_ZHIHU);
+            Net.get(API.NEWS_LATEST, callback, mActivity);
 
         } else if (type == API.TYPE_BEFORE) {
             date = SPUtil.get(Constants.DATE, DateUtil.parseStandardDate(new Date()));
-            Net.get(API.NEWS_BEFORE + date, callback, API.TAG_ZHIHU);
+            Net.get(API.NEWS_BEFORE + date, callback, mActivity);
         }
     }
 
@@ -132,7 +136,7 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
             }
 
         };
-        Net.get(API.BASE_URL + newsItem.getId(), callback, API.TAG_ZHIHU);
+        Net.get(API.BASE_URL + newsItem.getId(), callback, mActivity);
     }
 
 

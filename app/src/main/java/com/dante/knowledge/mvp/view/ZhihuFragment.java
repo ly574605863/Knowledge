@@ -6,6 +6,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.dante.knowledge.MainActivity;
@@ -16,7 +17,6 @@ import com.dante.knowledge.mvp.interf.OnListFragmentInteract;
 import com.dante.knowledge.mvp.model.ZhihuJson;
 import com.dante.knowledge.mvp.other.ZhihuListAdapter;
 import com.dante.knowledge.mvp.presenter.ZhihuDataPresenter;
-import com.dante.knowledge.net.API;
 import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
@@ -27,17 +27,22 @@ import com.zhy.http.okhttp.OkHttpUtils;
 public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJson>, SwipeRefreshLayout.OnRefreshListener, OnListFragmentInteract {
 
     private static final int PRELOAD_COUNT = 1;
+    private static final String TAG = "test";
 
     private NewsPresenter presenter;
     private ZhihuListAdapter adapter;
     private ConvenientBanner banner;
     private LinearLayoutManager layoutManager;
-    private BaseActivity context;
+    private BaseActivity mActivity;
 
     @Override
     public void onDestroyView() {
-        OkHttpUtils.getInstance().cancelTag(API.TAG_ZHIHU);
+        OkHttpUtils.getInstance().cancelTag(mActivity);
         SPUtil.save(type + Constants.POSITION, firstPosition);
+        if (banner!=null){
+            banner.stopTurning();
+            Log.i(TAG, "onDestroyView: stop banner");
+        }
         super.onDestroyView();
     }
 
@@ -52,11 +57,11 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
     protected void initViews() {
         super.initViews();
         type = TabsFragment.TYPE_ZHIHU;
-        context = (BaseActivity)getActivity();
-        layoutManager = new LinearLayoutManager(context);
+        mActivity = (BaseActivity) getActivity();
+        layoutManager = new LinearLayoutManager(mActivity);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ZhihuListAdapter(this, context);
+        adapter = new ZhihuListAdapter(this, mActivity);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -81,7 +86,7 @@ public class ZhihuFragment extends RecyclerFragment implements NewsView<ZhihuJso
 
     @Override
     protected void initData() {
-        presenter = new ZhihuDataPresenter(this, (BaseActivity)getActivity());
+        presenter = new ZhihuDataPresenter(this, (BaseActivity) getActivity());
         initBanner();
         onRefresh();
     }

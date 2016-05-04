@@ -68,7 +68,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     }
 
     public void clear() {
-
+        banner.stopTurning();
     }
 
     @Override

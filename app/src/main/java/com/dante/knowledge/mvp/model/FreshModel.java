@@ -30,6 +30,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
      * a continuous request with increasing one page each time
      */
     public static final int TYPE_CONTINUOUS = 1;
+    private static final String TAG = "test";
     private final Realm realm;
 
     private int page;
@@ -39,7 +40,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
     public FreshModel(BaseActivity activity) {
         mActivity = activity;
-        realm=mActivity.mRealm;
+        realm = mActivity.mRealm;
     }
 
     @Override
@@ -66,6 +67,9 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
             @Override
             public void onResponse(FreshJson response) {
+                if (mActivity.isFinishing() ) {
+                    return;
+                }
                 DB.saveList(realm, response.getPosts());
                 listener.onSuccess();
                 page++;
@@ -78,7 +82,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
             }
         };
 
-        Net.get(API.FRESH_NEWS + page, callback, API.TAG_FRESH);
+        Net.get(API.FRESH_NEWS + page, callback, mActivity);
     }
 
     @Override
@@ -124,6 +128,6 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
                 listener.onDetailSuccess(response);
             }
         };
-        Net.get(API.FRESH_NEWS_DETAIL + freshPost.getId(), callback, API.TAG_FRESH);
+        Net.get(API.FRESH_NEWS_DETAIL + freshPost.getId(), callback, mActivity);
     }
 }
