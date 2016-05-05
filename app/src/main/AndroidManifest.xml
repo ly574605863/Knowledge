@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
+
     <application
         android:name=".KnowledgeApp"
         android:allowBackup="true"

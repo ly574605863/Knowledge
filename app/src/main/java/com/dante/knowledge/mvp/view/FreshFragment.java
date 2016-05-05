@@ -20,7 +20,6 @@ import com.dante.knowledge.ui.BaseActivity;
 import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.SPUtil;
 import com.dante.knowledge.utils.UI;
-import com.zhy.http.okhttp.OkHttpUtils;
 
 
 /**
@@ -36,7 +35,6 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
 
     @Override
     public void onDestroyView() {
-        OkHttpUtils.getInstance().cancelTag(mActivity);
         SPUtil.save(type + Constants.POSITION, firstPosition);
         super.onDestroyView();
     }
@@ -60,7 +58,6 @@ public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayou
                 }
             }
         });
-
     }
 
     private void onListScrolled() {

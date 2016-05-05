@@ -61,7 +61,7 @@ android {
     }
 }
 android {
-    useLibrary 'org.apache.http.legacy'
+//    useLibrary 'org.apache.http.legacy'
 }
 //自动上传插件
 bugtags {

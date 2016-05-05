@@ -40,10 +40,9 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    boolean backPressed;
     private String currentType;
     private Fragment currentFragment;
-
-    boolean backPressed;
 
     @Override
     protected void initLayoutId() {
@@ -65,8 +64,7 @@ public class MainActivity extends BaseActivity
         if (new Random().nextBoolean()) {
             update();
         }
-
-        //        Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
+        //   Bmob.initialize(this, "3478b1205772b294ac0741d0b136e25e");
     }
 
     private void update() {
@@ -145,14 +143,12 @@ public class MainActivity extends BaseActivity
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-//            doublePressBackToQuit();
-            super.onBackPressed();
+            doublePressBackToQuit();
         }
     }
 

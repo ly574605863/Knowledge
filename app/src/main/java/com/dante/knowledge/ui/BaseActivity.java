@@ -13,6 +13,7 @@ import android.view.animation.DecelerateInterpolator;
 import com.bugtags.library.Bugtags;
 import com.dante.knowledge.R;
 import com.umeng.message.PushAgent;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -21,10 +22,10 @@ import io.realm.Realm;
  * BaseActivity includes a base layoutId, init its toolbar (if the layout has one)
  */
 public abstract class BaseActivity extends AppCompatActivity {
+    public Realm mRealm;
     protected int layoutId = R.layout.activity_base;
     protected Toolbar toolbar;
     private boolean isShowToolbar = true;
-    public Realm mRealm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        OkHttpUtils.getInstance().cancelTag(this);
         super.onDestroy();
         mRealm.close();
     }

@@ -1,6 +1,8 @@
 package com.dante.knowledge.mvp.model;
 
 
+import android.util.Log;
+
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
@@ -26,19 +28,18 @@ import okhttp3.Response;
  */
 public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
 
+    public static final int GET_DURATION = 2000;
     private static final String TAG = "test";
     private BaseActivity mActivity;
+    private String date;
+    private long lastGetTime;
+    private int type;
+    private Realm realm;
 
     public ZhihuModel(BaseActivity activity) {
         mActivity = activity;
         realm = mActivity.mRealm;
     }
-
-    private String date;
-    private long lastGetTime;
-    public static final int GET_DURATION = 2000;
-    private int type;
-    private Realm realm;
 
     @Override
     public void getNews(final int type, final OnLoadDataListener listener) {
@@ -53,7 +54,18 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
                 if (type == API.TYPE_BEFORE) {
                     SPUtil.save(Constants.DATE, date);
                 }
+                Thread.sleep(3000);
                 return zhihuJson;
+            }
+
+            @Override
+            public void onResponse(ZhihuJson zhihuJson) {
+                if (mActivity.isFinishing()) {
+                    Log.i(TAG, "onResponse: isFinishing");
+                    return;
+                }
+                saveZhihu(zhihuJson);
+                listener.onSuccess();
             }
 
             @Override
@@ -64,15 +76,6 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
                 }
                 e.printStackTrace();
                 listener.onFailure("load zhihu news failed");
-            }
-
-            @Override
-            public void onResponse(ZhihuJson zhihuJson) {
-                if (mActivity.isFinishing() ) {
-                    return;
-                }
-                saveZhihu(zhihuJson);
-                listener.onSuccess();
             }
 
         };
@@ -138,6 +141,5 @@ public class ZhihuModel implements NewsModel<ZhihuStory, ZhihuDetail> {
         };
         Net.get(API.BASE_URL + newsItem.getId(), callback, mActivity);
     }
-
 
 }
