@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -49,14 +48,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
 
     private List<AsyncTask> tasks = new ArrayList<>();
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        for (AsyncTask task : tasks) {
-            task.cancel(true);
-        }
-    }
-
     public static ViewerFragment newInstance(String url) {
         ViewerFragment fragment = new ViewerFragment();
         Bundle args = new Bundle();
@@ -65,6 +56,13 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         return fragment;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        for (AsyncTask task : tasks) {
+            task.cancel(true);
+        }
+    }
 
     @Override
     protected void initLayoutId() {
@@ -77,7 +75,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         url = getArguments().getString(Constants.URL);
         ViewCompat.setTransitionName(imageView, url);
         new LoadPictureTask().execute();
-        Log.i(TAG, "initViews: ");
     }
 
     private void showHint() {
@@ -128,6 +125,14 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
         return true;
     }
 
+    @Override
+    public void onClick(View v) {
+        if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
+            showHint();
+            SPUtil.save(Constants.HAS_HINT, true);
+        }
+        activity.toggleSystemUI();
+    }
 
     private class BlurTask extends AsyncTask<Bitmap, Void, Bitmap> {
         @Override
@@ -147,15 +152,6 @@ public class ViewerFragment extends BaseFragment implements View.OnLongClickList
             }
 
         }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (!SPUtil.getBoolean(Constants.HAS_HINT)) {
-            showHint();
-            SPUtil.save(Constants.HAS_HINT, true);
-        }
-        activity.toggleSystemUI();
     }
 
     private class LoadPictureTask extends AsyncTask<Void, Void, Bitmap> {
