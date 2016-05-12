@@ -26,7 +26,7 @@ public abstract class PictureAdapter extends ArrayRecyclerAdapter<Image, Picture
 
     @Override
     public long getItemId(int position) {
-        return super.getItemId(position);
+        return get(position).hashCode();
     }
 
     protected abstract void onItemClick(View v, int position);
