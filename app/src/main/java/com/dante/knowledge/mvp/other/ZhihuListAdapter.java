@@ -19,15 +19,15 @@ import com.dante.knowledge.mvp.model.ZhihuTop;
 import com.dante.knowledge.mvp.view.BannerView;
 import com.dante.knowledge.net.DB;
 import com.dante.knowledge.ui.BaseActivity;
-import com.dante.knowledge.utils.Constants;
 import com.dante.knowledge.utils.DateUtil;
 import com.dante.knowledge.utils.Imager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
-import io.realm.Sort;
+import io.realm.RealmResults;
 
 /**
  * Zhihu news' recyclerView adapter
@@ -46,19 +46,22 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int TYPE_FOOTER = 3;
     public static int textGrey;
     public static int textDark;
-
+    private final RealmResults<ZhihuJson> zhihuJson;
+    public ConvenientBanner<ZhihuTop> banner;
     private List<ZhihuStory> zhihuStories;
     private List<ZhihuTop> tops;
     private Realm mRealm;
-    public ConvenientBanner<ZhihuTop> banner;
-
     private OnListFragmentInteract mListener;
 
     public ZhihuListAdapter(OnListFragmentInteract listener, BaseActivity activity) {
         mListener = listener;
         mRealm = activity.mRealm;
-        mRealm.where(ZhihuJson.class).findAllSorted(Constants.DATE, Sort.DESCENDING);
-        zhihuStories = DB.findAll(mRealm, ZhihuStory.class);
+        zhihuJson = DB.findAllDateSorted(mRealm, ZhihuJson.class);
+        zhihuStories = new ArrayList<>();
+        for (int i = 0; i < zhihuJson.size(); i++) {
+            zhihuStories.addAll(zhihuJson.get(i).getStories());
+        }
+//        zhihuStories = DB.findAll(mRealm, ZhihuStory.class);
         tops = DB.findAll(mRealm, ZhihuTop.class);
         mRealm.addChangeListener(this);
     }
@@ -77,7 +80,6 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (viewType == TYPE_BANNER) {
             View view = inflater.inflate(R.layout.fragment_news_banner, parent, false);
             return new BannerViewHolder(view);
-
         } else if (viewType == TYPE_HEADER) {
             View view = inflater.inflate(R.layout.fragment_news_header, parent, false);
             return new HeaderViewHolder(view);
