@@ -46,8 +46,8 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private static final int TYPE_FOOTER = 3;
     public static int textGrey;
     public static int textDark;
-    private final RealmResults<ZhihuJson> zhihuJson;
     public ConvenientBanner<ZhihuTop> banner;
+    private RealmResults<ZhihuJson> zhihuJson;
     private List<ZhihuStory> zhihuStories;
     private List<ZhihuTop> tops;
     private Realm mRealm;
@@ -61,6 +61,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         for (int i = 0; i < zhihuJson.size(); i++) {
             zhihuStories.addAll(zhihuJson.get(i).getStories());
         }
+        //// TODO: 16/8/30 排序问题 
 //        zhihuStories = DB.findAll(mRealm, ZhihuStory.class);
         tops = DB.findAll(mRealm, ZhihuTop.class);
         mRealm.addChangeListener(this);
@@ -175,6 +176,12 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         if (null != banner) {
             banner.notifyDataSetChanged();
         }
+        zhihuStories.clear();
+        zhihuJson = DB.findAllDateSorted(mRealm, ZhihuJson.class);
+        for (int i = 0; i < zhihuJson.size(); i++) {
+            zhihuStories.addAll(zhihuJson.get(i).getStories());
+        }
+        notifyDataSetChanged();
     }
 
     public class FooterViewHolder extends RecyclerView.ViewHolder {
