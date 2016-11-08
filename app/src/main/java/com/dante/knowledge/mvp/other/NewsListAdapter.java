@@ -48,11 +48,13 @@ public class NewsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.freshPost = freshPosts.get(position);
-        String imgUrl = viewHolder.freshPost.getCustom_fields().getThumb_c().get(0).getVal();
+        if (viewHolder.freshPost.getCustom_fields() != null) {
+            String imgUrl = viewHolder.freshPost.getCustom_fields().getThumb_c().get(0).getVal();
+            Imager.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
+        }
 
         viewHolder.mTitle.setText(viewHolder.freshPost.getTitle());
         viewHolder.mTitle.setTextColor(ZhihuListAdapter.textDark);
-        Imager.load(viewHolder.itemView.getContext(), imgUrl, viewHolder.mImage);
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

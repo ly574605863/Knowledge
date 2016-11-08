@@ -1,5 +1,7 @@
 package com.dante.knowledge.mvp.model;
 
+import android.util.Log;
+
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
@@ -30,12 +32,11 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
      * a continuous request with increasing one page each time
      */
     public static final int TYPE_CONTINUOUS = 1;
+    public static final int GET_DURATION = 3000;
     private static final String TAG = "test";
     private final Realm realm;
-
     private int page;
     private long lastGetTime;
-    public static final int GET_DURATION = 3000;
     private BaseActivity mActivity;
 
     public FreshModel(BaseActivity activity) {
@@ -45,7 +46,6 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
     @Override
     public void getNews(int type, final OnLoadDataListener listener) {
-
         lastGetTime = System.currentTimeMillis();
         if (type == TYPE_FRESH) {
             page = 1;//如果是全新请求，就初始化page为1
@@ -67,12 +67,13 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
 
             @Override
             public void onResponse(FreshJson response) {
-                if (mActivity.isFinishing() ) {
+                if (mActivity.isFinishing() || response == null) {
                     return;
                 }
                 DB.saveList(realm, response.getPosts());
                 listener.onSuccess();
                 page++;
+                Log.i(TAG, "onResponse: page " + page);
                 SPUtil.save(Constants.PAGE, page);
             }
 
@@ -81,7 +82,6 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
                 return Json.parseFreshNews(response.body().string());
             }
         };
-
         Net.get(API.FRESH_NEWS + page, callback, mActivity);
     }
 

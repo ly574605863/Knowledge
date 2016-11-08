@@ -26,7 +26,7 @@ import com.dante.knowledge.utils.UI;
  * A simple {@link Fragment} subclass.
  */
 public class FreshFragment extends RecyclerFragment implements SwipeRefreshLayout.OnRefreshListener, NewsView<FreshJson>, OnListFragmentInteract {
-
+    private static final String TAG = "test";
     private static final int PRELOAD_COUNT = 1;
     private NewsPresenter presenter;
     private NewsListAdapter adapter;
