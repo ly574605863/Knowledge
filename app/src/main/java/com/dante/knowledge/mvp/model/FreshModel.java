@@ -1,7 +1,5 @@
 package com.dante.knowledge.mvp.model;
 
-import android.util.Log;
-
 import com.dante.knowledge.mvp.interf.NewsModel;
 import com.dante.knowledge.mvp.interf.OnLoadDataListener;
 import com.dante.knowledge.mvp.interf.OnLoadDetailListener;
@@ -72,8 +70,7 @@ public class FreshModel implements NewsModel<FreshPost, FreshDetailJson> {
                 }
                 DB.saveList(realm, response.getPosts());
                 listener.onSuccess();
-                page++;
-                Log.i(TAG, "onResponse: page " + page);
+                page ++;
                 SPUtil.save(Constants.PAGE, page);
             }
 
