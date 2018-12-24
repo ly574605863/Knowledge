@@ -17,7 +17,7 @@ Here, we sincerely invite you to join our network and enjoy fun mining on it.
 
 If you are not an existing user of MATRIX TOM chain or holding MAN tokens on Ethereum,you need to register a new account in the MATRIX network, which means you shall generate a new wallet address. Entry into MATRIX network via gman is supported, but not so convenient enough. 
 
-We recommend using our Online Wallet: http://testnet1.matrix.io/
+We recommend using our Online Wallet: https://testnet.matrix.io/
 
 For existing users of MATRIX TOM chain or holding MAN tokens on Ethereum, your original account still works with your keystore or private key on the new network.
 
@@ -78,13 +78,20 @@ Let's see how to get this ID:
 
 ### LINUX
 
-- Step1：Create a folder named 'chaindata' under root directory, where gman (can be obtained from [https://github.com/MatrixAINetwork/MATRIX-TESTNET](https://github.com/MatrixAINetwork/MATRIX-TESTNET)) is also placed
+- Step1：Create a folder named 'chaindata' under root directory, where gman (provided) is also placed
 
-- Step2: Create a new password.txt file under 'chaindata', which stores the password of your new wallet. Also place your keystore file here
+- Step2: Create a new password.txt file under 'chaindata', which stores the password of your new wallet. Also create a folder named 'keystore' and place your keystore file in it
 
-- Step3: Fetch the specified genesis file (MANGenesis.json) and common profile (man.json) from Github ([https://github.com/MatrixAINetwork/MATRIX-TESTNET](https://github.com/MatrixAINetwork/MATRIX-TESTNET))
+**Please note: If you run as a common node, there's no need to put keystore or password here, Thus, you can remove '--password /chaindata/password.txt' part in the following start script. This requirement apply to miners and validators.**
+
+- Step3: Fetch the specified genesis file (MANGenesis.json) and common profile (man.json) from Github
 
 You can place MANGenesis.json anywhere (suggest 'root'); but man.json should be placed under /chaindata (otherwise, you can't start gman due to the inability to read the profile)
+
+![](https://i.imgur.com/fKIVEAr.png)
+
+![](https://i.imgur.com/MMZjh11.png)
+
 
 - Step4: Initialize
 
@@ -102,21 +109,41 @@ gman --datadir /chaindata  --networkid 2  --debug --verbosity 5 --password /chai
 
 ### WINDOWS
 
-- Step1: Create a a folder named 'chaindata' on desktop, where gman and MANGenesis.json is also placed.
+- Step1: Create a a folder named 'chaindata' on desktop (you can specify another location), where gman.exe (placed under gman_windows) and MANGenesis.json is also placed.
 - Step2: Put man.json under chaindata
-- Step3: Create a new password.txt file under 'chaindata', which stores the password of your new wallet. Also place your keystore file here
+- Step3: Create a new password.txt file under 'chaindata', which stores the password of your new wallet. Also create a folder named 'keystore' and place your keystore file in it
+![](https://i.imgur.com/LjmE9i8.png)
+
+#### Under chaindata:
+
+
+![](https://i.imgur.com/elcd2wr.png)
+
+
+**Please note: If you run as a common node, there's no need to put keystore or password here, Thus, you can remove '--password ./chaindata\password.txt' part in the following start script. This requirement apply to miners and validators.**
+
 - Step4: Enter Windows CMD Line window and direct to the current path, for example, cd desktop
 - Step5: Initialize
 gman.exe --datadir chaindata\ init MANGenesis.json
 
--Step6:Start GMAN client
+- Step6: Start GMAN client
 
-gman --datadir chaindata  --networkid 2  --debug --verbosity 5 --outputinfo 1 --gcmode archive --syncmode full 
+gman --datadir chaindata  --networkid 2  --debug --verbosity 5 --password ./chaindata\password.txt --outputinfo 1 --gcmode archive --syncmode full 
 
 
 - Step7: Start a new command line window and input: gman attach ipc:\\.\pipe\gman.ipc
 
 - Step8: Run the command 'admin.nodeInfo' and the node info will be listed
+
+Note: When you complete deposits described in the following sections, you need to repeat the above init and start actions for your node to compete for miner or validator nodes.
+
+### Run MD5 to check the consistency of your gman
+
+- Linux:md5sum gman
+
+- Windows:certutil -hashfile gman.exe MD5 
+
+- Standard: You get the right version if your MD5 result equals ''
 
 ## Make Deposits (Under 'Deposit/Withdrawal' of Online Wallet)
 
